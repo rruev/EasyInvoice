@@ -1,0 +1,2 @@
+# EasyInvoice
+Invoice generator app
