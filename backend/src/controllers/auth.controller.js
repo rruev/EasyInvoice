@@ -29,4 +29,20 @@ authController.post('/login', async (req, res) => {
     });
 });
 
+authController.get('/logout', (req, res) => {
+    res.clearCookie('auth-token');
+    res.json({ message: 'Logged out successfully' });
+});
+
+authController.get('/me', (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ message: 'Access denied. User not authenticated.' });
+    }
+    
+    res.json({
+        id: req.user.id,
+        email: req.user.email
+    });
+});
+
 export default authController;
