@@ -9,11 +9,14 @@ import { useState, useEffect } from "react";
 import "./App.css";
 
 function App() {
-  const [formData, setFormData] = useState();
+  const [formData, setFormData] = useState(null);
+  const [pdfData, setPdfData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     const submitInvoice = async () => {
       if (formData) {
+        setIsLoading(true);
         try {
           const response = await fetch("http://localhost:3000/api/invoice/generate", {
             method: "POST",
@@ -25,13 +28,17 @@ function App() {
 
           if (!response.ok) {
             console.error("Failed to submit invoice data");
+            setIsLoading(false);
             return;
           }
 
           const pdf = await response.blob();
+          setPdfData(pdf);
           console.log("PDF generated:", pdf);
         } catch (error) {
           console.error("Error submitting invoice data:", error);
+        } finally {
+          setIsLoading(false);
         }
       }
     }
@@ -51,9 +58,9 @@ function App() {
 
         <section className="workspace">
 
-          <InvoiceForm setFormData={setFormData} />
+          <InvoiceForm setFormData={setFormData} isLoading={isLoading} />
 
-          <InvoicePreview />
+          <InvoicePreview pdfData={pdfData} isLoading={isLoading} />
 
         </section>
 

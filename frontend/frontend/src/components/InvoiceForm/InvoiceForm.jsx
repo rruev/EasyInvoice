@@ -1,17 +1,33 @@
 import "./InvoiceForm.css";
 
-function InvoiceForm({ setFormData }) {
-    const now = new Date().toISOString().split('T')[0]; 
+function InvoiceForm({ setFormData, isLoading }) {
+    const now = new Date().toISOString().split('T')[0];
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        
+
         const form = event.target;
         const data = new FormData(form);
         const formData = Object.fromEntries(data.entries());
         setFormData(formData);
         form.reset();
     };
+
+    const handleLoading = () => {
+        if (isLoading) {
+            return (
+                <div className="loading-overlay">
+                    <div className="loading-spinner">Loading...</div>
+                </div>
+            );
+        } else {
+            return (
+                <button type="submit">
+                    Generate PDF
+                </button>
+            )
+        }
+    }
 
     return (
 
@@ -124,15 +140,12 @@ function InvoiceForm({ setFormData }) {
             </div>
 
 
-            <button type="submit">
-                Generate PDF
-            </button>
+            {handleLoading()}
 
 
         </form>
 
     );
-
 }
 
 

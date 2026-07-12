@@ -1,6 +1,21 @@
 import "./InvoicePreview.css";
 
-function InvoicePreview(){
+import { useEffect, useState } from "react";
+
+function InvoicePreview({ pdfData, isLoading }) {
+
+    const hadlePreview = async () => {
+        if (pdfData) {
+            const pdfUrl = URL.createObjectURL(pdfData);
+            window.open(pdfUrl, "_blank");
+        } else {
+            console.error("No PDF data available for preview.");
+        }
+    };
+
+    useEffect(() => {
+        hadlePreview();
+    }, [pdfData]);
 
   return (
 
