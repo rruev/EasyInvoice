@@ -1,0 +1,28 @@
+.app {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* Main */
+
+.main {
+  flex: 1;
+  padding: 30px;
+}
+
+/* Invoice workspace */
+
+.workspace {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 25px;
+}
+
+
+@media(max-width:900px) {
+  .cards,
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+}

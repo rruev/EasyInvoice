@@ -1,0 +1,48 @@
+.invoice-form {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.invoice-form label {
+  display: block;
+  margin-top: 15px;
+  margin-bottom: 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.invoice-form input,
+.invoice-form textarea {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+}
+
+.invoice-form textarea {
+  height: 80px;
+}
+
+
+.invoice-form .items {
+  margin-top: 20px;
+}
+
+.invoice-form .item {
+  display: grid;
+  grid-template-columns: 2fr .5fr 1fr;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+
+.invoice-form button {
+  margin-top: 20px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 13px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+}

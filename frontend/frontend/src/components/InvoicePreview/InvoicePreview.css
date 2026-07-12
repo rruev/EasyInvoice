@@ -1,0 +1,38 @@
+.invoice-preview {
+  background: white;
+  padding: 25px;
+  border-radius: 15px;
+}
+
+.invoice-preview .invoice {
+  border: 1px solid #e5e7eb;
+  padding: 30px;
+  border-radius: 10px;
+}
+
+.invoice-preview .invoice-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.invoice-preview .invoice table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+.invoice-preview .invoice th,
+.invoice-preview .invoice td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  text-align: left;
+}
+
+
+.invoice-preview .total {
+  text-align: right;
+  margin-top: 20px;
+  font-size: 22px;
+  font-weight: bold;
+}
