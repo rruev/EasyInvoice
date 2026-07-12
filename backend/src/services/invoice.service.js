@@ -1,11 +1,9 @@
-import generatePdf from '../utils/pdf.util.js';
+import { createHtml, generatePdf } from '../utils/pdf.util.js';
 
 const generate = async (invoiceData) => {
-    // TODO: transform form data into HTML template
+    const content = await createHtml(invoiceData);
 
-
-
-    const pdfBuffer = await generatePdf(invoiceData);
+    const pdfBuffer = await generatePdf(content);
     return pdfBuffer;
 
     //TODO: save the generated PDF to a file or database

@@ -2,12 +2,9 @@ import puppeteer from 'puppeteer';
 import fs from 'fs/promises';
 
 
-const generatePDF = async (content) => {
+export const generatePdf = async (content) => {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();
-
-    // const content = '<html><head><title>PDF</title></head><body><h1>Hello, PDF!</h1></body></html>';
-
 
     await page.setContent(content, {
         waitUntil: 'networkidle0',
@@ -23,4 +20,22 @@ const generatePDF = async (content) => {
     return pdf;
 }
 
-export default generatePDF;
+export const createHtml = async (invoiceData) => {
+    const htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.template.html', 'utf-8');
+
+    const content = htmlTemplate
+        .replace('{{invoiceNumber}}', invoiceData.invoiceNumber)
+        .replace('{{businessName}}', invoiceData.businessName)
+        .replace('{{businessEmail}}', invoiceData.businessEmail)
+        .replace('{{customerName}}', invoiceData.customerName)
+        .replace("{{items}}", invoiceData.items.map(item => `
+            <tr>
+                <td>${item.description}</td>
+                <td>${item.quantity}</td>
+                <td>${item.price}</td>
+            </tr>
+        `).join(''))
+        .replace('{{total}}', invoiceData.total);
+
+    return content;
+}

@@ -26,13 +26,13 @@ model User {
 
 model Invoice {
   id        String   @id @default(cuid())
-  userId    String
+  userId    String?
   amount    Float
   status    String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt @default(now())
 
-  user      User     @relation(fields: [userId], references: [id])
+  user      User?     @relation(fields: [userId], references: [id])
 
   @@map("invoices")
 }
