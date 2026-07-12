@@ -1,19 +1,14 @@
 import { Router } from 'express';
-import generatePDF from '../utils/pdf.util.js';
+import invoiceService from '../services/invoice.service.js';
 
 const invoiceController = Router();
 
 invoiceController.post('/generate', async (req, res) => {
     const { content } = req.body;
 
-    try {
-        const pdfBuffer = await generatePDF(content);
-        res.setHeader('Content-Type', 'application/pdf');
-        res.send(pdfBuffer);
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        res.status(500).send('Error generating PDF');
-    }
+    const pdfBuffer = await invoiceService.generate(content);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.send(pdfBuffer);
 });
 
 export default invoiceController;
