@@ -1,93 +1,148 @@
 <!DOCTYPE html>
-<html>
-
+<html lang="de">
 <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 40px;
+            color: #111;
+            padding: 42px;
+            font-size: 14px;
+            line-height: 1.35;
         }
 
-        .header {
-            display: flex;
-            justify-content: space-between;
+        .top-meta {
+            text-align: right;
+            margin-bottom: 28px;
+            font-size: 13px;
+        }
+
+        .client {
+            margin-bottom: 28px;
+            white-space: pre-line;
+        }
+
+        .invoice-title {
+            font-size: 28px;
+            font-weight: 700;
+            margin: 6px 0 14px;
+        }
+
+        .invoice-info {
+            margin-bottom: 18px;
+        }
+
+        .invoice-info .row {
+            margin-bottom: 4px;
         }
 
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 30px;
+            margin-top: 8px;
         }
 
         th,
         td {
-            border-bottom: 1px solid #ddd;
-            padding: 10px;
+            padding: 10px 8px;
             text-align: left;
+            border-top: 1px solid #222;
         }
 
-        .total {
+        th {
+            font-weight: 700;
+            white-space: nowrap;
+        }
+
+        td.right,
+        th.right {
             text-align: right;
-            font-size: 20px;
-            margin-top: 30px;
+        }
+
+        .sum-row td {
+            border-top: 1px solid #222;
+            border-bottom: 2px solid #222;
+            font-weight: 700;
+        }
+
+        .note {
+            margin-top: 26px;
+            font-size: 13px;
+        }
+
+        .footer {
+            margin-top: 62px;
+            font-size: 12px;
+            display: flex;
+            justify-content: space-between;
+            gap: 24px;
+        }
+
+        .footer p {
+            margin: 0 0 2px;
         }
     </style>
 </head>
-
-
 <body>
-
-
-    <div class="header">
-
-        <div>
-            <h1>{{businessName}}</h1>
-            <p>{{businessEmail}}</p>
-        </div>
-
-        <div>
-            <h2>Invoice</h2>
-            <p>{{invoiceNumber}}</p>
-        </div>
-
+    <div class="top-meta">
+        <div>{{businessName}}</div>
+        <div>{{businessAddress}}</div>
+        <div>{{businessPhone}}</div>
+        <div>{{businessEmail}}</div>
     </div>
 
+    <div class="client">{{clientName}}
+{{clientAddress}}</div>
 
-    <h3>Customer</h3>
+    <div class="invoice-info">
+        <div class="row">RechnungNr.: {{invoiceNum}}</div>
+        <div class="row">Rechnungsdatum: {{issuedAt}}</div>
+        <div class="row">Leistungsdatum: {{workedAt}}</div>
+    </div>
 
-    <p>
-        {{customerName}}
-    </p>
-
+    <div class="invoice-title">Rechnung</div>
 
     <table>
-
         <thead>
             <tr>
-                <th>Description</th>
-                <th>Quantity</th>
-                <th>Price</th>
+                <th>Position</th>
+                <th>Bezeichnung</th>
+                <th class="right">Menge</th>
+                <th>Einheit</th>
+                <th class="right">Preis/Einh. (EUR)</th>
+                <th class="right">Gesamtpreis (EUR)</th>
             </tr>
         </thead>
-
-
         <tbody>
-
-            {{items}}
-
+            <tr>
+                <td>1</td>
+                <td>Routenbau / Routesetting in Kletterhalle</td>
+                <td class="right">{{quantity}}</td>
+                <td>Tagessatz</td>
+                <td class="right">{{price}}</td>
+                <td class="right">{{lineTotal}}</td>
+            </tr>
+            <tr class="sum-row">
+                <td colspan="4"></td>
+                <td>Summe</td>
+                <td class="right">{{totalPrice}}</td>
+            </tr>
         </tbody>
-
-
     </table>
 
+    <div class="note">Hinweis: Umsatzsteuerbefreit - Kleinunternehmer gem. Par. 6 Abs. 1 Z 27 UStG</div>
 
-    <div class="total">
-
-        Total: {{total}}
-
+    <div class="footer">
+        <div>
+            <p>Bankverbindung</p>
+            <p>Revolut Bank UAB</p>
+            <p>BIC/SWIFT: REVOLT21</p>
+            <p>IBAN: {{iban}}</p>
+        </div>
+        <div>
+            <p>Steuernummer: 91323/5859</p>
+        </div>
     </div>
-
-
 </body>
-
 </html>

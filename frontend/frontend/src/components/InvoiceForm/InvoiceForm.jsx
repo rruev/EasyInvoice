@@ -1,80 +1,137 @@
 import "./InvoiceForm.css";
 
-function InvoiceForm(){
+function InvoiceForm({ setFormData }) {
+    const now = new Date().toISOString().split('T')[0]; 
 
-  return (
+    const handleSubmit = (event) => {
+        event.preventDefault();
+        
+        const form = event.target;
+        const data = new FormData(form);
+        const formData = Object.fromEntries(data.entries());
+        setFormData(formData);
+        form.reset();
+    };
 
-    <div className="invoice-form">
+    return (
 
-      <h2>
-        Invoice Details
-      </h2>
+        <form className="invoice-form" onSubmit={handleSubmit}>
 
-
-      <label>
-        Customer Name
-      </label>
-
-      <input 
-        placeholder="Company / Person"
-      />
-
-
-      <label>
-        Email
-      </label>
-
-      <input 
-        placeholder="customer@email.com"
-      />
+            <h2>
+                Invoice Details
+            </h2>
 
 
-      <label>
-        Invoice Number
-      </label>
+            <label>
+                Business Name
+            </label>
 
-      <input 
-        value="INV-001"
-        readOnly
-      />
+            <input
+                name="businessName"
+                placeholder="Bussiness / Person"
+            />
 
+            <label>
+                Business Address
+            </label>
 
-      <label>
-        Notes
-      </label>
+            <input
+                name="businessAddress"
+                placeholder="123 Main Street, Innsbruck, Austria"
+            />
 
-      <textarea 
-        placeholder="Payment details..."
-      />
+            <label>
+                Business Phone
+            </label>
 
-
-      <div className="items">
-
-        <h3>
-          Items
-        </h3>
-
-
-        <div className="item">
-
-          <input placeholder="Description"/>
-          <input placeholder="Qty"/>
-          <input placeholder="Price"/>
-
-        </div>
+            <input
+                name="businessPhone"
+                placeholder="+43 123 456789"
+            />
 
 
-      </div>
+            <label>
+                Email
+            </label>
+
+            <input
+                name="businessEmail"
+                placeholder="company@email.com"
+            />
+
+            <label>
+                Client Name
+            </label>
+
+            <input
+                name="clientName"
+                placeholder="Company / Person"
+            />
+
+            <label>
+                Address
+            </label>
+
+            <input
+                name="clientAddress"
+                placeholder="123 Main Street, Innsbruck, Austria"
+            />
 
 
-      <button>
-        Generate PDF
-      </button>
+            <label>
+                Invoice Number
+            </label>
+
+            <input
+                name="invoiceNumber"
+                value="INV-001"
+                readOnly
+            />
+
+            <label>
+                Issue Date
+            </label>
+
+            <input
+                name="issueDate"
+                defaultValue={now}
+            />
+
+            <label>
+                Performed Date
+            </label>
+
+            <input
+                name="performedDate"
+                placeholder="YYYY-MM-DD"
+            />
+
+            <div className="items">
+
+                <h3>
+                    Items
+                </h3>
+
+                <div className="item">
+
+                    <input name="itemDescription" defaultValue="Routenbau / Routesetting in Kletterhalle" placeholder="Description" readOnly />
+                    <input name="itemQuantity" placeholder="Qty" />
+                    <input name="itemPrice" placeholder="Price" />
+
+                </div>
 
 
-    </div>
+            </div>
 
-  );
+
+            <button type="submit">
+                Generate PDF
+            </button>
+
+
+        </form>
+
+    );
 
 }
 

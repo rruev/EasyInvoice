@@ -4,9 +4,16 @@ import StatsCards from "./components/StatsCards/StatsCards";
 import InvoiceForm from "./components/InvoiceForm/InvoiceForm";
 import InvoicePreview from "./components/InvoicePreview/InvoicePreview";
 
+import { useState, useEffect } from "react";
+
 import "./App.css";
 
 function App() {
+  const [formData, setFormData] = useState();
+
+  useEffect(() => {
+    console.log('Form Data:', formData);
+  }, [formData]);
 
   return (
     <div className="app">
@@ -21,7 +28,7 @@ function App() {
 
         <section className="workspace">
 
-          <InvoiceForm />
+          <InvoiceForm setFormData={setFormData} />
 
           <InvoicePreview />
 
