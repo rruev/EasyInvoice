@@ -12,7 +12,30 @@ function App() {
   const [formData, setFormData] = useState();
 
   useEffect(() => {
-    console.log('Form Data:', formData);
+    const submitInvoice = async () => {
+      if (formData) {
+        try {
+          const response = await fetch("http://localhost:3000/api/invoice/generate", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify(formData)
+          });
+
+          if (!response.ok) {
+            console.error("Failed to submit invoice data");
+            return;
+          }
+
+          const pdf = await response.blob();
+          console.log("PDF generated:", pdf);
+        } catch (error) {
+          console.error("Error submitting invoice data:", error);
+        }
+      }
+    }
+    submitInvoice();
   }, [formData]);
 
   return (
