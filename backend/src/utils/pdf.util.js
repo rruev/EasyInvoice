@@ -28,11 +28,13 @@ export const createHtml = async (invoiceData) => {
 
     const templateData = {
         businessName: invoiceData.businessName ?? '',
-        businessAddress: invoiceData.businessAddress ?? '',
+        businessStreet: invoiceData.businessStreet ?? '',
+        businessCity: invoiceData.businessCity ?? '',
         businessPhone: invoiceData.businessPhone ?? '',
         businessEmail: invoiceData.businessEmail ?? '',
         clientName: invoiceData.clientName ?? invoiceData.customerName ?? '',
-        clientAddress: invoiceData.clientAddress ?? '',
+        clientStreet: invoiceData.clientStreet ?? '',
+        clientCity: invoiceData.clientCity ?? '',
         invoiceNum: invoiceData.invoiceNum ?? invoiceData.invoiceNumber ?? '',
         issuedAt: invoiceData.issuedAt ?? '',
         workedAt: invoiceData.workedAt ?? '',

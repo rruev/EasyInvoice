@@ -1,10 +1,11 @@
 import { createHtml, generatePdf } from '../utils/pdf.util.js';
+import prepareData from '../utils/invoice.util.js';
 
 const generate = async (invoiceData) => {
-    invoiceData.totalPrice = Number(invoiceData.lineTotal) * Number(invoiceData.quantity); 
-    console.log('Invoice Data:', invoiceData); // Log the invoiceData to see its structure
+    
+    const preparedData = prepareData(invoiceData);
 
-    const content = await createHtml(invoiceData);
+    const content = await createHtml(preparedData);
 
     const pdfBuffer = await generatePdf(content);
     return pdfBuffer;

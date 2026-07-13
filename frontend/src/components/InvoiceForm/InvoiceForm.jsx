@@ -47,7 +47,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessAddress"
-                    placeholder="123 Main Street, Innsbruck, Austria"
+                    placeholder="Format: Mainstraße, 123 6020 Innsbruck"
                 />
 
                 <label>
@@ -84,7 +84,7 @@ function InvoiceForm() {
 
                 <input
                     name="clientAddress"
-                    placeholder="123 Main Street, Innsbruck, Austria"
+                    placeholder="Format: Mainstraße, 123 6020 Innsbruck"
                 />
 
 
@@ -95,7 +95,7 @@ function InvoiceForm() {
                 <input
                     name="invoiceNum"
                     // value="INV-001"
-                    placeholder="000-001"
+                    placeholder="Format: YYYY-001"
                     readOnly
                 />
 
@@ -127,7 +127,7 @@ function InvoiceForm() {
 
                         <input name="itemDescription" defaultValue="Routenbau / Routesetting in Kletterhalle" placeholder="Description" readOnly />
                         <input name="quantity" placeholder="Qty" />
-                        <input name="lineTotal" placeholder="Price" />
+                        <input name="price" placeholder="Price" />
 
                     </div>
 
