@@ -1,0 +1,143 @@
+.invoice-form-skeleton {
+  background: #ffffff;
+  border-radius: 15px;
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+}
+
+.invoice-form-skeleton::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  transform: translateX(-100%);
+  background: linear-gradient(
+    105deg,
+    rgba(255, 255, 255, 0) 25%,
+    rgba(37, 99, 235, 0.08) 45%,
+    rgba(255, 255, 255, 0) 65%
+  );
+  animation: skeletonShimmer 1.8s ease-in-out infinite;
+}
+
+.skeleton-line {
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  background-size: 220% 100%;
+  border-radius: 8px;
+  animation: skeletonPulse 1.6s ease-in-out infinite;
+}
+
+.skeleton-title {
+  width: 210px;
+  height: 28px;
+}
+
+.skeleton-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 12px;
+}
+
+.skeleton-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.skeleton-label {
+  width: 120px;
+  height: 14px;
+}
+
+.skeleton-input {
+  height: 42px;
+  width: 100%;
+}
+
+.skeleton-items-block {
+  margin-top: 2px;
+}
+
+.skeleton-subtitle {
+  width: 60px;
+  height: 20px;
+  margin-bottom: 10px;
+}
+
+.skeleton-item-row {
+  display: grid;
+  grid-template-columns: 2fr 0.5fr 1fr;
+  gap: 10px;
+}
+
+.skeleton-message-wrap {
+  margin-top: 8px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border: 1px solid #bfdbfe;
+  border-radius: 10px;
+  background: #eff6ff;
+  animation: messageFloat 2.8s ease-in-out infinite;
+}
+
+.skeleton-pulse-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: #2563eb;
+  box-shadow: 0 0 0 rgba(37, 99, 235, 0.55);
+  animation: dotPulse 1.5s ease-out infinite;
+}
+
+.skeleton-message {
+  margin: 0;
+  font-size: 14px;
+  color: #1e3a8a;
+}
+
+@keyframes skeletonPulse {
+  0% {
+    background-position: 200% 0;
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.65;
+  }
+  100% {
+    background-position: -200% 0;
+    opacity: 0.95;
+  }
+}
+
+@keyframes skeletonShimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes dotPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.55);
+  }
+  100% {
+    box-shadow: 0 0 0 12px rgba(37, 99, 235, 0);
+  }
+}
+
+@keyframes messageFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+}

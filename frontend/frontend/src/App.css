@@ -12,10 +12,17 @@
 
 /* Invoice workspace */
 
-.workspace {
+/* For next version: */
+/* .workspace {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 25px;
+} */
+
+/* For first version */
+.workspace {
+  max-width: 500px;
+  margin: 0 auto;
 }
 
 

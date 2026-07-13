@@ -60,7 +60,8 @@ function App() {
 
           <InvoiceForm setFormData={setFormData} isLoading={isLoading} />
 
-          <InvoicePreview pdfData={pdfData} isLoading={isLoading} />
+          {/* For next version:}
+          {/* <InvoicePreview pdfData={pdfData} isLoading={isLoading} /> */}
 
         </section>
 
