@@ -1,16 +1,22 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
 
-function InvoiceForm({ setFormData, isLoading }) {
+import useInvoice from "../../hooks/useInvoice";
+import { previewPdf } from "../../utils/previewPdf.util";
+
+function InvoiceForm() {
+    const { isLoading, error, generatePdf } = useInvoice();
+
     const now = new Date().toISOString().split('T')[0];
 
-    const handleSubmit = (event) => {
+    const handleSubmit = async (event) => {
         event.preventDefault();
 
         const form = event.target;
         const data = new FormData(form);
         const formData = Object.fromEntries(data.entries());
-        setFormData(formData);
+        const pdfData = await generatePdf(formData);
+        await previewPdf(pdfData);
         form.reset();
     };
 
@@ -73,7 +79,7 @@ function InvoiceForm({ setFormData, isLoading }) {
                 />
 
                 <label>
-                    Address
+                    Client Address
                 </label>
 
                 <input
@@ -88,7 +94,8 @@ function InvoiceForm({ setFormData, isLoading }) {
 
                 <input
                     name="invoiceNumber"
-                    value="INV-001"
+                    // value="INV-001"
+                    placeholder="000-001"
                     readOnly
                 />
 

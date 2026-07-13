@@ -1,8 +1,10 @@
 import "./InvoicePreview.css";
 
-import { useEffect, useState } from "react";
+import { useInvoice } from "../../hooks/useInvoice";
 
-function InvoicePreview({ pdfData, isLoading }) {
+function InvoicePreview() {
+
+    const { pdfData } = useInvoice();
 
     const hadlePreview = async () => {
         if (pdfData) {

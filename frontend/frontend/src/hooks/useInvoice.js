@@ -1,0 +1,31 @@
+import { useState } from "react";
+import { fetchPdf } from "../services/invoice.service";
+
+export const useInvoice = () => {
+  const [pdfData, setPdfData] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const generatePdf = async (formData) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+        const pdfBlob = await fetchPdf(formData);
+        if (pdfBlob) {
+            setPdfData(pdfBlob);
+            return pdfBlob;
+        } else {
+            setError("Failed to generate PDF.");
+        }
+    } catch (err) {
+        setError("An error occurred while generating the PDF.");
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
+  return { pdfData, isLoading, error, generatePdf };
+}
+
+export default useInvoice;

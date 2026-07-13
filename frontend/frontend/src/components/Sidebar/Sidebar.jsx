@@ -6,16 +6,18 @@ function Sidebar() {
     <aside className="sidebar">
 
       <div className="logo">
-        InvoiceFlow
+        EasyInvoice 
+        <img src="/favicon.png" alt="EasyInvoice Logo" />
       </div>
 
       <nav className="menu">
 
         <a className="active" href="#">
-          Dashboard
+          Create New Invoice +
         </a>
 
-        <a href="#">
+        {/* For later versions: */}
+        {/* <a href="#">
           Invoices
         </a>
 
@@ -29,7 +31,7 @@ function Sidebar() {
 
         <a href="#">
           Settings
-        </a>
+        </a> */}
 
       </nav>
 

@@ -10,7 +10,7 @@ function Header() {
       </h1>
 
       <div className="profile">
-        John Business
+        User account TBD
       </div>
 
     </div>
