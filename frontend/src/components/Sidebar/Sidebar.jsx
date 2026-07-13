@@ -1,38 +1,27 @@
 import "./Sidebar.css";
 
+import { Link } from "react-router-dom";
+
 function Sidebar() {
 
   return (
     <aside className="sidebar">
 
       <div className="logo">
-        EasyInvoice 
+        EasyInvoice
         <img src="/favicon.png" alt="EasyInvoice Logo" />
       </div>
 
+
       <nav className="menu">
-
-        <a className="active" href="#">
-          Create New Invoice +
-        </a>
-
+        <Link className="active" to="/">Create New Invoice +</Link>
+        <Link to="/signin">Sign In</Link>
+        <Link to="/signup">Sign Up</Link>
         {/* For later versions: */}
-        {/* <a href="#">
-          Invoices
-        </a>
-
-        <a href="#">
-          Customers
-        </a>
-
-        <a href="#">
-          Business Profile
-        </a>
-
-        <a href="#">
-          Settings
-        </a> */}
-
+        {/* <Link to="/invoices">Invoices</Link>
+        <Link to="/customers">Customers</Link>
+        <Link to="/business-profile">Business Profile</Link>
+        <Link to="/settings">Settings</Link> */}
       </nav>
 
     </aside>
