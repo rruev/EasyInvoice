@@ -93,7 +93,7 @@ function InvoiceForm() {
                 </label>
 
                 <input
-                    name="invoiceNumber"
+                    name="invoiceNum"
                     // value="INV-001"
                     placeholder="000-001"
                     readOnly
@@ -104,7 +104,7 @@ function InvoiceForm() {
                 </label>
 
                 <input
-                    name="issueDate"
+                    name="issuedAt"
                     defaultValue={now}
                 />
 
@@ -113,7 +113,7 @@ function InvoiceForm() {
                 </label>
 
                 <input
-                    name="performedDate"
+                    name="workedAt"
                     placeholder="YYYY-MM-DD"
                 />
 
@@ -126,8 +126,8 @@ function InvoiceForm() {
                     <div className="item">
 
                         <input name="itemDescription" defaultValue="Routenbau / Routesetting in Kletterhalle" placeholder="Description" readOnly />
-                        <input name="itemQuantity" placeholder="Qty" />
-                        <input name="itemPrice" placeholder="Price" />
+                        <input name="quantity" placeholder="Qty" />
+                        <input name="lineTotal" placeholder="Price" />
 
                     </div>
 

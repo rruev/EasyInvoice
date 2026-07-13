@@ -25,7 +25,6 @@ export const createHtml = async (invoiceData) => {
 
     // TODO: Add flexible handling for diferent template structures and data formats. 
     // For now, we will assume a flat structure for invoiceData as we have only one template.
-    const firstItem = Array.isArray(invoiceData.items) ? invoiceData.items[0] ?? {} : {};
 
     const templateData = {
         businessName: invoiceData.businessName ?? '',
@@ -37,14 +36,14 @@ export const createHtml = async (invoiceData) => {
         invoiceNum: invoiceData.invoiceNum ?? invoiceData.invoiceNumber ?? '',
         issuedAt: invoiceData.issuedAt ?? '',
         workedAt: invoiceData.workedAt ?? '',
-        quantity: invoiceData.quantity ?? firstItem.quantity ?? '',
-        price: invoiceData.price ?? firstItem.price ?? '',
+        quantity: invoiceData.quantity ?? '',
+        price: invoiceData.price ?? '',
         lineTotal: invoiceData.lineTotal ?? invoiceData.total ?? '',
         totalPrice: invoiceData.totalPrice ?? invoiceData.total ?? '',
         iban: invoiceData.iban ?? '',
     };
 
-    const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (_, key) => {
+    const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (test, key) => {
         const value = templateData[key];
         return value === undefined || value === null ? '' : String(value);
     });
