@@ -7,7 +7,11 @@ import { previewPdf } from "../../utils/previewPdf.util";
 function InvoiceForm() {
     const { isLoading, error, generatePdf } = useInvoice();
 
-    const now = new Date().toISOString().split('T')[0];
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const now = `${day}.${month}.${year}`;
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -96,7 +100,7 @@ function InvoiceForm() {
                     name="invoiceNum"
                     // value="INV-001"
                     placeholder="Format: YYYY-001"
-                    readOnly
+                    // readOnly
                 />
 
                 <label>
@@ -114,7 +118,7 @@ function InvoiceForm() {
 
                 <input
                     name="workedAt"
-                    placeholder="YYYY-MM-DD"
+                    placeholder="DD.MM.YYYY"
                 />
 
                 <div className="items">
