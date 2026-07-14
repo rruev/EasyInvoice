@@ -62,3 +62,24 @@ export const logout = async () => {
         throw error;
     }
 }
+
+export const fetchUserData = async () => {
+    try {
+        const response = await fetch('http://localhost:3000/api/auth/me', {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            credentials: 'include'
+        });
+
+        if (!response.ok) {
+            throw new Error('Failed to fetch user data');
+        }
+
+        return await response.json();
+    } catch (error) {
+        console.error('Error fetching user data:', error);
+        throw error;
+    }
+}

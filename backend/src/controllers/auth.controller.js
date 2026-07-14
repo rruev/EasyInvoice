@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import authService from '../services/auth.service';
+import { isAuthenticated } from '../middleware/auth.middleware';
 
 const authController = Router();
 
@@ -34,7 +35,7 @@ authController.get('/logout', (req, res) => {
     res.json({ message: 'Logged out successfully' });
 });
 
-authController.get('/me', (req, res) => {
+authController.get('/me', isAuthenticated, (req, res) => {
     if (!req.user) {
         return res.status(401).json({ message: 'Access denied. User not authenticated.' });
     }

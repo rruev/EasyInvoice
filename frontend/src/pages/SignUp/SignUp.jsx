@@ -17,8 +17,10 @@ function SignUp() {
       return;
     }
     try {
-      await signUp({ email, password, confirmPassword });
-      navigate('/');
+      const user = await signUp({ email, password, confirmPassword });
+      if (user) {
+        navigate('/');
+      }
     } catch (err) {
       setError('Failed to create account');
     }
