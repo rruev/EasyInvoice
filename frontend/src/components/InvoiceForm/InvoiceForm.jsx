@@ -75,7 +75,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessName"
-                    value={userData ? userData.businessName : ''}
+                    defaultValue={userData ? userData.businessName : ''}
                     placeholder="Business / Person"
                 />
 
@@ -85,7 +85,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessAddress"
-                    value={userData ? userData.businessAddress : ''}
+                    defaultValue={userData ? userData.businessAddress : ''}
                     placeholder="Format: Mainstraße, 123 6020 Innsbruck"
                 />
 
@@ -95,7 +95,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessPhone"
-                    value={userData ? userData.phoneNumber : ''}
+                    defaultValue={userData ? userData.phoneNumber : ''}
                     placeholder="+43 123 456789"
                 />
 
@@ -106,7 +106,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessEmail"
-                    value={userData ? userData.businessEmail : ''}
+                    defaultValue={userData ? userData.businessEmail : ''}
                     placeholder="company@email.com"
                 />
 
@@ -218,7 +218,6 @@ function InvoiceForm() {
                     name="invoiceNum"
                     value={userData ? userData.nextInvoiceNum : ''}
                     placeholder="Format: YYYY-001"
-                    readOnly
                 />
 
                 <label>

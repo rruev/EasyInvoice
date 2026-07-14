@@ -32,7 +32,7 @@ model User {
 model Invoice {
   id         String   @id @default(cuid())
   userId     String
-  invoiceNum String   @unique
+  invoiceNum String   
   issuedAt   String
   workedAt   String
   quantity   Int

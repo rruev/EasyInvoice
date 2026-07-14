@@ -6,7 +6,10 @@ import StatsCards from "../StatsCards/StatsCards";
 import InvoiceForm from "../InvoiceForm/InvoiceForm";
 import InvoicePreview from "../InvoicePreview/InvoicePreview";
 
+import { useUser } from "../../hooks/useUser";
+
 function Home() {
+    const { userData } = useUser();
     return (
         <div className="app">
 
@@ -16,7 +19,7 @@ function Home() {
 
                 <Header />
 
-                {/* <StatsCards /> */}
+                {userData && <StatsCards />}
 
                 <section className="workspace">
 
