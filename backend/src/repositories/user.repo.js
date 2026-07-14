@@ -9,7 +9,16 @@ const create = async (user) => {
 
 const findByEmail = async (email) => {
     const user = await prisma.user.findUnique({
-        where: { email }
+        where: { email },
+        include: {
+            clients: true,
+            invoices: {
+                orderBy: {
+                    createdAt: 'desc'
+                },
+                take: 1
+            }
+        }
     });
     return user;
 }

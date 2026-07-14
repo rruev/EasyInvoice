@@ -3,6 +3,8 @@ import jwt from 'jsonwebtoken';
 
 import userRepo from '../repositories/user.repo.js';
 import tokenUtil from '../utils/token.util.js';
+import { getNextInvoiceNum } from '../utils/invoiceNum.util.js';
+import { get } from 'node:http';
 
 const register = async (userData) => {
     if (!userData.email || !userData.password) {
@@ -47,10 +49,13 @@ const login = async (userData) => {
 
 const getByEmail = async (email) => {
     const user = await userRepo.findByEmail(email);
-
+    
     if (!user) {
         throw new Error('User not found');
     }
+
+    const nextInvoiceNum = getNextInvoiceNum(user.invoices[0]);
+    user.nextInvoiceNum = nextInvoiceNum;
 
     return user;
 }

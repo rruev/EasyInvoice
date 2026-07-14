@@ -51,13 +51,16 @@ authController.get('/me', isAuthenticated, async (req, res) => {
     }
 
     const user = await authService.getByEmail(req.user.email);
-    
+
     res.json({
         id: user.id,
         email: user.email,
         businessName: user.businessName,
         businessAddress: user.businessAddress,
         companyEmail: user.companyEmail,
+        clients: user.clients,
+        invoices: user.invoices,
+        nextInvoiceNum: user.nextInvoiceNum
     });
 });
 

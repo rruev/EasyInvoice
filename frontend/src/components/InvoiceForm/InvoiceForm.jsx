@@ -3,9 +3,12 @@ import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
 
 import useInvoice from "../../hooks/useInvoice";
 import { previewPdf } from "../../utils/previewPdf.util";
+import { useUser } from "../../hooks/useUser";
 
 function InvoiceForm() {
     const { isLoading, error, generatePdf } = useInvoice();
+    const { userData } = useUser();
+    console.log("userData in InvoiceForm:", userData);
 
     const today = new Date();
     const year = today.getFullYear();
@@ -42,6 +45,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessName"
+                    defaultValue={userData ? userData.businessName : ''}
                     placeholder="Bussiness / Person"
                 />
 

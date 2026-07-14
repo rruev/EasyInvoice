@@ -1,5 +1,5 @@
 const prepareData = (invoiceData) => {
-    const totalPrice = Number(invoiceData.price) * Number(invoiceData.quantity);
+    const totalPrice = invoiceData.price * invoiceData.quantity;
     invoiceData.totalPrice = totalPrice;
     invoiceData.lineTotal = totalPrice;
 

@@ -3,6 +3,8 @@ import prepareData from '../utils/invoice.util.js';
 import invoiceRepo from '../repositories/invoice.repo.js';
 
 const generate = async (invoiceData) => {
+    invoiceData.quantity = Number(invoiceData.quantity);
+    invoiceData.price = Number(invoiceData.price);
     
     const preparedData = prepareData(invoiceData);
     
@@ -11,15 +13,15 @@ const generate = async (invoiceData) => {
     const pdfBuffer = await generatePdf(content);
     
     //save the generated PDF to a database
-    // if (invoiceData.userId) {
-    //     await invoiceRepo.create({
-    //         ...invoiceData,
-    //         status: 'pending',
-    //         total: preparedData.totalPrice,
-    //         issuedAt: preparedData.issuedAt,
-    //         workedAt: preparedData.workedAt,
-    //     });
-    // }
+    if (invoiceData.userId) {
+        await invoiceRepo.create({
+            ...invoiceData,
+            status: 'pending',
+            total: preparedData.totalPrice,
+            issuedAt: preparedData.issuedAt,
+            workedAt: preparedData.workedAt,
+        });
+    }
 
     return pdfBuffer;
 }
