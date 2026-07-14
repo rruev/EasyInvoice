@@ -45,14 +45,19 @@ authController.get('/logout', (req, res) => {
     res.json({ message: 'Logged out successfully' });
 });
 
-authController.get('/me', isAuthenticated, (req, res) => {
+authController.get('/me', isAuthenticated, async (req, res) => {
     if (!req.user) {
         return res.status(401).json({ message: 'Access denied. User not authenticated.' });
     }
+
+    const user = await authService.getByEmail(req.user.email);
     
     res.json({
-        id: req.user.id,
-        email: req.user.email
+        id: user.id,
+        email: user.email,
+        businessName: user.businessName,
+        businessAddress: user.businessAddress,
+        companyEmail: user.companyEmail,
     });
 });
 

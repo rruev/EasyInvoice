@@ -45,9 +45,20 @@ const login = async (userData) => {
     return { user, token };
 }
 
+const getByEmail = async (email) => {
+    const user = await userRepo.findByEmail(email);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    return user;
+}
+
 const authService = {
     login,
-    register
+    register,
+    getByEmail
 };
 
 export default authService;

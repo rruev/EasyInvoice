@@ -1,6 +1,8 @@
 import "./Header.css";
+import { useUser } from "../../hooks/useUser";
 
 function Header() {
+  const { userData } = useUser();
 
   return (
     <div className="header">
@@ -10,7 +12,7 @@ function Header() {
       </h1>
 
       <div className="profile">
-        User account TBD
+        {userData ? userData.businessName : "Guest"}
       </div>
 
     </div>
