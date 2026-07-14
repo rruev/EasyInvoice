@@ -13,26 +13,35 @@ datasource db {
 }
 
 model User {
-  id        String   @id @default(cuid())
-  email     String   @unique
-  password  String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  id              String   @id @default(cuid())
+  email           String   @unique
+  password        String
+  businessName    String?
+  businessAddress String?
+  phoneNumber     String?
+  companyEmail    String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now()) @updatedAt
 
-  invoices  Invoice[]
+  invoices Invoice[]
 
   @@map("users")
 }
 
 model Invoice {
-  id        String   @id @default(cuid())
-  userId    String?
-  amount    Float
-  status    String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt @default(now())
+  id         String   @id @default(cuid())
+  userId     String
+  invoiceNum String   @unique
+  issuedAt   DateTime
+  workedAt   DateTime
+  quantity   Int
+  price      Float
+  total      Float
+  status     String
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @default(now()) @updatedAt
 
-  user      User?     @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id])
 
   @@map("invoices")
 }
