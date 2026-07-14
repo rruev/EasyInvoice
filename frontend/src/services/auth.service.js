@@ -13,7 +13,8 @@ export const register = async (userData) => {
             throw new Error('Failed to register');
         }
 
-        return await response.json();
+        const newUser = await response.json();
+        return newUser;
     } catch (error) {
         console.error('Error registering user:', error);
         throw error;

@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { fetchPdf } from "../services/invoice.service";
+import invoiceService from "../services/invoice.service";
 
 export const useInvoice = () => {
   const [pdfData, setPdfData] = useState(null);
@@ -11,7 +11,7 @@ export const useInvoice = () => {
     setError(null);
 
     try {
-        const pdfBlob = await fetchPdf(formData);
+        const pdfBlob = await invoiceService.fetchPdf(formData);
         if (pdfBlob) {
             setPdfData(pdfBlob);
             return pdfBlob;

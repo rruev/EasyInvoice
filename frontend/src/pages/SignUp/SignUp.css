@@ -62,7 +62,26 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.auth-form textarea {
+  width: 100%;
+  border: 1px solid #cdd7e3;
+  border-radius: 10px;
+  padding: 12px 13px;
+  font-size: 15px;
+  color: #0f172a;
+  background: #fbfdff;
+  outline: none;
+  resize: vertical;
+  min-height: 110px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
 .auth-form input:focus {
+  border-color: #10b981;
+  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16);
+}
+
+.auth-form textarea:focus {
   border-color: #10b981;
   box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16);
 }
@@ -78,6 +97,17 @@
   color: #ffffff;
   background: linear-gradient(135deg, #059669 0%, #047857 100%);
   cursor: pointer;
+}
+
+.auth-error {
+  margin: 16px 0 0;
+  padding: 12px 14px;
+  border-radius: 10px;
+  border: 1px solid #fecaca;
+  background: #fef2f2;
+  color: #b91c1c;
+  font-size: 14px;
+  font-weight: 600;
 }
 
 @media (max-width: 640px) {

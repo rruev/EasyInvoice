@@ -1,4 +1,4 @@
-export const fetchPdf = async (formData) => {
+ const fetchPdf = async (formData) => {
     const response = await fetch("http://localhost:3000/api/invoice/generate", {
         method: "POST",
         headers: {
@@ -15,3 +15,9 @@ export const fetchPdf = async (formData) => {
     return await response.blob();
 
 }
+
+const invoiceService = {
+    fetchPdf
+};
+
+export default invoiceService;
