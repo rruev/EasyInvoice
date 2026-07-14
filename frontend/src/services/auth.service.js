@@ -45,7 +45,7 @@ export const login = async (userData) => {
 export const logout = async () => {
     try {
         const response = await fetch('http://localhost:3000/api/auth/logout', {
-            method: 'POST',
+            method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
             },

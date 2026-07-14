@@ -5,8 +5,7 @@ import { useUser } from "../../hooks/useUser";
 import { useEffect } from "react";
 
 function Sidebar() {
-  const { userData } = useUser();
-
+  const { userData, signOut } = useUser();
 
   return (
     <aside className="sidebar">
@@ -21,8 +20,8 @@ function Sidebar() {
         <Link className="active" to="/">Create New Invoice +</Link>
         {userData ? (
           <>
-            <div>{userData.email}</div>
-            <Link to="/logout">Logout</Link>
+            {userData.email}
+            <Link to="#" onClick={(e) => { e.preventDefault(); signOut(); }}>SignOut</Link>
           </>
         ) : (
           <>
