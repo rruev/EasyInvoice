@@ -8,16 +8,8 @@ const authController = Router();
 authController.post('/register', async (req, res) => {
     const userData = req.body;
 
-    const { user, token } = await authService.register({ email: userData.email, password: userData.password, confirmPassword: userData.confirmPassword });
-    if (user) {
-        const clientData = {
-            name: userData.name,
-            address: userData.street + ' ' + userData.streetNumber + ', ' + userData.postcode + ' ' + userData.city,
-            phone: userData.phone,
-            userId: user.id
-        };
-        await clientService.create(clientData);
-    }
+    const { user, token } = await authService.register(userData);
+
     res.cookie('auth-token', token, { httpOnly: true, sameSite: 'none', secure: false });
 
     res.json({

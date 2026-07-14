@@ -19,7 +19,7 @@ model User {
   businessName    String?
   businessAddress String?
   phoneNumber     String?
-  companyEmail    String?
+  businessEmail   String?
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now()) @updatedAt
 
@@ -42,7 +42,7 @@ model Invoice {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("invoices")
 }
@@ -57,7 +57,7 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("clients")
 }

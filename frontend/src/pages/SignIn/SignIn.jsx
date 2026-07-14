@@ -4,7 +4,7 @@ import { useUser } from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const { signIn, isLoading, error, setError } = useUser();
+  const { signIn, isLoading, error, setError, fetchUser } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -15,6 +15,7 @@ function SignIn() {
     try {
       const user = await signIn({ email, password });
       if (user) {
+        await fetchUser();
         navigate('/');
       }
     } catch (err) {

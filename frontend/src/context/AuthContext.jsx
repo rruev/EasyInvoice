@@ -64,7 +64,7 @@ const AuthProvider = ({ children }) => {
             setUserData(data);
             return data;
         } catch (err) {
-            setError('Failed to fetch user data.');
+            console.error('Failed to fetch user data:');
             throw err;
         } finally {
             setIsLoading(false);

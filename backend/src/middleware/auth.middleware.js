@@ -11,6 +11,7 @@ export const authMiddleware = (req, res, next) => {
         const decoded = tokenUtil.verifyToken(token);
         req.user = decoded;
     } catch (error) {
+        res.clearCookie('auth-token');
         return res.status(400).json({ message: 'Invalid token.' });
     }
 

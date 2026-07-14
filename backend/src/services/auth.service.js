@@ -17,7 +17,10 @@ const register = async (userData) => {
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
+    userData.confirmPassword = undefined; 
+
     const user = await userRepo.create({
+        ...userData,
         email: userData.email,
         password: hashedPassword
     });

@@ -150,7 +150,7 @@ function InvoiceForm() {
                             value={selectedClient}
                             onChange={(e) => setSelectedClient(e.target.value)}
                         >   
-                            <option value="" selected>Select a client...</option>
+                            <option value="">Select a client...</option>
                             {clients.length ? (
                                 clients.map((client, index) => (
                                     <option key={client.id ?? `${client.name}-${index}`} value={client.name}>
