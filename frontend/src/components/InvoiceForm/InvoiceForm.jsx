@@ -1,13 +1,23 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
+import { useEffect, useState } from "react";
 
 import useInvoice from "../../hooks/useInvoice";
 import { previewPdf } from "../../utils/previewPdf.util";
 import { useUser } from "../../hooks/useUser";
+import { useClient } from "../../hooks/useClient";
 
 function InvoiceForm() {
     const { isLoading, error, generatePdf } = useInvoice();
     const { userData, fetchUser } = useUser();
+    const { createClient } = useClient();
+
+    const clients = userData?.clients ?? [];
+
+    const [addNewClient, setAddNewClient] = useState(false);
+    const [clientName, setClientName] = useState("");
+    const [clientAddress, setClientAddress] = useState("");
+    const [selectedClient, setSelectedClient] = useState(clients.length > 0 ? clients[0].name : "");
 
     const today = new Date();
     const year = today.getFullYear();
@@ -21,11 +31,31 @@ function InvoiceForm() {
         const form = event.target;
         const data = new FormData(form);
         const formData = Object.fromEntries(data.entries());
+
+        if (userData) {
+            const client = clients.find(c => c.name === selectedClient);
+            if (client) {
+                formData.clientName = client.name;
+                formData.clientAddress = client.address;
+            } else {
+                console.log('Selected client not found.');
+                return;
+            }
+        }
+
         const pdfData = await generatePdf(formData);
         await previewPdf(pdfData);
-        await fetchUser(); 
+        await fetchUser();
         form.reset();
     };
+
+    const handleAddClient = async () => {
+        await createClient({ name: clientName, address: clientAddress });
+        setClientName("");
+        setClientAddress("");
+        setAddNewClient(false);
+        await fetchUser();
+    }
 
     if (isLoading) {
         return <InvoiceFormSkeleton />;
@@ -65,7 +95,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessPhone"
-                    defaultValue={userData ? userData.businessPhone : ''}
+                    defaultValue={userData ? userData.phoneNumber : ''}
                     placeholder="+43 123 456789"
                 />
 
@@ -80,23 +110,104 @@ function InvoiceForm() {
                     placeholder="company@email.com"
                 />
 
-                <label>
-                    Client Name
-                </label>
+                {!userData ? (
+                    <>
+                        <label>
+                            Client Name
+                        </label>
 
-                <input
-                    name="clientName"
-                    placeholder="Company / Person"
-                />
+                        <input
+                            name="clientName"
+                            placeholder="Company / Person"
+                        />
 
-                <label>
-                    Client Address
-                </label>
+                        <label>
+                            Client Address
+                        </label>
+                        <input
+                            name="clientAddress"
+                            placeholder="Format: Mainstraße 123, 6020 Innsbruck"
+                        />
+                    </>
+                ) : (
+                    <section className="client-picker">
 
-                <input
-                    name="clientAddress"
-                    placeholder="Format: Mainstraße, 123 6020 Innsbruck"
-                />
+
+                        <div className="client-picker__header">
+                            <div>
+                                <label htmlFor="client-select">
+                                    Select Client
+                                </label>
+                                <p className="client-picker__hint">
+                                    Choose an existing client.
+                                </p>
+                            </div>
+                        </div>
+
+                        <select
+                            id="client-select"
+                            className="client-picker__select"
+                            value={selectedClient}
+                            onChange={(e) => setSelectedClient(e.target.value)}
+                        >   
+                            <option value="" selected>Select a client...</option>
+                            {clients.length ? (
+                                clients.map((client, index) => (
+                                    <option key={client.id ?? `${client.name}-${index}`} value={client.name}>
+                                        {client.name}
+                                    </option>
+                                ))
+                            ) : (
+                                <option value="">No clients available</option>
+                            )}
+                        </select>
+                        <p className="client-picker__hint">
+                            or add new:
+                        </p>
+
+                        {addNewClient ? (
+                            <>
+                                <div className="client-picker__details">
+                                    <div className="client-picker__field">
+                                        <label>
+                                            Client Name
+                                        </label>
+                                        <input
+                                            placeholder="Company / Person"
+                                            onChange={(e) => setClientName(e.target.value)}
+                                        />
+                                    </div>
+
+                                    <div className="client-picker__field">
+                                        <label>
+                                            Client Address
+                                        </label>
+                                        <input
+                                            placeholder="Format: Mainstraße 123, 6020 Innsbruck"
+                                            onChange={(e) => setClientAddress(e.target.value)}
+                                        />
+                                    </div>
+                                </div>
+                                <div className="buttons_safe_cancel">
+                                    <button className="client-picker__button" type="button" onClick={handleAddClient}>
+                                        Save
+                                    </button>
+                                    <button className="client-picker__button" type="button" onClick={() => setAddNewClient(false)}>
+                                        Cancel
+                                    </button>
+                                </div>
+                            </>
+                        ) : (
+                            <button className="client-picker__button" type="button" onClick={() => setAddNewClient(true)}>
+                                Add New Client
+                            </button>
+
+                        )}
+
+                    </section>
+                )}
+
+
 
 
                 <label>

@@ -22,6 +22,11 @@ function Sidebar() {
           <>
             {userData.email}
             <Link to="#" onClick={(e) => { e.preventDefault(); signOut(); }}>SignOut</Link>
+            {/* For later versions: */}
+            <Link to="/invoices">Invoices</Link>
+            <Link to="/customers">Customers</Link>
+            <Link to="/business-profile">Business Profile</Link>
+            <Link to="/settings">Settings</Link>
           </>
         ) : (
           <>
@@ -29,11 +34,6 @@ function Sidebar() {
             <Link to="/signup">Sign Up</Link>
           </>
         )}
-        {/* For later versions: */}
-        {/* <Link to="/invoices">Invoices</Link>
-        <Link to="/customers">Customers</Link>
-        <Link to="/business-profile">Business Profile</Link>
-        <Link to="/settings">Settings</Link> */}
       </nav>
 
     </aside>

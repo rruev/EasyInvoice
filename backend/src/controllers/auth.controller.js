@@ -60,7 +60,8 @@ authController.get('/me', isAuthenticated, async (req, res) => {
         companyEmail: user.companyEmail,
         clients: user.clients,
         invoices: user.invoices,
-        nextInvoiceNum: user.nextInvoiceNum
+        nextInvoiceNum: user.nextInvoiceNum,
+        phoneNumber: user.phoneNumber
     });
 });
 
