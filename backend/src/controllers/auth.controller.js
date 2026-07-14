@@ -7,7 +7,7 @@ authController.post('/register', async (req, res) => {
     const userData = req.body;
 
     const { user, token } = await authService.register(userData);
-    res.cookie('auth-token', token, { httpOnly: true});
+    res.cookie('auth-token', token, { httpOnly: true, sameSite: 'none', secure: false });
 
     res.json({
         id: user.id,
