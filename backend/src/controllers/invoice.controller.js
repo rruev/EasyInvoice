@@ -4,7 +4,7 @@ import invoiceService from '../services/invoice.service.js';
 const invoiceController = Router();
 
 invoiceController.post('/generate', async (req, res) => {
-    const invoiceData = req.body;
+    const invoiceData = { ...req.body, userId: req.user.id };
 
     const pdfBuffer = await invoiceService.generate(invoiceData);
 

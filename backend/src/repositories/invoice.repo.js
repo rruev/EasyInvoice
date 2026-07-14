@@ -2,7 +2,16 @@ import { prisma } from "../lib/prisma.js";
 
 const create = async (invoiceData) => {
     const invoice = await prisma.invoice.create({
-        data: invoiceData,
+        data: {
+            userId: invoiceData.userId,         
+            invoiceNum: invoiceData.invoiceNum,   
+            issuedAt: invoiceData.issuedAt,   
+            workedAt: invoiceData.workedAt,   
+            quantity: invoiceData.quantity,
+            price: invoiceData.price,
+            total: invoiceData.totalPrice,
+            status: invoiceData.status,
+            },
     });
     return invoice;
 };

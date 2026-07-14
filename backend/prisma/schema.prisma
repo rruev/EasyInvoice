@@ -33,8 +33,8 @@ model Invoice {
   id         String   @id @default(cuid())
   userId     String
   invoiceNum String   @unique
-  issuedAt   DateTime
-  workedAt   DateTime
+  issuedAt   String
+  workedAt   String
   quantity   Int
   price      Float
   total      Float

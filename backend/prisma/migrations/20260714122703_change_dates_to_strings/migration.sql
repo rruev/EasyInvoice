@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "invoices" ALTER COLUMN "issuedAt" SET DATA TYPE TEXT,
+ALTER COLUMN "workedAt" SET DATA TYPE TEXT;
