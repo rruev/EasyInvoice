@@ -6,7 +6,7 @@ import { useState } from "react";
 
 
 function SignUp() {
-  const { signUp, isLoading, error, setError } = useUser();
+  const { signUp, isLoading, error, setError, fetchUser } = useUser();
   const { createClient } = useClient();
   const navigate = useNavigate();
 
@@ -27,6 +27,7 @@ function SignUp() {
     try {
       const user = await signUp(formData);
       if (user) {
+        await fetchUser();
         navigate('/');
       }
     } catch (err) {

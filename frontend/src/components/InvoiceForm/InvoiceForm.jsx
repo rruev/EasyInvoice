@@ -76,7 +76,7 @@ function InvoiceForm() {
                 <input
                     name="businessName"
                     defaultValue={userData ? userData.businessName : ''}
-                    placeholder="Bussiness / Person"
+                    placeholder="Business / Person"
                 />
 
                 <label>
@@ -106,7 +106,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessEmail"
-                    defaultValue={userData ? userData.companyEmail : ''}
+                    defaultValue={userData ? userData.businessEmail : ''}
                     placeholder="company@email.com"
                 />
 

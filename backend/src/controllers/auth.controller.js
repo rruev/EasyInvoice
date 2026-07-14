@@ -10,7 +10,7 @@ authController.post('/register', async (req, res) => {
 
     const { user, token } = await authService.register(userData);
 
-    res.cookie('auth-token', token, { httpOnly: true, sameSite: 'none', secure: false });
+    res.cookie('auth-token', token, { httpOnly: true });
 
     res.json({
         id: user.id,
@@ -49,7 +49,7 @@ authController.get('/me', isAuthenticated, async (req, res) => {
         email: user.email,
         businessName: user.businessName,
         businessAddress: user.businessAddress,
-        companyEmail: user.companyEmail,
+        businessEmail: user.businessEmail,
         clients: user.clients,
         invoices: user.invoices,
         nextInvoiceNum: user.nextInvoiceNum,
