@@ -7,8 +7,7 @@ import { useUser } from "../../hooks/useUser";
 
 function InvoiceForm() {
     const { isLoading, error, generatePdf } = useInvoice();
-    const { userData } = useUser();
-    console.log("userData in InvoiceForm:", userData);
+    const { userData, fetchUser } = useUser();
 
     const today = new Date();
     const year = today.getFullYear();
@@ -24,6 +23,7 @@ function InvoiceForm() {
         const formData = Object.fromEntries(data.entries());
         const pdfData = await generatePdf(formData);
         await previewPdf(pdfData);
+        await fetchUser(); 
         form.reset();
     };
 
@@ -55,6 +55,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessAddress"
+                    defaultValue={userData ? userData.businessAddress : ''}
                     placeholder="Format: Mainstraße, 123 6020 Innsbruck"
                 />
 
@@ -64,6 +65,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessPhone"
+                    defaultValue={userData ? userData.businessPhone : ''}
                     placeholder="+43 123 456789"
                 />
 
@@ -74,6 +76,7 @@ function InvoiceForm() {
 
                 <input
                     name="businessEmail"
+                    defaultValue={userData ? userData.companyEmail : ''}
                     placeholder="company@email.com"
                 />
 
@@ -102,9 +105,9 @@ function InvoiceForm() {
 
                 <input
                     name="invoiceNum"
-                    // value="INV-001"
+                    value={userData ? userData.nextInvoiceNum : ''}
                     placeholder="Format: YYYY-001"
-                    // readOnly
+                    readOnly
                 />
 
                 <label>

@@ -56,24 +56,24 @@ const AuthProvider = ({ children }) => {
         }
     }, []);
 
-    useEffect(() => {
-        const fetchUser = async () => {
-            setIsLoading(true);
-            setError(null);
-            try {
-                const data = await fetchUserData();
-                setUserData(data);
-                return data;
-            } catch (err) {
-                setError('Failed to fetch user data.');
-                throw err;
-            } finally {
-                setIsLoading(false);
-            }
+    const fetchUser = useCallback(async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            const data = await fetchUserData();
+            setUserData(data);
+            return data;
+        } catch (err) {
+            setError('Failed to fetch user data.');
+            throw err;
+        } finally {
+            setIsLoading(false);
         }
-
-        fetchUser();
     }, []);
+
+    useEffect(() => {
+        fetchUser();
+    }, [fetchUser]);
 
     const contextValue = useMemo(() => ({
         userData,
@@ -82,8 +82,9 @@ const AuthProvider = ({ children }) => {
         setError,
         signUp,
         signIn,
-        signOut
-    }), [userData, isLoading, error, signUp, signIn, signOut]);
+        signOut,
+        fetchUser,
+    }), [userData, isLoading, error, signUp, signIn, signOut, fetchUser]);
 
     return (
         <AuthContext value={contextValue}>

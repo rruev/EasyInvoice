@@ -6,9 +6,9 @@ export const useUser = () => {
     if (!ctx) {
         throw new Error('useUser must be used within an AuthProvider');
     }
-    const { userData, isLoading, error, setError, signUp, signIn, signOut } = ctx;
+    const { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser } = ctx;
 
-    return { userData, isLoading, error, setError, signUp, signIn, signOut };
+    return { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser };
 }
 
 export default useUser;
