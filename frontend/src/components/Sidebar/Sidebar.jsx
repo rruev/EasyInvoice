@@ -21,7 +21,7 @@ function Sidebar() {
         {userData ? (
           <>
             {userData.email}
-            <Link to="#" onClick={(e) => { e.preventDefault(); signOut(); }}>SignOut</Link>
+            <Link to="#" onClick={async (e) => { e.preventDefault(); await signOut(); }}>SignOut</Link>
             {/* For later versions: */}
             <Link to="/invoices">Invoices</Link>
             <Link to="/customers">Customers</Link>
