@@ -1,11 +1,21 @@
 import "./Invoices.css";
 import { useUser } from "../../hooks/useUser";
+import { useInvoice } from "../../hooks/useInvoice";
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
+  const { updateInvoiceStatus, removeInvoice } = useInvoice();
 
-  const handleOnChange = async (e) => {
-    
+  const handleOnChange = async (e, invoiceId) => {
+    await updateInvoiceStatus(invoiceId, e.target.value).then(async () => {
+      await fetchUser();
+    });
+  };
+
+  const handleClickDelete = async (id) => {
+    await removeInvoice(id).then(async () => {
+      await fetchUser();
+    });
   };
 
   return (
@@ -47,9 +57,9 @@ function Invoices() {
                   </td>
                   <td>{invoice.issuedAt ?? invoice.date ?? "-"}</td>
                   <td>
-                    <select className={`invoice-status invoice-status--${invoice.status ?? "draft"}`} onChange={handleOnChange}>
-                      <option selected={invoice.status === "pending"}>Pending</option>
-                      <option selected={invoice.status === "paid"}>Paid</option>
+                    <select className={`invoice-status invoice-status--${invoice.status ?? "draft"}`} onChange={(e) => handleOnChange(e, invoice.id)}>
+                      <option value="pending" defaultValue={invoice.status === "pending"}>Pending</option>
+                      <option value="paid" defaultValue={invoice.status === "paid"}>Paid</option>
                     </select>
                   </td>
                   <td>{invoice.total ?? invoice.amount ?? "-"} &euro;</td>
@@ -57,7 +67,7 @@ function Invoices() {
                     <button
                       type="button"
                       className="invoices-table__delete"
-                      onClick={() => onDeleteInvoice?.(invoice.id)}
+                      onClick={() => handleClickDelete(invoice.id)}
                       aria-label={`Delete invoice ${invoice.invoiceNum ?? invoice.number ?? index + 1}`}
                     >
                       Delete

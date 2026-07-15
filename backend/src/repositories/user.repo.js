@@ -16,7 +16,6 @@ const findByEmail = async (email) => {
                 orderBy: {
                     createdAt: 'desc'
                 },
-                take: 1
             }
         }
     });

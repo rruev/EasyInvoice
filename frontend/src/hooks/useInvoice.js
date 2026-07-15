@@ -25,7 +25,43 @@ export const useInvoice = () => {
     }
   }
 
-  return { pdfData, isLoading, error, generatePdf };
+  const updateInvoiceStatus = async (invoiceId, newStatus) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+        const response = await invoiceService.update(invoiceId, { status: newStatus });
+        if (response) {
+            return response;
+        } else {
+            setError("Failed to update invoice status.");
+        }
+    } catch (err) {
+        setError("An error occurred while updating the invoice status.");
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
+  const removeInvoice = async (invoiceId) => {
+    setIsLoading(true);
+    setError(null);
+
+    try {
+        const response = await invoiceService.remove(invoiceId);
+        if (response) {
+            return response;
+        } else {
+            setError("Failed to remove invoice.");
+        }
+    } catch (err) {
+        setError("An error occurred while removing the invoice.");
+    } finally {
+        setIsLoading(false);
+    }
+  }
+
+  return { pdfData, isLoading, error, generatePdf, updateInvoiceStatus, removeInvoice };
 }
 
 export default useInvoice;
