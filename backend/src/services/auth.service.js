@@ -59,7 +59,7 @@ const getByEmail = async (email) => {
 
     const nextInvoiceNum = getNextInvoiceNum(user.invoices[0]);
     user.nextInvoiceNum = nextInvoiceNum;
-
+    
     return user;
 }
 

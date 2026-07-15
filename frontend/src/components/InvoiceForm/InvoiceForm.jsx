@@ -1,14 +1,12 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
-import { useEffect, useState } from "react";
-
+import { useState } from "react";
 import useInvoice from "../../hooks/useInvoice";
-import { previewPdf } from "../../utils/previewPdf.util";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 
 function InvoiceForm() {
-    const { isLoading, error, generatePdf } = useInvoice();
+    const { isLoading, generatePdf } = useInvoice();
     const { userData, fetchUser } = useUser();
     const { createClient } = useClient();
 
@@ -43,11 +41,10 @@ function InvoiceForm() {
             }
         }
 
-        const pdfData = await generatePdf(formData);
-        await previewPdf(pdfData).then(async () => {
-            await fetchUser();
-            form.reset();
-        });
+        await generatePdf(formData);
+        // await previewPdf(pdfData);
+        await fetchUser();
+        form.reset();
     };
 
     const handleAddClient = async () => {
@@ -216,6 +213,7 @@ function InvoiceForm() {
                 </label>
 
                 <input
+                    key={userData ? userData.nextInvoiceNum : 'invoice-number'}
                     name="invoiceNum"
                     defaultValue={userData ? userData.nextInvoiceNum : ''}
                     placeholder="Format: YYYY-001"

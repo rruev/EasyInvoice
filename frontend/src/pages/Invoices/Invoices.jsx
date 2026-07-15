@@ -7,15 +7,13 @@ function Invoices() {
   const { updateInvoiceStatus, removeInvoice } = useInvoice();
 
   const handleOnChange = async (e, invoiceId) => {
-    await updateInvoiceStatus(invoiceId, e.target.value).then(async () => {
-      await fetchUser();
-    });
+    await updateInvoiceStatus(invoiceId, e.target.value);
+    await fetchUser();
   };
 
   const handleClickDelete = async (id) => {
-    await removeInvoice(id).then(async () => {
-      await fetchUser();
-    });
+    await removeInvoice(id);
+    await fetchUser();
   };
 
   return (
