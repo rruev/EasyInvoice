@@ -3,9 +3,11 @@ import "./Sidebar.css";
 import { Link } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const { userData, signOut } = useUser();
+  const navigate = useNavigate();
 
   return (
     <aside className="sidebar">
@@ -21,7 +23,7 @@ function Sidebar() {
         {userData ? (
           <>
             {userData.email}
-            <Link to="#" onClick={async (e) => { e.preventDefault(); await signOut(); }}>SignOut</Link>
+            <Link to="#" onClick={async (e) => { e.preventDefault(); await signOut(); navigate("/"); }}>SignOut</Link>
             {/* For later versions: */}
             <Link to="/invoices">Invoices</Link>
             <Link to="/customers">Customers</Link>

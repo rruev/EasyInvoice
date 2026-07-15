@@ -11,28 +11,22 @@ import { useUser } from "../../hooks/useUser";
 function Home() {
     const { userData } = useUser();
     return (
-        <div className="app">
+        <main className="main">
 
-            <Sidebar />
+            <Header />
 
-            <main className="main">
+            {userData && <StatsCards />}
 
-                <Header />
+            <section className="workspace">
 
-                {userData && <StatsCards />}
+                <InvoiceForm />
 
-                <section className="workspace">
-
-                    <InvoiceForm />
-
-                    {/* For next version:}
+                {/* For next version:}
           {/* <InvoicePreview /> */}
 
-                </section>
-            </main>
-
-        </div>
-    )
+            </section>
+        </main>
+    );
 }
 
 export default Home;

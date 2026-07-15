@@ -27,8 +27,19 @@ const generate = async (invoiceData) => {
     return pdfBuffer;
 }
 
+const update = async (invoiceId, updatedData) => {
+    const updatedInvoice = await invoiceRepo.update(invoiceId, updatedData);
+    return updatedInvoice;
+};
+
+const remove = async (invoiceId) => {
+    await invoiceRepo.remove(invoiceId);
+};
+
 const invoiceService = {
     generate,
+    update,
+    remove,
 };
 
 export default invoiceService;

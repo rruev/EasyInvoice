@@ -30,10 +30,26 @@ const findAll = async (filter = {}) => {
     return invoices;
 };
 
+const update = async (invoiceId, updatedData) => {
+    const updatedInvoice = await prisma.invoice.update({
+        where: { id: invoiceId },
+        data: updatedData,
+    });
+    return updatedInvoice;
+};
+
+const remove = async (invoiceId) => {
+    await prisma.invoice.delete({
+        where: { id: invoiceId },
+    });
+};
+
 const invoiceRepo = {
     create,
     findById,
     findAll,
-}
+    update,
+    remove,
+};
 
 export default invoiceRepo;
