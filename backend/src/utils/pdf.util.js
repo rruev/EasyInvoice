@@ -39,9 +39,9 @@ export const createHtml = async (invoiceData) => {
         issuedAt: invoiceData.issuedAt ?? '',
         workedAt: invoiceData.workedAt ?? '',
         quantity: invoiceData.quantity ?? '',
-        price: invoiceData.price ?? '',
-        lineTotal: invoiceData.lineTotal ?? invoiceData.total ?? '',
-        totalPrice: invoiceData.totalPrice ?? invoiceData.total ?? '',
+        price: invoiceData.price !== undefined ? invoiceData.price.toFixed(2) : '',
+        lineTotal: invoiceData.lineTotal !== undefined ? invoiceData.lineTotal.toFixed(2) : '',
+        totalPrice: invoiceData.totalPrice !== undefined ? invoiceData.totalPrice.toFixed(2) : '',
         iban: invoiceData.iban ?? '',
     };
 

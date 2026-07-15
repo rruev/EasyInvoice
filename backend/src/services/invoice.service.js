@@ -4,7 +4,7 @@ import invoiceRepo from '../repositories/invoice.repo.js';
 
 const generate = async (invoiceData) => {
     invoiceData.quantity = Number(invoiceData.quantity);
-    invoiceData.price = Number(invoiceData.price);
+    invoiceData.price = parseFloat(invoiceData.price);
     
     const preparedData = prepareData(invoiceData);
     
@@ -17,6 +17,7 @@ const generate = async (invoiceData) => {
         await invoiceRepo.create({
             ...invoiceData,
             status: 'pending',
+            price: invoiceData.price,
             total: preparedData.totalPrice,
             issuedAt: preparedData.issuedAt,
             workedAt: preparedData.workedAt,

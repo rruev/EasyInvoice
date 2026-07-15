@@ -44,9 +44,10 @@ function InvoiceForm() {
         }
 
         const pdfData = await generatePdf(formData);
-        await previewPdf(pdfData);
-        await fetchUser();
-        form.reset();
+        await previewPdf(pdfData).then(async () => {
+            await fetchUser();
+            form.reset();
+        });
     };
 
     const handleAddClient = async () => {
@@ -216,7 +217,7 @@ function InvoiceForm() {
 
                 <input
                     name="invoiceNum"
-                    value={userData ? userData.nextInvoiceNum : ''}
+                    defaultValue={userData ? userData.nextInvoiceNum : ''}
                     placeholder="Format: YYYY-001"
                 />
 
