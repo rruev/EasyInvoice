@@ -13,6 +13,8 @@ export const getErrors = (error) => {
         errors = { password: ['Invalid password'] };
     } else if (error.name === 'UserNotFoundError') {
         errors = { email: ['User with this email does not exist'] };
+    } else {
+        errors = { general: 'An unexpected error occurred' };
     }
     return errors;
 }

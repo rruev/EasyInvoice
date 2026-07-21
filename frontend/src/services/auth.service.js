@@ -1,49 +1,40 @@
+import { getErrors } from "../utils/errors.util";
+
 export const register = async (userData) => {
-    try {
-        const response = await fetch('http://localhost:3000/api/auth/register', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-            credentials: 'include' 
-        });
+    const response = await fetch('http://localhost:3000/api/auth/register', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+        credentials: 'include'
+    });
 
-        if (!response.ok) {
-            throw new Error('Failed to register');
-        }
-
-        const newUser = await response.json();
-        return newUser;
-    } catch (error) {
-        console.error('Error registering user:', error);
+    if (!response.ok) {
+        const error = await getErrors(response);
         throw error;
     }
+
+    const newUser = await response.json();
+    return newUser;
 }
 
 export const login = async (userData) => {
-    try {
-        const response = await fetch('http://localhost:3000/api/auth/login', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(userData),
-            credentials: 'include'
-        });
+    const response = await fetch('http://localhost:3000/api/auth/login', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(userData),
+        credentials: 'include'
+    });
 
-        if (!response.ok) {
-            const errorData = await response.json();
-            const error = new Error(errorData.message || 'Failed to login');
-            error.errors = errorData.errors || [];
-            throw error;
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error logging in user:', error);
+    if (!response.ok) {
+        const error = await getErrors(response);
         throw error;
     }
+
+    return await response.json();
 }
 
 export const logout = async () => {

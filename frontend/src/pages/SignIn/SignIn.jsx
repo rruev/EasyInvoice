@@ -4,7 +4,7 @@ import { useUser } from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 
 function SignIn() {
-  const { signIn, isLoading, error, setError, fetchUser } = useUser();
+  const { signIn, isLoading, error, fetchUser } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -12,14 +12,12 @@ function SignIn() {
     const formData = new FormData(e.target);
     const email = formData.get("email");
     const password = formData.get("password");
-    try {
-      const user = await signIn({ email, password });
-      if (user) {
-        await fetchUser();
-        navigate('/');
-      }
-    } catch (err) {
-      setError('Failed to sign in');
+
+    const user = await signIn({ email, password });
+
+    if (user) {
+      await fetchUser();
+      navigate('/');
     }
   };
 

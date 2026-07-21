@@ -19,8 +19,7 @@ const AuthProvider = ({ children }) => {
             setUserData(data);
             return data;
         } catch (err) {
-            setError('Failed to register user.');
-            throw err;
+            setError(err.errors || { general: 'Failed to register user.' });
         } finally {
             setIsLoading(false);
         }
@@ -35,9 +34,8 @@ const AuthProvider = ({ children }) => {
             setUserData(data);
             return data;
         } catch (err) {
-            console.log('Failed to login user:', err.errors);
-            setError(err.errors || 'Failed to login user.');
-            // throw err;
+            console.log('Login failed with error:', err);
+            setError(err.errors || { general: 'Failed to login user.' });
         } finally {
             setIsLoading(false);
         }

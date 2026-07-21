@@ -20,18 +20,10 @@ function SignUp() {
     e.preventDefault();
     const formData = Object.fromEntries(new FormData(e.target).entries());
 
-    if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
-      return;
-    }
-    try {
-      const user = await signUp(formData);
-      if (user) {
-        await fetchUser();
-        navigate('/');
-      }
-    } catch (err) {
-      setError('Failed to create account');
+    const user = await signUp(formData);
+    if (user) {
+      await fetchUser();
+      navigate('/');
     }
   };
 
@@ -59,6 +51,7 @@ function SignUp() {
             placeholder="name@company.com"
             autoComplete="email"
           />
+          {error && error.email && <p className="auth-error">{error.email[0]}</p>}
 
           <label htmlFor="sign-up-password">Password</label>
           <input
@@ -68,6 +61,7 @@ function SignUp() {
             placeholder="Create password"
             autoComplete="new-password"
           />
+          {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
           <label htmlFor="sign-up-confirmPassword">Confirm Password</label>
           <input
@@ -78,11 +72,13 @@ function SignUp() {
             autoComplete="new-password"
             onChange={(e) => setShowBusinessName(e.target.value.length > 0)}
           />
+          {error && error.confirmPassword && <p className="auth-error">{error.confirmPassword[0]}</p>}
+          
           {showBusinessName && (
             <>
-              <label htmlFor="sign-up-confirmPassword">Business name</label>
+              <label htmlFor="sign-up-businessName">Business name</label>
               <input
-                id="sign-up-confirmPassword"
+                id="sign-up-businessName"
                 type="text"
                 name="businessName"
                 placeholder="Business name"
@@ -106,6 +102,7 @@ function SignUp() {
               <button type="button" onClick={handleClick}>Same as user email</button>
             </>
           )}
+          {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
 
           {showBusinessAddress && (
             <>
@@ -120,6 +117,7 @@ function SignUp() {
               />
             </>
           )}
+          {error && error.businessAddress && <p className="auth-error">{error.businessAddress[0]}</p>}
 
           {showPhoneNumber && (
             <>
@@ -133,9 +131,11 @@ function SignUp() {
               />
             </>
           )}
+          {error && error.phoneNumber && <p className="auth-error">{error.phoneNumber[0]}</p>}
+
           <button type="submit">Create Account</button>
         </form>
-        {error && <p className="auth-error">{error}</p>}
+        {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>
     </section>
   );
