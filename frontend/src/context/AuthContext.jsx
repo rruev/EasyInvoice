@@ -35,8 +35,9 @@ const AuthProvider = ({ children }) => {
             setUserData(data);
             return data;
         } catch (err) {
-            setError('Failed to login user.');
-            throw err;
+            console.log('Failed to login user:', err.errors);
+            setError(err.errors || 'Failed to login user.');
+            // throw err;
         } finally {
             setIsLoading(false);
         }

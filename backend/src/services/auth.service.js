@@ -4,7 +4,6 @@ import jwt from 'jsonwebtoken';
 import userRepo from '../repositories/user.repo.js';
 import tokenUtil from '../utils/token.util.js';
 import { getNextInvoiceNum } from '../utils/invoiceNum.util.js';
-import { get } from 'node:http';
 
 const register = async (userData) => {
     if (!userData.email || !userData.password) {
@@ -17,7 +16,7 @@ const register = async (userData) => {
 
     const hashedPassword = await bcrypt.hash(userData.password, 10);
 
-    userData.confirmPassword = undefined; 
+    userData.confirmPassword = undefined;
 
     const user = await userRepo.create({
         ...userData,
@@ -26,40 +25,41 @@ const register = async (userData) => {
     });
 
     const token = tokenUtil.generateToken(user);
-    return { user, token};
+    return { user, token };
 }
 
 const login = async (userData) => {
-    if (!userData.email || !userData.password) {
-        throw new Error('Email and password are required');
-    }
-
     const user = await userRepo.findByEmail(userData.email);
 
     if (!user) {
-        throw new Error('User not found');
+        const error = new Error('User not found');
+        error.name = 'UserNotFoundError';
+        throw error;
     }
 
     const isPasswordValid = await bcrypt.compare(userData.password, user.password);
 
     if (!isPasswordValid) {
-        throw new Error('Invalid password');
+        const error = new Error('Invalid password');
+        error.name = 'InvalidPasswordError';
+        throw error;
     }
 
     const token = tokenUtil.generateToken(user);
     return { user, token };
-}
+
+};
 
 const getByEmail = async (email) => {
     const user = await userRepo.findByEmail(email);
-    
+
     if (!user) {
         throw new Error('User not found');
     }
 
     const nextInvoiceNum = getNextInvoiceNum(user.invoices[0]);
     user.nextInvoiceNum = nextInvoiceNum;
-    
+
     return user;
 }
 

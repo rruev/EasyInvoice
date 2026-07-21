@@ -39,6 +39,7 @@ function SignIn() {
             placeholder="name@company.com"
             autoComplete="email"
           />
+          {error && error.email && <p className="auth-error">{error.email[0]}</p>}
 
           <label htmlFor="sign-in-password">Password</label>
           <input
@@ -48,10 +49,11 @@ function SignIn() {
             placeholder="Enter password"
             autoComplete="current-password"
           />
+          {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
           <button type="submit">Sign In</button>
         </form>
-        {error && <p className="auth-error">{error}</p>}
+        {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>
     </section>
   );

@@ -28,7 +28,7 @@ function Sidebar() {
             <Link to="/invoices">Invoices</Link>
             <Link to="/customers">Customers</Link>
             <Link to="/business-profile">Business Profile</Link>
-            <Link to="/settings">Settings</Link>
+            {/* <Link to="/settings">Settings</Link> */}
           </>
         ) : (
           <>

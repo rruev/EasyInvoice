@@ -33,7 +33,10 @@ export const login = async (userData) => {
         });
 
         if (!response.ok) {
-            throw new Error('Failed to login');
+            const errorData = await response.json();
+            const error = new Error(errorData.message || 'Failed to login');
+            error.errors = errorData.errors || [];
+            throw error;
         }
 
         return await response.json();

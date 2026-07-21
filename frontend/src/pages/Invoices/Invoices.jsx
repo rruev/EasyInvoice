@@ -35,7 +35,7 @@ function Invoices() {
             <thead>
               <tr>
                 <th>Invoice</th>
-                <th>Customer</th>
+                <th>Client</th>
                 <th>Issue Date</th>
                 <th>Status</th>
                 <th>Total</th>
