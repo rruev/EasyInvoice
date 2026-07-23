@@ -1,0 +1,188 @@
+.business-profile {
+  min-height: 100vh;
+  width: 100%;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+  background:
+    radial-gradient(circle at 10% 18%, rgba(14, 165, 233, 0.2), transparent 44%),
+    radial-gradient(circle at 84% 80%, rgba(34, 197, 94, 0.16), transparent 40%),
+    linear-gradient(140deg, #f8fafc 0%, #edf4fb 56%, #f9fbff 100%);
+}
+
+.business-profile__card {
+  width: min(860px, 100%);
+  background: #ffffff;
+  border: 1px solid #d8e3ef;
+  border-radius: 20px;
+  padding: 30px;
+  box-shadow: 0 22px 48px rgba(15, 23, 42, 0.12);
+}
+
+.business-profile__header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 24px;
+}
+
+.business-profile__eyebrow {
+  margin: 0 0 6px;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #0f766e;
+  font-weight: 700;
+}
+
+.business-profile__title {
+  margin: 0;
+  font-size: 30px;
+  line-height: 1.15;
+  color: #0f172a;
+}
+
+.business-profile__subtitle {
+  margin: 8px 0 0;
+  font-size: 14px;
+  color: #475569;
+}
+
+.business-profile__status {
+  flex: 0 0 auto;
+  border-radius: 999px;
+  padding: 8px 13px;
+  background: #e0f2fe;
+  color: #0c4a6e;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.business-profile__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.profile-field {
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
+.profile-field--wide {
+  grid-column: 1 / -1;
+}
+
+.profile-field__label {
+  margin: 0 0 6px;
+  font-size: 12px;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  font-weight: 700;
+}
+
+.profile-field__value {
+  width: 100%;
+  border: 1px solid #cdd7e3;
+  border-radius: 10px;
+  padding: 11px 12px;
+  background: #fbfdff;
+  outline: none;
+  font-size: 16px;
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.profile-field__value:read-only {
+  color: #0f172a;
+  cursor: default;
+}
+
+.profile-field__value:focus {
+  border-color: #93c5fd;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.14);
+}
+
+.business-profile__actions {
+  margin-top: 26px;
+  display: flex;
+  gap: 12px;
+  justify-content: flex-end;
+}
+
+.business-profile__button {
+  border: 0;
+  border-radius: 10px;
+  min-width: 140px;
+  padding: 12px 16px;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+}
+
+.business-profile__button:hover {
+  transform: translateY(-1px);
+}
+
+.business-profile__button--edit {
+  color: #ffffff;
+  background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+  box-shadow: 0 10px 20px rgba(2, 132, 199, 0.26);
+}
+
+.business-profile__button--delete {
+  color: #b91c1c;
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+}
+
+.business-profile__button--delete:hover {
+  opacity: 0.92;
+}
+
+@media (max-width: 860px) {
+  .business-profile__header {
+    flex-direction: column;
+  }
+
+  .business-profile__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-field--wide {
+    grid-column: auto;
+  }
+
+  .business-profile__actions {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 640px) {
+  .business-profile {
+    padding: 0;
+    background: #eef4fb;
+  }
+
+  .business-profile__card {
+    width: 100%;
+    min-height: 100vh;
+    border-radius: 0;
+    border: 0;
+    box-shadow: none;
+    padding: 24px 20px;
+  }
+
+  .business-profile__title {
+    font-size: 26px;
+  }
+
+  .business-profile__actions {
+    flex-direction: column;
+  }
+}

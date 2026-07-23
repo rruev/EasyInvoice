@@ -1,8 +1,10 @@
 import "./Clients.css";
 import { useUser } from "../../hooks/useUser";
+import { Outlet, useNavigate } from "react-router-dom";
 
 function Clients() {
   const { userData } = useUser();
+  const navigate = useNavigate();
 
   return (
     <section className="customers-panel">
@@ -20,7 +22,7 @@ function Clients() {
       <div className="customers-panel__grid">
         {userData?.clients?.length ? (
           userData?.clients?.map((customer, index) => (
-            <article className="customer-card" key={customer.id ?? customer.name ?? index}>
+            <article className="customer-card" key={customer.id ?? customer.name ?? index} onClick={() => navigate(`/clients/editBusinessClient/${customer.id}`)}>
               <div className="customer-card__header">
                 <div>
                   <h3 className="customer-card__name">{customer.name ?? "Unnamed customer"}</h3>
