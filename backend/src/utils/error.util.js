@@ -16,5 +16,6 @@ export const getErrors = (error) => {
     } else {
         errors = { general: 'An unexpected error occurred' };
     }
+    console.log('Error details:', error);
     return errors;
 }

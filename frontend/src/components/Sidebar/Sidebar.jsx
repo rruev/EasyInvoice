@@ -22,7 +22,6 @@ function Sidebar() {
         <Link className="active" to="/">Create New Invoice +</Link>
         {userData ? (
           <>
-            {userData.email}
             <Link to="#" onClick={async (e) => { e.preventDefault(); await signOut(); navigate("/"); }}>SignOut</Link>
             {/* For later versions: */}
             <Link to="/invoices">Invoices</Link>

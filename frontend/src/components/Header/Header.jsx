@@ -12,7 +12,7 @@ function Header() {
       </h1>
 
       <div className="profile">
-        {userData ? userData.businessName : "Guest"}
+        {userData ? (userData.businessName ? userData.businessName : userData.email) : "Guest"}
       </div>
 
     </div>
