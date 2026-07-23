@@ -114,6 +114,12 @@
   box-shadow: 0 12px 24px rgba(37, 99, 235, 0.18);
 }
 
+.invoice-form-error {
+  color: #dc2626;
+  font-size: 13px;
+  margin-top: 4px;
+}
+
 @media (max-width: 720px) {
   .client-picker__header,
   .client-picker__details {

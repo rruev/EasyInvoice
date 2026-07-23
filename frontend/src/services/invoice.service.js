@@ -1,16 +1,19 @@
- const fetchPdf = async (formData) => {
+import { getErrors } from '../utils/errors.util';
+
+const fetchPdf = async (formData) => {
     const response = await fetch("http://localhost:3000/api/invoice/generate", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(formData),
-        credentials: "include" 
+        credentials: "include"
     });
 
     if (!response.ok) {
-        console.error("Failed to submit invoice data");
-        return;
+        console.log("Failed to submit invoice data");
+        const error = await getErrors(response);
+        throw error;
     }
 
     return await response.blob();

@@ -1,14 +1,22 @@
 import { Router } from 'express';
 import invoiceService from '../services/invoice.service.js';
+import { getErrors } from '../utils/error.util.js';
+import { invoiceSchema } from '../schemas/invoice.schema.js';
 
 const invoiceController = Router();
 
 invoiceController.post('/generate', async (req, res) => {
-    const invoiceData = { ...req.body, userId: req.user?.id };
-
-    const pdfBuffer = await invoiceService.generate(invoiceData);
-
-    res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
+    try {
+        const data = invoiceSchema.parse(req.body);
+        const invoiceData = { ...data, userId: req.user?.id };
+    
+        const pdfBuffer = await invoiceService.generate(invoiceData);
+    
+        res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(400).json({ errors });
+    }
 });
 
 invoiceController.put('/update/:invoiceId', async (req, res) => {

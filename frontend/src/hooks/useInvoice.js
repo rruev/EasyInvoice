@@ -2,66 +2,63 @@ import { useState } from "react";
 import invoiceService from "../services/invoice.service";
 
 export const useInvoice = () => {
-  const [pdfData, setPdfData] = useState(null);
-  const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+    const [pdfData, setPdfData] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-  const generatePdf = async (formData) => {
-    setIsLoading(true);
-    setError(null);
+    const generatePdf = async (formData) => {
+        setIsLoading(true);
+        setError(null);
 
-    try {
-        const pdfBlob = await invoiceService.fetchPdf(formData);
-        if (pdfBlob) {
+        try {
+            const pdfBlob = await invoiceService.fetchPdf(formData);
             setPdfData(pdfBlob);
             return pdfBlob;
-        } else {
-            setError("Failed to generate PDF.");
+
+        } catch (err) {
+            setError(err.errors || { general: "An error occurred while generating the PDF." });
+        } finally {
+            setIsLoading(false);
         }
-    } catch (err) {
-        setError("An error occurred while generating the PDF.");
-    } finally {
-        setIsLoading(false);
     }
-  }
 
-  const updateInvoiceStatus = async (invoiceId, newStatus) => {
-    setIsLoading(true);
-    setError(null);
+    const updateInvoiceStatus = async (invoiceId, newStatus) => {
+        setIsLoading(true);
+        setError(null);
 
-    try {
-        const response = await invoiceService.update(invoiceId, { status: newStatus });
-        if (response) {
-            return response;
-        } else {
-            setError("Failed to update invoice status.");
+        try {
+            const response = await invoiceService.update(invoiceId, { status: newStatus });
+            if (response) {
+                return response;
+            } else {
+                setError("Failed to update invoice status.");
+            }
+        } catch (err) {
+            setError("An error occurred while updating the invoice status.");
+        } finally {
+            setIsLoading(false);
         }
-    } catch (err) {
-        setError("An error occurred while updating the invoice status.");
-    } finally {
-        setIsLoading(false);
     }
-  }
 
-  const removeInvoice = async (invoiceId) => {
-    setIsLoading(true);
-    setError(null);
+    const removeInvoice = async (invoiceId) => {
+        setIsLoading(true);
+        setError(null);
 
-    try {
-        const response = await invoiceService.remove(invoiceId);
-        if (response) {
-            return response;
-        } else {
-            setError("Failed to remove invoice.");
+        try {
+            const response = await invoiceService.remove(invoiceId);
+            if (response) {
+                return response;
+            } else {
+                setError("Failed to remove invoice.");
+            }
+        } catch (err) {
+            setError("An error occurred while removing the invoice.");
+        } finally {
+            setIsLoading(false);
         }
-    } catch (err) {
-        setError("An error occurred while removing the invoice.");
-    } finally {
-        setIsLoading(false);
     }
-  }
 
-  return { pdfData, isLoading, error, generatePdf, updateInvoiceStatus, removeInvoice };
+    return { pdfData, isLoading, error, setError, generatePdf, updateInvoiceStatus, removeInvoice };
 }
 
 export default useInvoice;
