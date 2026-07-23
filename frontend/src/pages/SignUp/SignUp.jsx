@@ -87,6 +87,7 @@ function SignUp() {
               />
             </>
           )}
+          {error && error.businessName && <p className="auth-error">{error.businessName[0]}</p>}
 
           {showEmail && (
             <>
