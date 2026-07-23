@@ -72,6 +72,7 @@ function SignUp() {
             name="email"
             placeholder="name@company.com"
             autoComplete="email"
+            className={error && error.email ? 'focus' : ''}
             onChange={handleChange}
           />
           {error && error.email && <p className="auth-error">{error.email[0]}</p>}
@@ -83,6 +84,7 @@ function SignUp() {
             name="password"
             placeholder="Create password"
             autoComplete="new-password"
+            className={error && error.password ? 'focus' : ''}
             onChange={handleChange}
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}

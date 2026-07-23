@@ -76,16 +76,6 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.auth-form input:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16);
-}
-
-.auth-form textarea:focus {
-  border-color: #10b981;
-  box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.16);
-}
-
 .auth-button {
   margin-top: 20px;
   width: 100%;
