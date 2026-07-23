@@ -2,9 +2,10 @@ import "./SignIn.css";
 
 import { useUser } from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
 function SignIn() {
-  const { signIn, isLoading, error, fetchUser } = useUser();
+  const { signIn, isLoading, error, setError, fetchUser } = useUser();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -20,6 +21,10 @@ function SignIn() {
       navigate('/');
     }
   };
+
+  useEffect(() => {
+    setError(null);
+  }, []);
 
   return (
     <section className="auth-screen" aria-label="Sign in screen">
@@ -49,7 +54,7 @@ function SignIn() {
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
-          <button type="submit">Sign In</button>
+          <button type="submit" className="auth-button">Sign In</button>
         </form>
         {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>

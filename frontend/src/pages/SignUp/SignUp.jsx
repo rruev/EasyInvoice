@@ -2,7 +2,10 @@ import "./SignUp.css";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { userRegisterSchema } from "../../schemas/user.schema";
+
+import * as z from 'zod';
 
 
 function SignUp() {
@@ -14,12 +17,11 @@ function SignUp() {
   const [showEmail, setShowEmail] = useState(false);
   const [showBusinessAddress, setShowBusinessAddress] = useState(false);
   const [showPhoneNumber, setShowPhoneNumber] = useState(false);
-  const [disabled, setDisabled] = useState(false);
+  const [disabled, setDisabled] = useState(true);
+  const [formData, setFormData] = useState({});
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = Object.fromEntries(new FormData(e.target).entries());
-
     const user = await signUp(formData);
     if (user) {
       await fetchUser();
@@ -34,6 +36,26 @@ function SignUp() {
     form.elements['businessEmail'].value = userEmail;
     setShowBusinessAddress(true);
   }
+
+  const handleChange = (e) => {
+    let data = { ...formData, [e.target.name]: e.target.value };
+
+    try {
+      data = userRegisterSchema.parse(data);
+      setError({ ...error, [e.target.name]: undefined });
+      setDisabled(false);
+    } catch (err) {
+      const error = z.flattenError(err).fieldErrors;
+      setError(error);
+      setDisabled(true);
+    }
+
+    setFormData(data);
+  };
+
+  useEffect(() => {
+    setError(null);
+  }, []);
 
   return (
     <section className="auth-screen" aria-label="Sign up screen">
@@ -50,6 +72,7 @@ function SignUp() {
             name="email"
             placeholder="name@company.com"
             autoComplete="email"
+            onChange={handleChange}
           />
           {error && error.email && <p className="auth-error">{error.email[0]}</p>}
 
@@ -60,6 +83,7 @@ function SignUp() {
             name="password"
             placeholder="Create password"
             autoComplete="new-password"
+            onChange={handleChange}
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
@@ -70,10 +94,12 @@ function SignUp() {
             name="confirmPassword"
             placeholder="Confirm password"
             autoComplete="new-password"
-            onChange={(e) => setShowBusinessName(e.target.value.length > 0)}
+            onChange={(e) => {
+              setShowBusinessName(e.target.value.length > 0); handleChange(e);
+            }}
           />
           {error && error.confirmPassword && <p className="auth-error">{error.confirmPassword[0]}</p>}
-          
+
           {showBusinessName && (
             <>
               <label htmlFor="sign-up-businessName">Business name</label>
@@ -83,7 +109,7 @@ function SignUp() {
                 name="businessName"
                 placeholder="Business name"
                 autoComplete="organization"
-                onChange={(e) => setShowEmail(e.target.value.length > 0)}
+                onChange={(e) => { setShowEmail(e.target.value.length > 0); handleChange(e); }}
               />
             </>
           )}
@@ -98,9 +124,9 @@ function SignUp() {
                 name="businessEmail"
                 placeholder="Business email"
                 autoComplete="email"
-                onChange={(e) => setShowBusinessAddress(e.target.value.length > 0)}
+                onChange={(e) => { setShowBusinessAddress(e.target.value.length > 0); handleChange(e); }}
               />
-              <button type="button" onClick={handleClick}>Same as user email</button>
+              <button type="button" onClick={handleClick} className="auth-button">Same as user email</button>
             </>
           )}
           {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
@@ -114,7 +140,7 @@ function SignUp() {
                 name="businessAddress"
                 placeholder="Business address"
                 autoComplete="street-address"
-                onChange={(e) => setShowPhoneNumber(e.target.value.length > 0)}
+                onChange={(e) => { setShowPhoneNumber(e.target.value.length > 0); handleChange(e); }}
               />
             </>
           )}
@@ -129,12 +155,13 @@ function SignUp() {
                 name="phoneNumber"
                 placeholder="Phone number"
                 autoComplete="tel"
+                onChange={handleChange}
               />
             </>
           )}
           {error && error.phoneNumber && <p className="auth-error">{error.phoneNumber[0]}</p>}
 
-          <button type="submit">Create Account</button>
+          <button type="submit" disabled={disabled} className={disabled ? 'auth-button-disabled' : 'auth-button'}>Create Account</button>
         </form>
         {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>
