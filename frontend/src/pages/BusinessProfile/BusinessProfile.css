@@ -1,6 +1,6 @@
 .business-profile {
   min-height: 100vh;
-  width: 100%;
+  flex: 1;
   display: grid;
   place-items: center;
   padding: 28px;

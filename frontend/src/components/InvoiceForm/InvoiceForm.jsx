@@ -290,7 +290,7 @@ function InvoiceForm() {
                     <div className="item">
 
                         <input name="itemDescription" defaultValue="Routenbau / Routesetting in Kletterhalle" placeholder="Description" readOnly />
-                        <input name="quantity" placeholder="Qty" onChange={handleChange} />
+                        <input name="quantity" placeholder="Qty" defaultValue="1" onChange={handleChange} />
                         {error && error.quantity && <p className="invoice-form-error">{error.quantity[0]}</p>}
                         <input name="price" placeholder="Price" onChange={handleChange} />
                         {error && error.price && <p className="invoice-form-error">{error.price[0]}</p>}

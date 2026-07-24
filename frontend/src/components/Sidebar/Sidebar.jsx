@@ -1,12 +1,12 @@
 import "./Sidebar.css";
 
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
-  const { userData, signOut } = useUser();
+  const { userData } = useUser();
   const navigate = useNavigate();
 
   return (
@@ -19,20 +19,18 @@ function Sidebar() {
 
 
       <nav className="menu">
-        <Link className="active" to="/">Create New Invoice +</Link>
+        <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/">New Invoice</NavLink>
         {userData ? (
           <>
-            <Link to="#" onClick={async (e) => { e.preventDefault(); await signOut(); navigate("/"); }}>SignOut</Link>
-            {/* For later versions: */}
-            <Link to="/invoices">Invoices</Link>
-            <Link to="/clients">Clients</Link>
-            <Link to="/business-profile">Business Profile</Link>
-            {/* <Link to="/settings">Settings</Link> */}
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/invoices">Invoices</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/clients">Clients</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/business-profile">Business Profile</NavLink>
+            {/* <NavLink to="/settings">Settings</NavLink> */}
           </>
         ) : (
           <>
-            <Link to="/signin">Sign In</Link>
-            <Link to="/signup">Sign Up</Link>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signin">Sign In</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signup">Sign Up</NavLink>
           </>
         )}
       </nav>

@@ -1,6 +1,6 @@
 .auth-screen {
+  flex: 1;
   min-height: 100vh;
-  width: 100%;
   display: grid;
   place-items: center;
   padding: 28px;

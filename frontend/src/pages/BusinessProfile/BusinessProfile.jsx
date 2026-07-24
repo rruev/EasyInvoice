@@ -2,7 +2,7 @@ import "./BusinessProfile.css";
 import * as z from "zod";
 
 import { useUser } from "../../hooks/useUser";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { userUpdateSchema } from "../../../../backend/src/schemas/user.schema";
 
@@ -19,6 +19,8 @@ function BusinessProfile() {
         businessEmail: userData?.businessEmail || undefined,
         phoneNumber: userData?.phoneNumber || undefined,
     });
+
+    const form = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -47,7 +49,7 @@ function BusinessProfile() {
 
     const handleChange = (e) => {
         let data = { ...formData, [e.target.name]: e.target.value };
-        
+
         if (e.target.value.length === 0) {
             data[e.target.name] = undefined;
         }
@@ -78,7 +80,7 @@ function BusinessProfile() {
                     <span className="business-profile__status">Active account</span>
                 </div>
 
-                <form id="business-profile-form" className="business-profile__grid" onSubmit={handleSubmit}>
+                <form id="business-profile-form" ref={form} className="business-profile__grid" onSubmit={handleSubmit}>
 
                     <article className="profile-field">
                         <label className="profile-field__label">Full name</label>
@@ -129,7 +131,7 @@ function BusinessProfile() {
                             <button type="submit" className="business-profile__button business-profile__button--save" disabled={readOnly} form="business-profile-form">
                                 Save Changes
                             </button>
-                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({});} }>
+                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({}); form.current.reset();} }>
                                 Cancel
                             </button>
                         </>

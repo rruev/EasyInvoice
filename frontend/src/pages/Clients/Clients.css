@@ -1,5 +1,5 @@
 .customers-panel {
-  width: 90%;
+  flex: 1;
   background: #ffffff;
   border-radius: 18px;
   padding: 24px;
