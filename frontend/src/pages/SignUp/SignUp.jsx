@@ -40,6 +40,10 @@ function SignUp() {
   const handleChange = (e) => {
     let data = { ...formData, [e.target.name]: e.target.value };
 
+    if (e.target.value.length === 0) {
+      data[e.target.name] = undefined;
+    }
+
     try {
       data = userRegisterSchema.parse(data);
       setError({ ...error, [e.target.name]: undefined });
@@ -65,7 +69,7 @@ function SignUp() {
         <p className="auth-subtitle">Create the user account first, then add the first client details.</p>
 
         <form className="auth-form" noValidate onSubmit={handleSubmit}>
-          <label htmlFor="sign-up-email">User Email</label>
+          <label htmlFor="sign-up-email">User Email *</label>
           <input
             id="sign-up-email"
             type="email"
@@ -76,7 +80,7 @@ function SignUp() {
           />
           {error && error.email && <p className="auth-error">{error.email[0]}</p>}
 
-          <label htmlFor="sign-up-password">Password</label>
+          <label htmlFor="sign-up-password">Password *</label>
           <input
             id="sign-up-password"
             type="password"
@@ -87,7 +91,7 @@ function SignUp() {
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
-          <label htmlFor="sign-up-confirmPassword">Confirm Password</label>
+          <label htmlFor="sign-up-confirmPassword">Confirm Password *</label>
           <input
             id="sign-up-confirmPassword"
             type="password"
@@ -95,7 +99,7 @@ function SignUp() {
             placeholder="Confirm password"
             autoComplete="new-password"
             onChange={(e) => {
-              setShowBusinessName(e.target.value.length > 0); handleChange(e);
+              setShowBusinessName(true); handleChange(e);
             }}
           />
           {error && error.confirmPassword && <p className="auth-error">{error.confirmPassword[0]}</p>}
@@ -109,7 +113,7 @@ function SignUp() {
                 name="businessName"
                 placeholder="Business name"
                 autoComplete="organization"
-                onChange={(e) => { setShowEmail(e.target.value.length > 0); handleChange(e); }}
+                onChange={(e) => { setShowEmail(true); handleChange(e); }}
               />
             </>
           )}
@@ -124,7 +128,7 @@ function SignUp() {
                 name="businessEmail"
                 placeholder="Business email"
                 autoComplete="email"
-                onChange={(e) => { setShowBusinessAddress(e.target.value.length > 0); handleChange(e); }}
+                onChange={(e) => { setShowBusinessAddress(true); handleChange(e); }}
               />
               <button type="button" onClick={handleClick} className="auth-button">Same as user email</button>
             </>
@@ -140,7 +144,7 @@ function SignUp() {
                 name="businessAddress"
                 placeholder="Business address"
                 autoComplete="street-address"
-                onChange={(e) => { setShowPhoneNumber(e.target.value.length > 0); handleChange(e); }}
+                onChange={(e) => { setShowPhoneNumber(true); handleChange(e); }}
               />
             </>
           )}

@@ -47,6 +47,11 @@ function BusinessProfile() {
 
     const handleChange = (e) => {
         let data = { ...formData, [e.target.name]: e.target.value };
+        
+        if (e.target.value.length === 0) {
+            data[e.target.name] = undefined;
+        }
+        
         try {
             data = userUpdateSchema.parse(data);
             setError({});
@@ -124,7 +129,7 @@ function BusinessProfile() {
                             <button type="submit" className="business-profile__button business-profile__button--save" disabled={readOnly} form="business-profile-form">
                                 Save Changes
                             </button>
-                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => setReadOnly(!readOnly)}>
+                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({});} }>
                                 Cancel
                             </button>
                         </>

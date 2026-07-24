@@ -1,9 +1,12 @@
 import * as z from 'zod';
 
 export const userRegisterSchema = z.object({
-  email: z.string({ message: 'Email is required' }).email({ message: 'Invalid email address' }),
-  password: z.string({ message: 'Password is required' }).min(8, { message: 'Password must be at least 8 characters long' }).regex(/(?=.*[A-Z])(?=.*\d)/, { message: 'Password must contain at least one uppercase letter and one number' }),
-  confirmPassword: z.string({ message: 'Confirm Password is required' }),
+  email: z.string({ message: 'Email is required' }).email({ message: 'Invalid email address' }).optional(),
+  password: z.string({ message: 'Password is required' })
+    .min(8, { message: 'Password must be at least 8 characters long and must contain one uppercase letter and one number' })
+    .regex(/(?=.*[A-Z])(?=.*\d)/, { message: 'Password must contain at least one uppercase letter and one number' })
+    .optional(),
+  confirmPassword: z.string({ message: 'Confirm Password is required' }).optional(),
   businessName: z.string().optional(),
   businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().optional(),
@@ -15,6 +18,7 @@ export const userRegisterSchema = z.object({
 
 export const userUpdateSchema = z.object({
   fullName: z.string().optional(),
+  email: z.string().email({ message: 'Invalid email address' }).optional(),
   businessName: z.string().optional(),
   businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().optional(),

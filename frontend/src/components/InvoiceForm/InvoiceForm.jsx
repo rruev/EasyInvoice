@@ -53,9 +53,14 @@ function InvoiceForm() {
 
     const handleChange = (e) => {
         let data = { ...formData, [e.target.name]: e.target.value };
+
+        if (e.target.value.length === 0) {
+            data[e.target.name] = undefined;
+        }
+
         try {
             data = invoiceFormSchema.parse(data);
-            setError({ ...error, [e.target.name]: undefined });
+            setError({});
         } catch (err) {
             const errors = z.flattenError(err).fieldErrors;
             setError(errors);
