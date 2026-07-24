@@ -1,15 +1,19 @@
 import "./Home.css";
 
-import Sidebar from "../Sidebar/Sidebar";
 import Header from "../Header/Header";
 import StatsCards from "../StatsCards/StatsCards";
 import InvoiceForm from "../InvoiceForm/InvoiceForm";
-import InvoicePreview from "../InvoicePreview/InvoicePreview";
+import HomeSkeleton from "./HomeSkeleton";
 
 import { useUser } from "../../hooks/useUser";
 
 function Home() {
-    const { userData } = useUser();
+    const { userData, isLoading } = useUser();
+
+    if (isLoading) {
+        return <HomeSkeleton />;
+    }
+
     return (
         <main className="main">
 

@@ -4,34 +4,40 @@ import * as z from "zod";
 import { useUser } from "../../hooks/useUser";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { userUpdateSchema } from "../../../../backend/src/schemas/user.schema";
+import { userUpdateSchema } from "../../schemas/user.schema";
 
 function BusinessProfile() {
-    const { userData, fetchUser, error, setError, updateUser, deleteUser } = useUser();
+    const { userData, fetchUser, error, setError, updateUser, deleteUser, isLoading } = useUser();
     const navigate = useNavigate();
 
     const [readOnly, setReadOnly] = useState(true);
-    const [formData, setFormData] = useState({
-        fullName: userData?.fullName || undefined,
-        email: userData?.email || undefined,
-        businessName: userData?.businessName || undefined,
-        businessAddress: userData?.businessAddress || undefined,
-        businessEmail: userData?.businessEmail || undefined,
-        phoneNumber: userData?.phoneNumber || undefined,
-    });
+    const [isSaving, setIsSaving] = useState(false);
+    const [formData, setFormData] = useState({});
 
     const form = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        const data = Object.fromEntries(new FormData(form.current).entries());
+        const updatedData = {
+            fullName: data.fullName || null,
+            email: data.email || null,
+            businessName: data.businessName || null,
+            businessAddress: data.businessAddress || null,
+            businessEmail: data.businessEmail || null,
+            phoneNumber: data.phoneNumber || null,
+        };
 
         try {
-            await updateUser(formData);
+            setIsSaving(true);
+            await updateUser(updatedData);
             await fetchUser();
             setReadOnly(true);
         } catch (error) {
             console.error("Failed to update user:", error);
             setError(error || { general: ["Failed to update user."] });
+        } finally {
+            setIsSaving(false);
         }
 
     };
@@ -51,7 +57,7 @@ function BusinessProfile() {
         let data = { ...formData, [e.target.name]: e.target.value };
 
         if (e.target.value.length === 0) {
-            data[e.target.name] = undefined;
+            data[e.target.name] = null;
         }
         
         try {
@@ -60,7 +66,7 @@ function BusinessProfile() {
         } catch (error) {
             const errors = z.flattenError(error).fieldErrors;
             console.error("Invalid form data:", errors);
-            setError(errors);
+            setError(errors || { general: ["Invalid form data."] });
         }
         setFormData(data);
     };
@@ -128,15 +134,28 @@ function BusinessProfile() {
 
                     ) : (
                         <>
-                            <button type="submit" className="business-profile__button business-profile__button--save" disabled={readOnly} form="business-profile-form">
-                                Save Changes
+                            <button
+                                type="submit"
+                                className="business-profile__button business-profile__button--save"
+                                disabled={readOnly || isSaving}
+                                form="business-profile-form"
+                                aria-busy={isSaving}
+                            >
+                                {isSaving ? (
+                                    <span className="business-profile__loading-content">
+                                        <span className="business-profile__spinner" aria-hidden="true" />
+                                        Saving...
+                                    </span>
+                                ) : (
+                                    "Save Changes"
+                                )}
                             </button>
-                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({}); form.current.reset();} }>
+                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({}); form.current.reset();} } disabled={isSaving}>
                                 Cancel
                             </button>
                         </>
                     )}
-                    <button type="button" className="business-profile__button business-profile__button--delete" onClick={handleDeleteUser}>
+                    <button type="button" className="business-profile__button business-profile__button--delete" onClick={handleDeleteUser} disabled={isLoading || isSaving}>
                         Delete User
                     </button>
                 </div>

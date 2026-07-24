@@ -2,12 +2,14 @@ import "./Sidebar.css";
 
 import { NavLink } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
-import { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import SidebarSkeleton from "./SidebarSkeleton";
 
 function Sidebar() {
-  const { userData } = useUser();
-  const navigate = useNavigate();
+  const { userData, isLoading } = useUser();
+
+  if (isLoading) {
+    return <SidebarSkeleton />;
+  }
 
   return (
     <aside className="sidebar">

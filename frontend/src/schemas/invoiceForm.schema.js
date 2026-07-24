@@ -10,6 +10,6 @@ export const invoiceFormSchema = z.object({
     invoiceNum: z.string({ message: 'Invoice number is required' }).regex(/^\d{4}-\d{3}$/, { message: "Invoice number must be in the format YYYY-001" }).trim().optional(),
     issuedAt: z.string().regex(/^\d{2}\.\d{2}\.\d{4}$/, { message: "Issue date must be in the format DD.MM.YYYY" }).trim().optional(),
     workedAt: z.string({ message: 'Performed date is required' }).regex(/^\d{2}\.\d{2}\.\d{4}$/, { message: "Performed date must be in the format DD.MM.YYYY" }).trim().optional(),
-    quantity: z.coerce.number({ message: 'Quantity is required' }).positive({ message: "Quantity must be a positive number" }).optional(),
-    price: z.coerce.number({ message: 'Price is required' }).positive({ message: "Price must be a positive number" }).optional(),
+    quantity: z.coerce.number({ message: 'Quantity must be a positive number' }).positive({ message: "Quantity must be a positive number" }).optional(),
+    price: z.coerce.number({ message: 'Price must be a positive number' }).positive({ message: "Price must be a positive number" }).optional(),
 })

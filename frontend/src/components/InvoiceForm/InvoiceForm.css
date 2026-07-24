@@ -84,9 +84,36 @@
   box-shadow: 0 10px 22px rgba(37, 99, 235, 0.22);
 }
 
+.client-picker__button:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.client-picker__loading-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.client-picker__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #ffffff;
+  border-radius: 50%;
+  animation: clientButtonSpin 0.75s linear infinite;
+}
+
 .client-picker__button:hover,
 .invoice-form button:hover {
   transform: translateY(-1px);
+}
+
+@keyframes clientButtonSpin {
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 

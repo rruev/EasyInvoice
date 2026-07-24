@@ -56,7 +56,7 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     const fetchUser = useCallback(async () => {
-        setIsLoading(true);
+        // setIsLoading(true);
         setError(null);
         try {
             const data = await fetchUserData();
@@ -71,7 +71,12 @@ const AuthProvider = ({ children }) => {
     }, []);
 
     useEffect(() => {
-        fetchUser();
+        const fetchData = async () => {
+            setIsLoading(true);
+            await fetchUser();
+            setIsLoading(false);
+        };
+        fetchData();
     }, [fetchUser]);
 
     const contextValue = useMemo(() => ({
@@ -83,6 +88,7 @@ const AuthProvider = ({ children }) => {
         signIn,
         signOut,
         fetchUser,
+        setIsLoading,
     }), [userData, isLoading, error, signUp, signIn, signOut, fetchUser]);
 
     return (

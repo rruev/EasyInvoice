@@ -23,6 +23,7 @@ const findByEmail = async (email) => {
 }
 
 const update = async (userData) => {
+    console.log("Updating user:", userData);
     const updatedUser = await prisma.user.update({
         where: { id: userData.id },
         data: userData

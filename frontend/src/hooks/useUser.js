@@ -8,7 +8,7 @@ export const useUser = () => {
     if (!ctx) {
         throw new Error('useUser must be used within an AuthProvider');
     }
-    const { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser } = ctx;
+    const { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser, setIsLoading } = ctx;
 
     const updateUser = async (userData) => {
         try {
@@ -23,11 +23,11 @@ export const useUser = () => {
             await userService.deleteUser();
         } catch (error) {
             console.error("Failed to delete user:", error.errors);
-            setError(error.errors || { general: ["Failed to delete user."] });
+            throw error.errors || { general: ["Failed to delete user."] };
         }
     };
 
-    return { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser, updateUser, deleteUser };
+    return { userData, isLoading, error, setError, signUp, signIn, signOut, fetchUser, updateUser, deleteUser, setIsLoading };
 }
 
 export default useUser;
