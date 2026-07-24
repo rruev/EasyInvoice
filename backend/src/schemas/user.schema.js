@@ -17,3 +17,11 @@ export const userRegisterSchema = z.object({
   message: 'Passwords do not match',
   path: ['confirmPassword'],
 });
+
+export const userUpdateSchema = z.object({
+  email: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase(),
+  businessName: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]*$/, { message: 'Invalid business name' }).optional(),
+  businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'Invalid business address' }).optional(),
+  businessEmail: z.string().email({ message: 'Invalid business email address' }).trim().toLowerCase().optional(),
+  phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().optional(),
+});

@@ -5,6 +5,7 @@ import useInvoice from "../../hooks/useInvoice";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
+import { previewPdf } from "../../utils/previewPdf.util";
 import * as z from "zod";
 
 function InvoiceForm() {
@@ -44,8 +45,8 @@ function InvoiceForm() {
             }
         }
 
-        await generatePdf(formData);
-        // await previewPdf(pdfData);
+        const pdfData = await generatePdf(formData);
+        await previewPdf(pdfData);
         await fetchUser();
         form.reset();
     };
@@ -199,8 +200,10 @@ function InvoiceForm() {
                                         </label>
                                         <input
                                             placeholder="Company / Person"
-                                            onChange={(e) => setClientName(e.target.value)}
+                                            name="clientName"
+                                            onChange={(e) => { setClientName(e.target.value); handleChange(e); }}
                                         />
+                                    {error && error.clientName && <p className="invoice-form-error">{error.clientName[0]}</p>}
                                     </div>
 
                                     <div className="client-picker__field">
@@ -209,9 +212,12 @@ function InvoiceForm() {
                                         </label>
                                         <input
                                             placeholder="Format: Mainstraße 123, 6020 Innsbruck"
-                                            onChange={(e) => setClientAddress(e.target.value)}
+                                            name="clientAddress"
+                                            onChange={(e) => { setClientAddress(e.target.value); handleChange(e); }}
                                         />
+                                    {error && error.clientAddress && <p className="invoice-form-error">{error.clientAddress[0]}</p>}
                                     </div>
+
                                 </div>
                                 <div className="buttons_safe_cancel">
                                     <button className="client-picker__button" type="button" onClick={handleAddClient}>

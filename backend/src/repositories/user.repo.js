@@ -22,9 +22,25 @@ const findByEmail = async (email) => {
     return user;
 }
 
+const update = async (userData) => {
+    const updatedUser = await prisma.user.update({
+        where: { id: userData.id },
+        data: userData
+    });
+    return updatedUser;
+}
+
+const remove = async (userId) => {
+    await prisma.user.delete({
+        where: { id: userId },
+    });
+};
+
 const userRepo = {
     create,
-    findByEmail
-}
+    findByEmail,
+    update,
+    remove,
+};
 
 export default userRepo;

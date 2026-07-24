@@ -8,8 +8,8 @@ const invoiceController = Router();
 invoiceController.post('/generate', async (req, res) => {
     try {
         const data = invoiceSchema.parse(req.body);
-        const invoiceData = { ...data, userId: req.user?.id };
-    
+        const invoiceData = { ...req.body, userId: req.user?.id }; //TODO: fix this
+
         const pdfBuffer = await invoiceService.generate(invoiceData);
     
         res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
