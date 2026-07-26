@@ -21,7 +21,7 @@ const fetchPdf = async (formData) => {
 }
 
 const update = async (invoiceId, updatedData) => {
-    const response = await fetch(`http://localhost:3000/api/invoice/update/${invoiceId}`, {
+    const response = await fetch(`http://localhost:3000/api/invoice/${invoiceId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -39,7 +39,7 @@ const update = async (invoiceId, updatedData) => {
 }
 
 const remove = async (invoiceId) => {
-    const response = await fetch(`http://localhost:3000/api/invoice/delete/${invoiceId}`, {
+    const response = await fetch(`http://localhost:3000/api/invoice/${invoiceId}`, {
         method: "DELETE",
         credentials: "include"
     });

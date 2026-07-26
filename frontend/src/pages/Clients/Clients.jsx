@@ -1,6 +1,6 @@
 import "./Clients.css";
 import { useUser } from "../../hooks/useUser";
-import { Outlet, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 function Clients() {
   const { userData } = useUser();

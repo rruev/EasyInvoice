@@ -1,6 +1,9 @@
 import "./ClientProfileForm.css";
+import { useUser } from "../../../hooks/useUser";
 
 function ClientProfileForm() {
+  const { userData, error, isLoading } = useUser();
+
   return (
     <section className="client-profile" aria-label="Client profile form">
       <div className="client-profile__card">
