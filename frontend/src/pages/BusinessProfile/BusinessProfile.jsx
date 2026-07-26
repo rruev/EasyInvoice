@@ -43,13 +43,8 @@ function BusinessProfile() {
     };
 
     const handleDeleteUser = async () => {
-        try {
-            await deleteUser();
-            navigate("/");
-        } catch (error) {
-            console.error("Failed to delete user:", error);
-            setError(error.errors || { general: ["Failed to delete user."] });
-        }
+        await deleteUser();
+        navigate("/");
     };
 
     const handleChange = (e) => {

@@ -6,7 +6,7 @@ import { getErrors } from '../utils/error.util.js';
 
 const userController = Router();
 
-userController.put('/update', isAuthenticated, async (req, res) => {
+userController.put('/', isAuthenticated, async (req, res) => {
     try {
         const userData = userUpdateSchema.parse(req.body);
 
@@ -25,7 +25,7 @@ userController.put('/update', isAuthenticated, async (req, res) => {
     }
 });
 
-userController.delete('/delete', isAuthenticated, async (req, res) => {
+userController.delete('/', isAuthenticated, async (req, res) => {
     try {
         await userService.deleteUser(req.user.id);
         res.clearCookie('auth-token');
