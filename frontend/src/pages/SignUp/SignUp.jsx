@@ -19,6 +19,7 @@ function SignUp() {
   const [showPhoneNumber, setShowPhoneNumber] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [formData, setFormData] = useState({});
+  const isSubmitDisabled = disabled || isLoading;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -76,6 +77,7 @@ function SignUp() {
             name="email"
             placeholder="name@company.com"
             autoComplete="email"
+            readOnly={isLoading}
             onChange={handleChange}
           />
           {error && error.email && <p className="auth-error">{error.email[0]}</p>}
@@ -87,6 +89,7 @@ function SignUp() {
             name="password"
             placeholder="Create password"
             autoComplete="new-password"
+            readOnly={isLoading}
             onChange={handleChange}
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}
@@ -98,6 +101,7 @@ function SignUp() {
             name="confirmPassword"
             placeholder="Confirm password"
             autoComplete="new-password"
+            readOnly={isLoading}
             onChange={(e) => {
               setShowBusinessName(true); handleChange(e);
             }}
@@ -113,6 +117,7 @@ function SignUp() {
                 name="businessName"
                 placeholder="Business name"
                 autoComplete="organization"
+                readOnly={isLoading}
                 onChange={(e) => { setShowEmail(true); handleChange(e); }}
               />
             </>
@@ -128,9 +133,10 @@ function SignUp() {
                 name="businessEmail"
                 placeholder="Business email"
                 autoComplete="email"
+                readOnly={isLoading}
                 onChange={(e) => { setShowBusinessAddress(true); handleChange(e); }}
               />
-              <button type="button" onClick={handleClick} className="auth-button">Same as user email</button>
+              <button type="button" onClick={handleClick} className="auth-button" disabled={isLoading}>Same as user email</button>
             </>
           )}
           {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
@@ -144,6 +150,7 @@ function SignUp() {
                 name="businessAddress"
                 placeholder="Business address"
                 autoComplete="street-address"
+                readOnly={isLoading}
                 onChange={(e) => { setShowPhoneNumber(true); handleChange(e); }}
               />
             </>
@@ -159,13 +166,28 @@ function SignUp() {
                 name="phoneNumber"
                 placeholder="Phone number"
                 autoComplete="tel"
+                readOnly={isLoading}
                 onChange={handleChange}
               />
             </>
           )}
           {error && error.phoneNumber && <p className="auth-error">{error.phoneNumber[0]}</p>}
 
-          <button type="submit" disabled={disabled} className={disabled ? 'auth-button-disabled' : 'auth-button'}>Create Account</button>
+          <button
+            type="submit"
+            disabled={isSubmitDisabled}
+            className={isSubmitDisabled ? "auth-button-disabled" : "auth-button"}
+            aria-busy={isLoading}
+          >
+            {isLoading ? (
+              <span className="auth-loading-content">
+                <span className="auth-spinner" aria-hidden="true" />
+                Creating Account...
+              </span>
+            ) : (
+              "Create Account"
+            )}
+          </button>
         </form>
         {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>

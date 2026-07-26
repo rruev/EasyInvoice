@@ -41,6 +41,7 @@ function SignIn() {
             name="email"
             placeholder="name@company.com"
             autoComplete="email"
+            readOnly={isLoading}
           />
           {error && error.email && <p className="auth-error">{error.email[0]}</p>}
 
@@ -51,10 +52,20 @@ function SignIn() {
             name="password"
             placeholder="Enter password"
             autoComplete="current-password"
+            readOnly={isLoading}
           />
           {error && error.password && <p className="auth-error">{error.password[0]}</p>}
 
-          <button type="submit" className="auth-button">Sign In</button>
+          <button type="submit" className="auth-button" disabled={isLoading} aria-busy={isLoading}>
+            {isLoading ? (
+              <span className="auth-loading-content">
+                <span className="auth-spinner" aria-hidden="true" />
+                Signing In...
+              </span>
+            ) : (
+              "Sign In"
+            )}
+          </button>
         </form>
         {error && error.general && <p className="auth-error">{error.general}</p>}
       </div>
