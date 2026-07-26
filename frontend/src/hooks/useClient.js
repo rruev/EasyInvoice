@@ -2,7 +2,6 @@ import clientService from "../services/client.service";
 import { useState } from "react";
 
 export const useClient = () => {
-    const [clients, setClients] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -12,10 +11,9 @@ export const useClient = () => {
 
         try {
             const newClient = await clientService.create(clientData);
-            setClients((prevClients) => [...prevClients, newClient]);
             return newClient;
         } catch (err) {
-            setError('Failed to create client.');
+            setError(err.errors || { general: ['An error occurred while creating the client.'] });
             throw err;
         } finally {
             setIsLoading(false);
@@ -28,15 +26,59 @@ export const useClient = () => {
 
         try {
             const data = await clientService.getAll();
-            setClients(data);
             return data;
         } catch (err) {
-            setError('Failed to fetch clients.');
+            setError(err.errors || { general: ['An error occurred while fetching clients.'] });
             throw err;
         } finally {
             setIsLoading(false);
         }
     }
 
-    return { clients, isLoading, error, fetchClients, createClient };
+    const fetchClientById = async (clientId) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const data = await clientService.getById(clientId);
+            return data;
+        } catch (err) {
+            setError(err.errors || { general: ['An error occurred while fetching the client.'] });
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const updateClient = async (clientId, clientData) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const updatedClient = await clientService.update(clientId, clientData);
+            return updatedClient;
+        } catch (err) {
+            setError(err.errors || { general: ['An error occurred while updating the client.'] });
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    const deleteClient = async (clientId) => {
+        setIsLoading(true);
+        setError(null);
+
+        try {
+            const deletedClient = await clientService.deleteClient(clientId);
+            return deletedClient;
+        } catch (err) {
+            setError(err.errors || { general: ['An error occurred while deleting the client.'] });
+            throw err;
+        } finally {
+            setIsLoading(false);
+        }
+    }
+
+    return { isLoading, error, fetchClients, createClient, fetchClientById, updateClient, deleteClient };
 }

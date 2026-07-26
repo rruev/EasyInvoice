@@ -7,9 +7,19 @@ import { getErrors } from "../utils/error.util.js";
 const clientController = Router();
 
 clientController.get('/', isAuthenticated, async (req, res) => {
-    const clients = await clientService.getAll(req.user?.id);
+    const filter = req.query;
+    console.log(filter);
+    try {
+        const clients = await clientService.getAll({ userId: req.user?.id, ...filter });
 
-    res.status(200).json(clients);
+        res.status(200).json(clients);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(400).json({
+            message: 'Failed to fetch clients',
+            errors: errors
+        });
+    }
 });
 
 clientController.get('/:id', isAuthenticated, async (req, res) => {
@@ -17,10 +27,10 @@ clientController.get('/:id', isAuthenticated, async (req, res) => {
     const client = await clientService.getById(clientId); // test if you can get another user's client by id
 
     if (!client) {
-        return res.status(404).json({ 
+        return res.status(404).json({
             message: 'Client not found',
-            errors: {general: ['Client not found']}
-         });
+            errors: { general: ['Client not found'] }
+        });
     }
 
     res.status(200).json(client);
@@ -38,7 +48,7 @@ clientController.post('/', isAuthenticated, async (req, res) => {
         res.status(400).json({
             message: 'Failed to create client',
             errors: errors
-         });
+        });
     }
 });
 
@@ -56,7 +66,7 @@ clientController.put('/:id', isAuthenticated, async (req, res) => {
         res.status(400).json({
             message: 'Failed to update client',
             errors: errors
-         });
+        });
     }
 });
 

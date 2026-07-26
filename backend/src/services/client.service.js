@@ -1,7 +1,7 @@
 import clientRepo from '../repositories/client.repo.js';
 
-const getAll = async (userId) => {
-    const clients = await clientRepo.findAll({ userId });
+const getAll = async (filter = {}) => {
+    const clients = await clientRepo.findAll(filter);
     return clients;
 };
 

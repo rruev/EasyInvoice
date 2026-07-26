@@ -24,7 +24,7 @@ function App() {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/invoices" element={<Invoices />} />
           <Route path="/clients" element={<Clients />} />
-          <Route path="/clients/editBusinessClient/:id" element={<ClientProfileForm />} />
+          <Route path="/clients/editBusinessClient/:clientId" element={<ClientProfileForm />} />
           <Route path="/business-profile" element={<BusinessProfile />} />
           <Route path="/settings" element={<></>} />
         </Routes>

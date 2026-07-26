@@ -1,49 +1,98 @@
+import { getErrors } from '../utils/errors.util';
+
 const create = async (clientData) => {
-    try {
-        const response = await fetch('http://localhost:3000/api/clients', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(clientData),
-            credentials: 'include'  
-        });
+    const response = await fetch('http://localhost:3000/api/clients', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clientData),
+        credentials: 'include'
+    });
 
-        if (!response.ok) {
-            throw new Error('Failed to create client');
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error creating client:', error);
+    if (!response.ok) {
+        const error = await getErrors(response);
         throw error;
     }
+
+    return await response.json();
 }
 
 const getAll = async () => {
-    try {
-        const response = await fetch('http://localhost:3000/api/clients', {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            credentials: 'include'  
-        });
+    const response = await fetch('http://localhost:3000/api/clients', {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    });
 
-        if (!response.ok) {
-            throw new Error('Failed to fetch clients');
-        }
-
-        return await response.json();
-    } catch (error) {
-        console.error('Error fetching clients:', error);
+    if (!response.ok) {
+        const error = await getErrors(response);
         throw error;
     }
+
+    return await response.json();
+}
+
+const getById = async (clientId) => {
+    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        const error = await getErrors(response);
+        throw error;
+    }
+
+    return await response.json();
+}
+
+const update = async (clientId, clientData) => {
+    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(clientData),
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        const error = await getErrors(response);
+        throw error;
+    }
+
+    return await response.json();
+}
+
+const deleteClient = async (clientId) => {
+    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        credentials: 'include'
+    });
+
+    if (!response.ok) {
+        const error = await getErrors(response);
+        throw error;
+    }
+
+    return await response.json();
 }
 
 const clientService = {
     create,
-    getAll
+    getAll,
+    getById,
+    update,
+    deleteClient
 };
 
 export default clientService;

@@ -11,7 +11,6 @@ const fetchPdf = async (formData) => {
     });
 
     if (!response.ok) {
-        console.log("Failed to submit invoice data");
         const error = await getErrors(response);
         throw error;
     }
