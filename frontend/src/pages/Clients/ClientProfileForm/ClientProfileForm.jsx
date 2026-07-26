@@ -45,6 +45,7 @@ function ClientProfileForm() {
 
     const updatedClient = await updateClient(clientId, updatedData);
     setClientData(updatedClient);
+    await fetchUser();
     navigate("/clients");
   };
 

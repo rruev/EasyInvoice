@@ -1,10 +1,14 @@
 import "./Invoices.css";
 import { useUser } from "../../hooks/useUser";
 import { useInvoice } from "../../hooks/useInvoice";
+import { useState } from "react";
+
+const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
   const { updateInvoiceStatus, removeInvoice } = useInvoice();
+  const [deletingInvoiceIds, setDeletingInvoiceIds] = useState([]);
 
   const handleOnChange = async (e, invoiceId) => {
     await updateInvoiceStatus(invoiceId, e.target.value);
@@ -12,8 +16,19 @@ function Invoices() {
   };
 
   const handleClickDelete = async (id) => {
-    await removeInvoice(id);
-    await fetchUser();
+    if (deletingInvoiceIds.includes(id)) {
+      return;
+    }
+
+    setDeletingInvoiceIds((prev) => [...prev, id]);
+    await new Promise((resolve) => setTimeout(resolve, DELETE_ANIMATION_MS));
+
+    try {
+      await removeInvoice(id);
+      await fetchUser();
+    } finally {
+      setDeletingInvoiceIds((prev) => prev.filter((invoiceId) => invoiceId !== id));
+    }
   };
 
   return (
@@ -45,30 +60,40 @@ function Invoices() {
 
             <tbody>
               {userData?.invoices?.map((invoice, index) => (
-                <tr key={invoice.id ?? invoice.invoiceNum ?? index}>
+                <tr
+                  key={invoice.id ?? invoice.invoiceNum ?? index}
+                  className={`invoices-table__row ${deletingInvoiceIds.includes(invoice.id) ? "invoices-table__row--deleting" : ""}`}
+                  aria-busy={deletingInvoiceIds.includes(invoice.id)}
+                >
                   <td>
-                    <strong>{invoice.invoiceNum ?? invoice.number ?? "-"}</strong>
+                    <strong>{invoice.invoiceNum ?? "-"}</strong>
                   </td>
                   <td>
                     <div className="invoices-table__primary">{invoice.client.name ?? "-"}</div>
-                    <div className="invoices-table__secondary">{invoice.clientAddress ?? ""}</div>
+                    <div className="invoices-table__secondary">{invoice.client.address ?? ""}</div>
                   </td>
                   <td>{invoice.issuedAt ?? invoice.date ?? "-"}</td>
                   <td>
-                    <select className={`invoice-status invoice-status--${invoice.status ?? "draft"}`} onChange={(e) => handleOnChange(e, invoice.id)}>
-                      <option value="pending" defaultValue={invoice.status === "pending"}>Pending</option>
-                      <option value="paid" defaultValue={invoice.status === "paid"}>Paid</option>
+                    <select
+                      className={`invoice-status invoice-status--${invoice.status ?? "draft"}`}
+                      value={invoice.status ?? "pending"}
+                      onChange={(e) => handleOnChange(e, invoice.id)}
+                      disabled={deletingInvoiceIds.includes(invoice.id)}
+                    >
+                      <option value="pending">Pending</option>
+                      <option value="paid">Paid</option>
                     </select>
                   </td>
-                  <td>{invoice.total ?? invoice.amount ?? "-"} &euro;</td>
+                  <td>{invoice.total ?? "-"} &euro;</td>
                   <td className="invoices-table__action">
                     <button
                       type="button"
                       className="invoices-table__delete"
                       onClick={() => handleClickDelete(invoice.id)}
+                      disabled={deletingInvoiceIds.includes(invoice.id)}
                       aria-label={`Delete invoice ${invoice.invoiceNum ?? invoice.number ?? index + 1}`}
                     >
-                      Delete
+                      {deletingInvoiceIds.includes(invoice.id) ? "Deleting..." : "Delete"}
                     </button>
                   </td>
                 </tr>

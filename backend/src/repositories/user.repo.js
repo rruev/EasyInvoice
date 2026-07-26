@@ -36,6 +36,7 @@ const findByEmail = async (email) => {
                     client: {
                         select: {
                             name: true,
+                            address: true,
                         }
                     }
                 },

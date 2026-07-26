@@ -8,7 +8,7 @@ const AuthContext = createContext(null);
 
 const AuthProvider = ({ children }) => {
     const [userData, setUserData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
     const signUp = useCallback(async (userData) => {
@@ -64,8 +64,8 @@ const AuthProvider = ({ children }) => {
             setUserData(data);
             return data;
         } catch (err) {
-            console.error('Failed to fetch user data:');
-            throw err;
+            setUserData(null);
+            return null;
         } finally {
             setIsLoading(false);
         }

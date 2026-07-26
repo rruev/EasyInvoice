@@ -35,6 +35,7 @@ function SignUp() {
     const form = e.target.form;
     const userEmail = form.elements['email'].value;
     form.elements['businessEmail'].value = userEmail;
+    setFormData({ ...formData, businessEmail: userEmail });
     setShowBusinessAddress(true);
   }
 
