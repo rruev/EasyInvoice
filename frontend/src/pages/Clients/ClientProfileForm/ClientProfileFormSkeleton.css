@@ -1,0 +1,50 @@
+.client-profile__skeleton {
+  pointer-events: none;
+}
+
+.client-profile__skeleton-block {
+  border-radius: 10px;
+  background: linear-gradient(90deg, #e7edf4 0%, #f8fbff 50%, #e7edf4 100%);
+  background-size: 220% 100%;
+  animation: client-profile-shimmer 1.3s linear infinite;
+}
+
+.client-profile__skeleton-block--eyebrow {
+  width: 110px;
+  height: 12px;
+  border-radius: 999px;
+  margin-bottom: 12px;
+}
+
+.client-profile__skeleton-block--title {
+  width: min(280px, 72vw);
+  height: 34px;
+  margin-bottom: 12px;
+}
+
+.client-profile__skeleton-block--subtitle {
+  width: min(460px, 80vw);
+  height: 14px;
+}
+
+.client-profile__skeleton-block--status {
+  width: 74px;
+  height: 30px;
+  border-radius: 999px;
+}
+
+.client-profile__skeleton-block--label {
+  width: 90px;
+  height: 12px;
+  border-radius: 999px;
+}
+
+.client-profile__skeleton-block--input {
+  width: 100%;
+  height: 44px;
+}
+
+.client-profile__skeleton-block--button {
+  width: 130px;
+  height: 44px;
+}

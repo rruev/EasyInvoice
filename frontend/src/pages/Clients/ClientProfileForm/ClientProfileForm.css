@@ -135,6 +135,16 @@
   margin-bottom: 6px;
 }
 
+@keyframes client-profile-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
 @media (max-width: 820px) {
   .client-profile__header {
     flex-direction: column;

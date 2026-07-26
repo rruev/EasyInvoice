@@ -1,6 +1,7 @@
 import "./ClientProfileForm.css";
 import * as z from "zod";
 import clientSchema from "../../../schemas/client.schema";
+import ClientProfileFormSkeleton from "./ClientProfileFormSkeleton";
 
 import { useClient } from "../../../hooks/useClient";
 import { useUser } from "../../../hooks/useUser";
@@ -21,7 +22,6 @@ function ClientProfileForm() {
   useEffect(() => {
     const fetchClientData = async () => {
       const clientData = await fetchClientById(clientId);
-      console.log("Fetched client data:", clientData);
       setClientData(clientData);
     };
 
@@ -44,6 +44,7 @@ function ClientProfileForm() {
   };
 
   const handleDeleteClient = async () => {
+    setClientData(null);
     await deleteClient(clientId);
     await fetchUser();
     navigate("/clients");
@@ -66,6 +67,10 @@ function ClientProfileForm() {
     }
     setFormData(data);
   };
+
+  if (isLoading || !clientData) {
+    return <ClientProfileFormSkeleton />;
+  }
 
   return (
     <section className="client-profile" aria-label="Client profile form">
