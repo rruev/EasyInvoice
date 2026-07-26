@@ -1,12 +1,15 @@
 import "./ClientProfileForm.css";
 import { useClient } from "../../../hooks/useClient";
+import { useUser } from "../../../hooks/useUser";
 import { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 function ClientProfileForm() {
+  const { fetchUser } = useUser();
   const { fetchClientById, updateClient, deleteClient, isLoading, error } = useClient();
   const { clientId } = useParams();
-
+  const navigate = useNavigate();
   const form = useRef(null);
 
   const [clientData, setClientData] = useState(null);
@@ -34,6 +37,12 @@ function ClientProfileForm() {
 
     const updatedClient = await updateClient(clientId, updatedData);
     setClientData(updatedClient);
+  };
+
+  const handleDeleteClient = async () => {
+    await deleteClient(clientId);
+    await fetchUser();
+    navigate("/clients");
   };
 
   return (
@@ -110,7 +119,7 @@ function ClientProfileForm() {
             <button type="submit" className="client-profile__button client-profile__button--edit">
               Save Changes
             </button>
-            <button type="button" className="client-profile__button client-profile__button--delete">
+            <button type="button" className="client-profile__button client-profile__button--delete" onClick={handleDeleteClient}>
               Delete Client
             </button>
           </div>
