@@ -1,4 +1,7 @@
 import "./ClientProfileForm.css";
+import * as z from "zod";
+import clientSchema from "../../../schemas/client.schema";
+
 import { useClient } from "../../../hooks/useClient";
 import { useUser } from "../../../hooks/useUser";
 import { useEffect, useState, useRef } from "react";
@@ -7,12 +10,13 @@ import { useParams } from "react-router-dom";
 
 function ClientProfileForm() {
   const { fetchUser } = useUser();
-  const { fetchClientById, updateClient, deleteClient, isLoading, error } = useClient();
+  const { fetchClientById, updateClient, deleteClient, isLoading, error, setError } = useClient();
   const { clientId } = useParams();
   const navigate = useNavigate();
   const form = useRef(null);
 
   const [clientData, setClientData] = useState(null);
+  const [formData, setFormData] = useState({});
 
   useEffect(() => {
     const fetchClientData = async () => {
@@ -45,6 +49,24 @@ function ClientProfileForm() {
     navigate("/clients");
   };
 
+  const handleChange = (e) => {
+    let data = { ...formData, [e.target.name]: e.target.value };
+
+    if (e.target.value.length === 0) {
+      data[e.target.name] = null;
+    }
+
+    try {
+      data = clientSchema.parse(data);
+      setError({});
+    } catch (error) {
+      const errors = z.flattenError(error).fieldErrors;
+      console.error("Invalid form data:", errors);
+      setError(errors || { general: ["Invalid form data."] });
+    }
+    setFormData(data);
+  };
+
   return (
     <section className="client-profile" aria-label="Client profile form">
       <div className="client-profile__card">
@@ -56,7 +78,7 @@ function ClientProfileForm() {
               Update client information or remove the client from your directory.
             </p>
           </div>
-          <span className="client-profile__status">Customer</span>
+          <span className="client-profile__status">Client</span>
         </div>
 
         <form className="client-profile__form" ref={form} onSubmit={handleSubmit}>
@@ -68,18 +90,21 @@ function ClientProfileForm() {
               name="name"
               defaultValue={clientData?.name}
               placeholder="Client name"
+              onChange={handleChange}
             />
+          {error?.name && <p className="client-profile__error">{error.name[0]}</p>}
           </div>
 
           <div className="client-profile__field">
             <label htmlFor="client-email">Email</label>
             <input
               id="client-email"
-              type="email"
               name="email"
               defaultValue={clientData?.email}
               placeholder="client@email.com"
+              onChange={handleChange}
             />
+          {error?.email && <p className="client-profile__error">{error.email[0]}</p>}
           </div>
 
           <div className="client-profile__field client-profile__field--wide">
@@ -90,7 +115,9 @@ function ClientProfileForm() {
               name="address"
               defaultValue={clientData?.address}
               placeholder="Street and city"
+              onChange={handleChange}
             />
+          {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
           </div>
 
           <div className="client-profile__field">
@@ -101,7 +128,9 @@ function ClientProfileForm() {
               name="phone"
               defaultValue={clientData?.phone}
               placeholder="+49 000 000000"
+              onChange={handleChange}
             />
+          {error?.phone && <p className="client-profile__error">{error.phone[0]}</p>}
           </div>
 
           {/* <div className="client-profile__field">
@@ -114,7 +143,6 @@ function ClientProfileForm() {
               placeholder="Tax ID"
             />
           </div> */}
-
           <div className="client-profile__actions">
             <button type="submit" className="client-profile__button client-profile__button--edit">
               Save Changes
@@ -123,6 +151,7 @@ function ClientProfileForm() {
               Delete Client
             </button>
           </div>
+          {error?.general && <p className="client-profile__error">{error.general[0]}</p>}
         </form>
       </div>
     </section>

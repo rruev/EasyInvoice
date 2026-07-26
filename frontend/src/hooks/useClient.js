@@ -80,5 +80,5 @@ export const useClient = () => {
         }
     }
 
-    return { isLoading, error, fetchClients, createClient, fetchClientById, updateClient, deleteClient };
+    return { isLoading, error, setError, fetchClients, createClient, fetchClientById, updateClient, deleteClient };
 }
