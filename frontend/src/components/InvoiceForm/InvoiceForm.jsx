@@ -18,7 +18,7 @@ function InvoiceForm() {
     const [addNewClient, setAddNewClient] = useState(false);
     const [clientName, setClientName] = useState("");
     const [clientAddress, setClientAddress] = useState("");
-    const [selectedClient, setSelectedClient] = useState(clients.length > 0 ? clients[0].name : "");
+    const [selectedClient, setSelectedClient] = useState("");
     const [formData, setFormData] = useState({});
 
     const today = new Date();
@@ -35,14 +35,11 @@ function InvoiceForm() {
         const formData = Object.fromEntries(data.entries());
 
         if (userData) {
-            const client = clients.find(c => c.id === selectedClient); //TODO: Check if selectedClient is the correct identifier (id or name) based on your data structure
-            if (client) {
-                formData.clientName = client.name;
-                formData.clientAddress = client.address;
-            } else {
-                console.log('Selected client not found.');
-                return;
-            }
+            const client = clients.find(c => c.id === selectedClient);
+
+            formData.clientName = client.name;
+            formData.clientAddress = client.address;
+
         }
 
         const pdfData = await generatePdf(formData);
@@ -72,12 +69,13 @@ function InvoiceForm() {
         if (isClientLoading) {
             return;
         }
-        await createClient({ name: clientName, address: clientAddress });
+        const client = await createClient({ name: clientName, address: clientAddress });
+        setSelectedClient(client.id);
         setClientName("");
         setClientAddress("");
         setAddNewClient(false);
         await fetchUser();
-    }
+    };
 
     if (isLoading) {
         return <InvoiceFormSkeleton />;
@@ -195,6 +193,7 @@ function InvoiceForm() {
                             <option value="">No clients available</option>
                         )}
                     </select>
+                    {error && error.clientName && <p className="invoice-form-error">{error.clientName[0]}</p>}
                     <p className="client-picker__hint">
                         or add new:
                     </p>

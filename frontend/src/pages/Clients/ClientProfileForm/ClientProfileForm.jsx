@@ -6,11 +6,11 @@ import ClientProfileFormSkeleton from "./ClientProfileFormSkeleton";
 import { useClient } from "../../../hooks/useClient";
 import { useUser } from "../../../hooks/useUser";
 import { useEffect, useState, useRef } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 function ClientProfileForm() {
-  const { fetchUser } = useUser();
+  const { userData,fetchUser } = useUser();
   const { fetchClientById, updateClient, deleteClient, isLoading, error, setError } = useClient();
   const { clientId } = useParams();
   const navigate = useNavigate();
@@ -25,8 +25,12 @@ function ClientProfileForm() {
       setClientData(clientData);
     };
 
+    if (userData && userData.clients) {
+      setClientData(userData.clients.find(client => client.id === clientId) || null);
+    }
+
     fetchClientData();
-  }, [clientId]);
+  }, [clientId, userData]);
 
 
   const handleSubmit = async (e) => {
@@ -41,6 +45,7 @@ function ClientProfileForm() {
 
     const updatedClient = await updateClient(clientId, updatedData);
     setClientData(updatedClient);
+    navigate("/clients");
   };
 
   const handleDeleteClient = async () => {
@@ -68,7 +73,7 @@ function ClientProfileForm() {
     setFormData(data);
   };
 
-  if (isLoading || !clientData) {
+  if (!clientData) {
     return <ClientProfileFormSkeleton />;
   }
 
@@ -97,7 +102,7 @@ function ClientProfileForm() {
               placeholder="Client name"
               onChange={handleChange}
             />
-          {error?.name && <p className="client-profile__error">{error.name[0]}</p>}
+            {error?.name && <p className="client-profile__error">{error.name[0]}</p>}
           </div>
 
           <div className="client-profile__field">
@@ -109,7 +114,7 @@ function ClientProfileForm() {
               placeholder="client@email.com"
               onChange={handleChange}
             />
-          {error?.email && <p className="client-profile__error">{error.email[0]}</p>}
+            {error?.email && <p className="client-profile__error">{error.email[0]}</p>}
           </div>
 
           <div className="client-profile__field client-profile__field--wide">
@@ -122,7 +127,7 @@ function ClientProfileForm() {
               placeholder="Street and city"
               onChange={handleChange}
             />
-          {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
+            {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
           </div>
 
           <div className="client-profile__field">
@@ -135,20 +140,13 @@ function ClientProfileForm() {
               placeholder="+49 000 000000"
               onChange={handleChange}
             />
-          {error?.phone && <p className="client-profile__error">{error.phone[0]}</p>}
+            {error?.phone && <p className="client-profile__error">{error.phone[0]}</p>}
           </div>
 
-          {/* <div className="client-profile__field">
-            <label htmlFor="client-tax-id">Tax ID</label>
-            <input
-              id="client-tax-id"
-              type="text"
-              name="taxId"
-              defaultValue={clientData?.taxId || ""}
-              placeholder="Tax ID"
-            />
-          </div> */}
           <div className="client-profile__actions">
+            <NavLink to="/clients" className="client-profile__back-link">
+              &larr; Back to Clients
+            </NavLink>
             <button type="submit" className="client-profile__button client-profile__button--edit">
               Save Changes
             </button>
