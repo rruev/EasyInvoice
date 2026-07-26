@@ -16,7 +16,7 @@ export const useInvoice = () => {
             return pdfBlob;
 
         } catch (err) {
-            setError(err.errors || { general: "An error occurred while generating the PDF." });
+            setError(err.errors || { general: ["An error occurred while generating the PDF."] });
         } finally {
             setIsLoading(false);
         }
@@ -27,14 +27,9 @@ export const useInvoice = () => {
         setError(null);
 
         try {
-            const response = await invoiceService.update(invoiceId, { status: newStatus });
-            if (response) {
-                return response;
-            } else {
-                setError("Failed to update invoice status.");
-            }
+            await invoiceService.update(invoiceId, { status: newStatus });
         } catch (err) {
-            setError("An error occurred while updating the invoice status.");
+            setError(err.errors || { general: ["An error occurred while updating the invoice status."] });
         } finally {
             setIsLoading(false);
         }
@@ -45,14 +40,9 @@ export const useInvoice = () => {
         setError(null);
 
         try {
-            const response = await invoiceService.remove(invoiceId);
-            if (response) {
-                return response;
-            } else {
-                setError("Failed to remove invoice.");
-            }
+            await invoiceService.remove(invoiceId);
         } catch (err) {
-            setError("An error occurred while removing the invoice.");
+            setError(err.errors || { general: ["An error occurred while deleting the invoice."] });
         } finally {
             setIsLoading(false);
         }

@@ -7,8 +7,8 @@ import userController from './controllers/user.controller.js';
 const router = Router();
 
 router.use('/auth', authController);
-router.use('/user', userController);
-router.use('/invoice', invoiceController);
-router.use('/client', clientController);
+router.use('/users', userController);
+router.use('/invoices', invoiceController);
+router.use('/clients', clientController);
 
 export default router;

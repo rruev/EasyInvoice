@@ -1,7 +1,7 @@
 import { getErrors } from '../utils/errors.util';
 
 export const updateUser = async (userData) => {
-    const response = await fetch(`http://localhost:3000/api/user`, {
+    const response = await fetch(`http://localhost:3000/api/users`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +19,7 @@ export const updateUser = async (userData) => {
 };
 
 export const deleteUser = async () => {
-    const response = await fetch('http://localhost:3000/api/user', {
+    const response = await fetch('http://localhost:3000/api/users', {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

@@ -1,7 +1,7 @@
 import { getErrors } from '../utils/errors.util';
 
 const fetchPdf = async (formData) => {
-    const response = await fetch("http://localhost:3000/api/invoice/generate", {
+    const response = await fetch("http://localhost:3000/api/invoices/generate", {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -21,7 +21,7 @@ const fetchPdf = async (formData) => {
 }
 
 const update = async (invoiceId, updatedData) => {
-    const response = await fetch(`http://localhost:3000/api/invoice/${invoiceId}`, {
+    const response = await fetch(`http://localhost:3000/api/invoices/${invoiceId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -31,22 +31,20 @@ const update = async (invoiceId, updatedData) => {
     });
 
     if (!response.ok) {
-        console.error("Failed to update invoice");
-        return;
+        const error = await getErrors(response);
+        throw error;
     }
-
-    return await response.json();
 }
 
 const remove = async (invoiceId) => {
-    const response = await fetch(`http://localhost:3000/api/invoice/${invoiceId}`, {
+    const response = await fetch(`http://localhost:3000/api/invoices/${invoiceId}`, {
         method: "DELETE",
         credentials: "include"
     });
 
     if (!response.ok) {
-        console.error("Failed to delete invoice");
-        return;
+        const error = await getErrors(response);
+        throw error;
     }
 };
 

@@ -1,21 +1,76 @@
 import { Router } from 'express';
 import clientService from '../services/client.service.js';
 import clientSchema from '../schemas/client.schema.js';
+import { isAuthenticated } from "../middleware/auth.middleware.js";
+import { getErrors } from "../utils/error.util.js";
 
 const clientController = Router();
 
-clientController.get('/', async (req, res) => {
+clientController.get('/', isAuthenticated, async (req, res) => {
     const clients = await clientService.getAll(req.user?.id);
 
     res.status(200).json(clients);
 });
 
-clientController.post('/', async (req, res) => {
-    const clientData = { ...req.body, userId: req.user?.id };
+clientController.get('/:id', isAuthenticated, async (req, res) => {
+    const clientId = req.params.id;
+    const client = await clientService.getById(clientId); // test if you can get another user's client by id
 
-    const newClient = await clientService.create(clientData);
+    if (!client) {
+        return res.status(404).json({ message: 'Client not found' });
+    }
 
-    res.status(201).json(newClient);
+    res.status(200).json(client);
+});
+
+clientController.post('/', isAuthenticated, async (req, res) => {
+    try {
+        const clientData = clientSchema.parse(req.body);
+
+        const newClient = await clientService.create({ ...clientData, userId: req.user?.id });
+
+        res.status(201).json(newClient);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(400).json({
+            message: 'Failed to create client',
+            errors: errors
+         });
+    }
+});
+
+clientController.put('/:id', isAuthenticated, async (req, res) => {
+    const clientId = req.params.id;
+
+    try {
+        const clientData = clientSchema.parse(req.body);
+
+        const updatedClient = await clientService.update(clientId, clientData);
+
+        if (!updatedClient) {
+            return res.status(404).json({ message: 'Client not found' });
+        }
+
+        res.status(200).json(updatedClient);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(400).json({
+            message: 'Failed to update client',
+            errors: errors
+         });
+    }
+});
+
+clientController.delete('/:id', isAuthenticated, async (req, res) => {
+    const clientId = req.params.id;
+
+    const deletedClient = await clientService.remove(clientId);
+
+    if (!deletedClient) {
+        return res.status(404).json({ message: 'Client not found' });
+    }
+
+    res.status(200).json({ message: 'Client deleted successfully' });
 });
 
 

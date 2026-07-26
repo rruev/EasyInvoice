@@ -1,6 +1,6 @@
 const create = async (clientData) => {
     try {
-        const response = await fetch('http://localhost:3000/api/client', {
+        const response = await fetch('http://localhost:3000/api/clients', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -22,7 +22,7 @@ const create = async (clientData) => {
 
 const getAll = async () => {
     try {
-        const response = await fetch('http://localhost:3000/api/client', {
+        const response = await fetch('http://localhost:3000/api/clients', {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',

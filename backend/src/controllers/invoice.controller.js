@@ -25,9 +25,11 @@ invoiceController.put('/:invoiceId', isAuthenticated, async (req, res) => {
 
     try {
         const updatedInvoice = await invoiceService.update(invoiceId, updatedData);
+
         res.status(200).json(updatedInvoice);
     } catch (error) {
-        res.status(500).json({ error: 'Failed to update invoice' });
+        const errors = getErrors(error);
+        res.status(500).json({ message: 'Failed to update invoice', errors: errors });
     }
 });
 
@@ -36,9 +38,11 @@ invoiceController.delete('/:invoiceId', isAuthenticated, async (req, res) => {
 
     try {
         await invoiceService.remove(invoiceId);
+
         res.status(200).json({ message: 'Invoice deleted successfully' });
     } catch (error) {
-        res.status(500).json({ error: 'Failed to delete invoice' });
+        const errors = getErrors(error);
+        res.status(500).json({ message: 'Failed to delete invoice', errors: errors });
     }
 });
 

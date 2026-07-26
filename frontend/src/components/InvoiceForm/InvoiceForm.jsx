@@ -320,7 +320,7 @@ function InvoiceForm() {
                 Generate PDF
             </button>
 
-            {error && error.general && <p className="invoice-form-error">{error.general}</p>}
+            {error && error.general && <p className="invoice-form-error">{error.general[0]}</p>}
 
         </form>
 

@@ -8,13 +8,17 @@ export const getErrors = (error) => {
     } else if (error.name === 'PrismaClientKnownRequestError') {
         if (error.code === 'P2002') {
             errors = { email: ['Email already exists'] };
+        } else if (error.code === 'P2025') {
+            errors = { general: [`${error.meta?.modelName ?? 'Record'} not found`] };
+        } else {
+            errors = { general: ['Database error occurred'] };
         }
     } else if (error.name === 'InvalidPasswordError') {
         errors = { password: ['Invalid password'] };
     } else if (error.name === 'UserNotFoundError') {
         errors = { email: ['User with this email does not exist'] };
     } else {
-        errors = { general: 'An unexpected error occurred' };
+        errors = { general: ['An unexpected error occurred'] };
     }
     console.log('Error details:', error);
     return errors;
