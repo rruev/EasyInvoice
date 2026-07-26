@@ -35,7 +35,7 @@ function InvoiceForm() {
         const formData = Object.fromEntries(data.entries());
 
         if (userData) {
-            const client = clients.find(c => c.name === selectedClient);
+            const client = clients.find(c => c.id === selectedClient); //TODO: Check if selectedClient is the correct identifier (id or name) based on your data structure
             if (client) {
                 formData.clientName = client.name;
                 formData.clientAddress = client.address;
@@ -187,7 +187,7 @@ function InvoiceForm() {
                         <option value="">Select a client...</option>
                         {clients.length ? (
                             clients.map((client, index) => (
-                                <option key={client.id ?? `${client.name}-${index}`} value={client.name}>
+                                <option key={client.id} value={client.id}>
                                     {client.name}
                                 </option>
                             ))

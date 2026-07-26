@@ -1,6 +1,7 @@
 import { createContext } from "react";
-import { useState, useEffect  } from 'react';
+import { useState, useEffect } from 'react';
 import { register, login, logout, fetchUserData } from '../services/auth.service';
+import userService from '../services/user.service';
 import { useMemo, useCallback } from 'react';
 
 const AuthContext = createContext(null);
@@ -70,6 +71,21 @@ const AuthProvider = ({ children }) => {
         }
     }, []);
 
+    const deleteUser = async () => {
+        setIsLoading(true);
+        setError(null);
+        try {
+            await userService.deleteUser();
+            setUserData(null);
+        } catch (error) {
+            console.error("Failed to delete user:", error.errors);
+            setError(error.errors || { general: ["Failed to delete user."] });
+            throw error.errors || { general: ["Failed to delete user."] };
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
     useEffect(() => {
         const fetchData = async () => {
             setIsLoading(true);
@@ -88,8 +104,8 @@ const AuthProvider = ({ children }) => {
         signIn,
         signOut,
         fetchUser,
-        setIsLoading,
-    }), [userData, isLoading, error, signUp, signIn, signOut, fetchUser]);
+        deleteUser,
+    }), [userData, isLoading, error, signUp, signIn, signOut, fetchUser, deleteUser]);
 
     return (
         <AuthContext value={contextValue}>

@@ -45,7 +45,6 @@ function BusinessProfile() {
     const handleDeleteUser = async () => {
         try {
             await deleteUser();
-            await fetchUser();
             navigate("/");
         } catch (error) {
             console.error("Failed to delete user:", error);
@@ -59,7 +58,7 @@ function BusinessProfile() {
         if (e.target.value.length === 0) {
             data[e.target.name] = null;
         }
-        
+
         try {
             data = userUpdateSchema.parse(data);
             setError({});
@@ -150,7 +149,7 @@ function BusinessProfile() {
                                     "Save Changes"
                                 )}
                             </button>
-                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => {setReadOnly(!readOnly); setError({}); form.current.reset();} } disabled={isSaving}>
+                            <button type="button" className="business-profile__button business-profile__button--cancel" onClick={() => { setReadOnly(!readOnly); setError({}); form.current.reset(); }} disabled={isSaving}>
                                 Cancel
                             </button>
                         </>
