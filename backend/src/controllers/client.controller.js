@@ -17,7 +17,10 @@ clientController.get('/:id', isAuthenticated, async (req, res) => {
     const client = await clientService.getById(clientId); // test if you can get another user's client by id
 
     if (!client) {
-        return res.status(404).json({ message: 'Client not found' });
+        return res.status(404).json({ 
+            message: 'Client not found',
+            errors: {general: ['Client not found']}
+         });
     }
 
     res.status(200).json(client);
@@ -47,10 +50,6 @@ clientController.put('/:id', isAuthenticated, async (req, res) => {
 
         const updatedClient = await clientService.update(clientId, clientData);
 
-        if (!updatedClient) {
-            return res.status(404).json({ message: 'Client not found' });
-        }
-
         res.status(200).json(updatedClient);
     } catch (error) {
         const errors = getErrors(error);
@@ -64,13 +63,18 @@ clientController.put('/:id', isAuthenticated, async (req, res) => {
 clientController.delete('/:id', isAuthenticated, async (req, res) => {
     const clientId = req.params.id;
 
-    const deletedClient = await clientService.remove(clientId);
+    try {
+        await clientService.remove(clientId);
 
-    if (!deletedClient) {
-        return res.status(404).json({ message: 'Client not found' });
+        res.status(200).json({ message: 'Client deleted successfully' });
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(400).json({
+            message: 'Failed to delete client',
+            errors: errors
+        });
     }
 
-    res.status(200).json({ message: 'Client deleted successfully' });
 });
 
 
