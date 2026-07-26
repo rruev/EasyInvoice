@@ -1,6 +1,7 @@
 import * as z from 'zod';
 
 export const invoiceSchema = z.object({
+    clientId: z.string({ message: 'Client ID is required' }).cuid({ message: 'Invalid client ID' }),
     businessName: z.string({ message: 'Business name is required' }).min(1, { message: 'Business name is required' }).trim(),
     businessAddress: z.string({ message: 'Business address is required' }).regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).trim(),
     businessPhone: z.string({ message: 'Business phone is required' }).regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim(),

@@ -32,7 +32,8 @@ model User {
 model Invoice {
   id         String   @id @default(cuid())
   userId     String
-  invoiceNum String   
+  clientId   String
+  invoiceNum String
   issuedAt   String
   workedAt   String
   quantity   Int
@@ -42,7 +43,8 @@ model Invoice {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+  client Client @relation(fields: [clientId], references: [id], onDelete: Cascade) // Fix on delete behavior
 
   @@map("invoices")
 }
@@ -57,7 +59,8 @@ model Client {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now()) @updatedAt
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  invoices Invoice[]
 
   @@map("clients")
 }

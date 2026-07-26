@@ -37,9 +37,9 @@ function InvoiceForm() {
         if (userData) {
             const client = clients.find(c => c.id === selectedClient);
 
-            formData.clientName = client.name;
-            formData.clientAddress = client.address;
-
+            formData.clientId = client?.id;
+            formData.clientName = client?.name;
+            formData.clientAddress = client?.address;
         }
 
         const pdfData = await generatePdf(formData);

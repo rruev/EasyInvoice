@@ -4,6 +4,7 @@ const create = async (invoiceData) => {
     const invoice = await prisma.invoice.create({
         data: {
             userId: invoiceData.userId,
+            clientId: invoiceData.clientId,
             invoiceNum: invoiceData.invoiceNum,
             issuedAt: invoiceData.issuedAt,
             workedAt: invoiceData.workedAt,

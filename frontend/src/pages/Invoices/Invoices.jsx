@@ -50,7 +50,7 @@ function Invoices() {
                     <strong>{invoice.invoiceNum ?? invoice.number ?? "-"}</strong>
                   </td>
                   <td>
-                    <div className="invoices-table__primary">{invoice.clientName ?? "-"}</div>
+                    <div className="invoices-table__primary">{invoice.client.name ?? "-"}</div>
                     <div className="invoices-table__secondary">{invoice.clientAddress ?? ""}</div>
                   </td>
                   <td>{invoice.issuedAt ?? invoice.date ?? "-"}</td>

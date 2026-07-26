@@ -33,7 +33,12 @@ const findByEmail = async (email) => {
                     price: true,
                     total: true,
                     status: true,
-                }
+                    client: {
+                        select: {
+                            name: true,
+                        }
+                    }
+                },
             }
         }
     });
