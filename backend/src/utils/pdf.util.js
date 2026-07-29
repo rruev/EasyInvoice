@@ -42,7 +42,10 @@ export const createHtml = async (invoiceData) => {
         price: invoiceData.price !== undefined ? invoiceData.price.toFixed(2) : '',
         lineTotal: invoiceData.lineTotal !== undefined ? invoiceData.lineTotal.toFixed(2) : '',
         totalPrice: invoiceData.totalPrice !== undefined ? invoiceData.totalPrice.toFixed(2) : '',
+        bankName: invoiceData.bankName ?? '',
+        bic: invoiceData.bic ?? '',
         iban: invoiceData.iban ?? '',
+        taxId: invoiceData.taxId ?? '',
     };
 
     const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (test, key) => {

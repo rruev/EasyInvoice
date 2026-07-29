@@ -138,6 +138,54 @@ function InvoiceForm() {
             />
             {error && error.businessEmail && <p className="invoice-form-error">{error.businessEmail[0]}</p>}
 
+            <label>
+                Bank Name
+            </label>
+
+            <input
+                name="bankName"
+                defaultValue={userData ? userData.bankName : ''}
+                placeholder="Revolut Bank UAB"
+                onChange={handleChange}
+            />
+            {error && error.bankName && <p className="invoice-form-error">{error.bankName[0]}</p>}
+
+            <label>
+                BIC/SWIFT
+            </label>
+
+            <input
+                name="bic"
+                defaultValue={userData ? userData.bic : ''}
+                placeholder="REVOLT21"
+                onChange={handleChange}
+            />
+            {error && error.bic && <p className="invoice-form-error">{error.bic[0]}</p>}
+
+            <label>
+                IBAN
+            </label>
+
+            <input
+                name="iban"
+                defaultValue={userData ? userData.iban : ''}
+                placeholder="LT15 5289 8043 9331 7202"
+                onChange={handleChange}
+            />
+            {error && error.iban && <p className="invoice-form-error">{error.iban[0]}</p>}
+
+             <label>
+                TAX-Id
+            </label>
+
+            <input
+                name="taxId"
+                defaultValue={userData ? userData.taxId : ''}
+                placeholder="Steuernummer"
+                onChange={handleChange}
+            />
+            {error && error.taxId && <p className="invoice-form-error">{error.taxId[0]}</p>}
+
             {!userData ? (
                 <>
                     <label>
