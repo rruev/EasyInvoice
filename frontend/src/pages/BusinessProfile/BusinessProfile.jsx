@@ -1,5 +1,6 @@
 import "./BusinessProfile.css";
 import * as z from "zod";
+import { formatIban } from "../../utils/formatFormData";
 
 import { useUser } from "../../hooks/useUser";
 import { useRef, useState } from "react";
@@ -15,6 +16,7 @@ function BusinessProfile() {
     const [formData, setFormData] = useState({});
 
     const form = useRef(null);
+    const iban = useRef(null);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -32,6 +34,11 @@ function BusinessProfile() {
             taxId: data.taxId || null,
         };
 
+        if (updatedData.iban === iban.current.defaultValue) {
+            console.log(iban.current.defaultValue);
+            updatedData.iban = undefined;
+        }
+
         try {
             setIsSaving(true);
             await updateUser(updatedData);
@@ -41,6 +48,7 @@ function BusinessProfile() {
             console.error("Failed to update user:", error);
             setError(error || { general: ["Failed to update user."] });
         } finally {
+            iban.current.value = userData?.iban || "";
             setIsSaving(false);
         }
 
@@ -59,6 +67,11 @@ function BusinessProfile() {
         }
 
         try {
+            if (e.target.name === "iban") {
+                e.target.value = formatIban(e.target.value);
+                data[e.target.name] = e.target.value;
+            }
+
             data = userUpdateSchema.parse(data);
             setError({});
         } catch (error) {
@@ -136,7 +149,7 @@ function BusinessProfile() {
 
                     <article className="profile-field profile-field--wide">
                         <label className="profile-field__label">IBAN</label>
-                        <input className="profile-field__value" name="iban" defaultValue={userData?.iban} readOnly={readOnly} onChange={handleChange} />
+                        <input className="profile-field__value" ref={iban} name="iban" defaultValue={userData?.iban} readOnly={readOnly} onChange={handleChange} />
                         {error?.iban && <p className="profile-field__error">{error.iban[0]}</p>}
                     </article>
 

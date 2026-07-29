@@ -25,6 +25,9 @@ export const userUpdateSchema = z.object({
   phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().nullable().optional(),
   bankName: z.string().trim().nullable().optional(),
   bic: z.string().trim().nullable().optional(),
-  iban: z.string().trim().nullable().optional(),
+  iban: z.string()
+    .regex(/^[A-Z]{2}\d{2}(?: [A-Z0-9]{4})+(?: [A-Z0-9]{1,2})?$/, { message: 'Invalid IBAN' })
+    .nullable()
+    .optional(),
   taxId: z.string().trim().nullable().optional(),
 });

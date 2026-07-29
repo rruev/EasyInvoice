@@ -9,7 +9,6 @@ export const invoiceFormSchema = z.object({
     bic: z.string().trim().optional(),
     iban: z.string()
         .regex(/^[A-Z]{2}\d{2}(?: [A-Z0-9]{4})+(?: [A-Z0-9]{1,2})?$/, { message: 'Invalid IBAN' })
-        .transform((value) => value.replace(/(.{4})(?=.)/g, "$1 ").trim())
         .optional(),
     taxId: z.string().trim().optional(),
     clientName: z.string({ message: 'Client name is required' }).trim().optional(),
