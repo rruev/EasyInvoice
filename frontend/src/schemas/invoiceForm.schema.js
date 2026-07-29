@@ -7,7 +7,10 @@ export const invoiceFormSchema = z.object({
     businessEmail: z.string({ message: 'Business email is required' }).email({ message: 'Invalid email address' }).trim().toLowerCase().optional(),
     bankName: z.string().trim().optional(),
     bic: z.string().trim().optional(),
-    iban: z.string().trim().optional(),
+    iban: z.string()
+        .regex(/^[A-Z]{2}\d{2}(?: [A-Z0-9]{4})+(?: [A-Z0-9]{1,2})?$/, { message: 'Invalid IBAN' })
+        .transform((value) => value.replace(/(.{4})(?=.)/g, "$1 ").trim())
+        .optional(),
     taxId: z.string().trim().optional(),
     clientName: z.string({ message: 'Client name is required' }).trim().optional(),
     clientAddress: z.string({ message: 'Client address is required' }).regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).optional(),

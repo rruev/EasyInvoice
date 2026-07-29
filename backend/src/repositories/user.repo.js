@@ -61,11 +61,20 @@ const remove = async (userId) => {
     });
 };
 
+const getUserIban = async (userId) => {
+    const user = await prisma.user.findUnique({
+        where: { id: userId },
+        select: { iban: true }
+    });
+    return user?.iban || null;
+};
+
 const userRepo = {
     create,
     findByEmail,
     update,
     remove,
+    getUserIban,
 };
 
 export default userRepo;

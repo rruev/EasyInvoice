@@ -1,10 +1,19 @@
 import { createHtml, generatePdf } from '../utils/pdf.util.js';
 import prepareData from '../utils/invoice.util.js';
 import invoiceRepo from '../repositories/invoice.repo.js';
+import userRepo from '../repositories/user.repo.js';
 
 const generate = async (invoiceData) => {
     invoiceData.quantity = Number(invoiceData.quantity);
     invoiceData.price = parseFloat(invoiceData.price);
+
+    if (invoiceData.userId) {
+        const iban = await userRepo.getUserIban(invoiceData.userId);
+
+        if (iban) {
+            invoiceData.iban = iban;
+        }
+    }
 
     const preparedData = prepareData(invoiceData);
 

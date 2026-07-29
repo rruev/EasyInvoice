@@ -6,6 +6,7 @@ import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
 import { previewPdf } from "../../utils/previewPdf.util";
+import { formatIban, formatDate } from "../../utils/formatFormData";
 import * as z from "zod";
 
 function InvoiceForm() {
@@ -56,6 +57,16 @@ function InvoiceForm() {
         }
 
         try {
+            if (e.target.name === "iban") {
+                e.target.value = formatIban(e.target.value);
+                data[e.target.name] = e.target.value;
+            }
+
+            if (e.target.name === "workedAt") {
+                e.target.value = formatDate(e.target.value);
+                data[e.target.name] = e.target.value;
+            }
+
             data = invoiceFormSchema.parse(data);
             setError({});
         } catch (err) {
@@ -175,7 +186,7 @@ function InvoiceForm() {
             {error && error.iban && <p className="invoice-form-error">{error.iban[0]}</p>}
 
              <label>
-                TAX-Id
+                Steuernummer / Tax ID
             </label>
 
             <input

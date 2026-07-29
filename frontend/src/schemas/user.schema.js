@@ -23,4 +23,8 @@ export const userUpdateSchema = z.object({
   businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).nullable().optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().nullable().optional(),
   phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().nullable().optional(),
+  bankName: z.string().trim().nullable().optional(),
+  bic: z.string().trim().nullable().optional(),
+  iban: z.string().trim().nullable().optional(),
+  taxId: z.string().trim().nullable().optional(),
 });

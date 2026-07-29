@@ -26,6 +26,10 @@ function BusinessProfile() {
             businessAddress: data.businessAddress || null,
             businessEmail: data.businessEmail || null,
             phoneNumber: data.phoneNumber || null,
+            bankName: data.bankName || null,
+            bic: data.bic || null,
+            iban: data.iban || null,
+            taxId: data.taxId || null,
         };
 
         try {
@@ -116,6 +120,30 @@ function BusinessProfile() {
                         <label className="profile-field__label">Phone number</label>
                         <input className="profile-field__value" name="phoneNumber" defaultValue={userData?.phoneNumber} readOnly={readOnly} onChange={handleChange} />
                         {error?.phoneNumber && <p className="profile-field__error">{error.phoneNumber[0]}</p>}
+                    </article>
+
+                    <article className="profile-field">
+                        <label className="profile-field__label">Bank name</label>
+                        <input className="profile-field__value" name="bankName" defaultValue={userData?.bankName} readOnly={readOnly} onChange={handleChange} />
+                        {error?.bankName && <p className="profile-field__error">{error.bankName[0]}</p>}
+                    </article>
+
+                    <article className="profile-field">
+                        <label className="profile-field__label">SWIFT / BIC</label>
+                        <input className="profile-field__value" name="bic" defaultValue={userData?.bic} readOnly={readOnly} onChange={handleChange} />
+                        {error?.bic && <p className="profile-field__error">{error.bic[0]}</p>}
+                    </article>
+
+                    <article className="profile-field profile-field--wide">
+                        <label className="profile-field__label">IBAN</label>
+                        <input className="profile-field__value" name="iban" defaultValue={userData?.iban} readOnly={readOnly} onChange={handleChange} />
+                        {error?.iban && <p className="profile-field__error">{error.iban[0]}</p>}
+                    </article>
+
+                    <article className="profile-field profile-field--wide">
+                        <label className="profile-field__label">Steuernummer / Tax ID</label>
+                        <input className="profile-field__value" name="taxId" defaultValue={userData?.taxId} readOnly={readOnly} onChange={handleChange} />
+                        {error?.taxId && <p className="profile-field__error">{error.taxId[0]}</p>}
                     </article>
                 </form>
                 {error?.general && <p className="business-profile__error">{error.general[0]}</p>}
