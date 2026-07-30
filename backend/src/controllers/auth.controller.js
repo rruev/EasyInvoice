@@ -62,7 +62,6 @@ authController.get('/logout', (req, res) => {
 authController.get('/me', isAuthenticated, async (req, res) => {
     const user = await authService.getByEmail(req.user.email);
 
-    const iban = user.iban ? user.iban.slice(0, 4) + " XXXX XXXX XXXX XXXX" : null;
 
     res.json({
         id: user.id,
@@ -71,7 +70,7 @@ authController.get('/me', isAuthenticated, async (req, res) => {
         businessAddress: user.businessAddress,
         businessEmail: user.businessEmail,
         bankName: user.bankName,
-        iban: iban,
+        iban: user.iban,
         bic: user.bic,
         taxId: user.taxId,
         clients: user.clients,

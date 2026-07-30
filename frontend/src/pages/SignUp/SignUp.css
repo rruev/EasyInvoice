@@ -62,6 +62,11 @@
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
+.auth-form input:focus {
+  border-color: #0f766e;
+  box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.12);
+}
+
 .auth-form textarea {
   width: 100%;
   border: 1px solid #cdd7e3;
@@ -84,6 +89,56 @@
   color: #6b7280;
   border-color: #d1d5db;
   cursor: not-allowed;
+}
+
+.optional-details {
+  margin-top: 16px;
+  padding: 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #f8fafc;
+}
+
+.optional-details__toggle {
+  width: 100%;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: #0369a1;
+  font-size: 20px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.optional-details__toggle:hover {
+  color: #0284c7;
+}
+
+.optional-details__hint {
+  margin: 6px 0 0;
+  font-size: 16px;
+  color: #64748b;
+}
+
+.optional-details__fields {
+  margin-top: 12px;
+}
+
+.auth-secondary-button {
+  margin-top: 8px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #0f172a;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.auth-secondary-button:hover {
+  background: #f8fafc;
 }
 
 .auth-button {

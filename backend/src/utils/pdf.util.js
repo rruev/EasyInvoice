@@ -45,7 +45,7 @@ export const createHtml = async (invoiceData) => {
         bankName: invoiceData.bankName ?? '',
         bic: invoiceData.bic ?? '',
         iban: invoiceData.iban ?? '',
-        taxId: invoiceData.taxId ?? '',
+        taxId: invoiceData.taxId ? `Steuernummer: ${invoiceData.taxId}` : '',
     };
 
     const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (test, key) => {

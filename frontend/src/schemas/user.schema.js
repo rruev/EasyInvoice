@@ -11,6 +11,12 @@ export const userRegisterSchema = z.object({
   businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().optional(),
   phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().optional(),
+  bankName: z.string().trim().optional(),
+  bic: z.string().trim().optional(),
+  iban: z.string()
+    .regex(/^[A-Z]{2}\d{2}(?: [A-Z0-9]{4})+(?: [A-Z0-9]{1,2})?$/, { message: 'Invalid IBAN' })
+    .optional(),
+  taxId: z.string().trim().optional(),
 }).refine((data) => data.password === data.confirmPassword, {
   message: 'Passwords do not match',
   path: ['confirmPassword'],

@@ -57,12 +57,12 @@ function InvoiceForm() {
         }
 
         try {
-            if (e.target.name === "iban") {
+            if (e.target.name === "iban" && e.target.value.length > 0) {
                 e.target.value = formatIban(e.target.value);
                 data[e.target.name] = e.target.value;
             }
 
-            if (e.target.name === "workedAt") {
+            if (e.target.name === "workedAt" && e.target.value.length > 0) {
                 e.target.value = formatDate(e.target.value);
                 data[e.target.name] = e.target.value;
             }

@@ -2,6 +2,7 @@ import { createHtml, generatePdf } from '../utils/pdf.util.js';
 import prepareData from '../utils/invoice.util.js';
 import invoiceRepo from '../repositories/invoice.repo.js';
 import userRepo from '../repositories/user.repo.js';
+import { decryptData } from '../utils/encrypt.util.js';
 
 const generate = async (invoiceData) => {
     invoiceData.quantity = Number(invoiceData.quantity);
@@ -11,7 +12,7 @@ const generate = async (invoiceData) => {
         const iban = await userRepo.getUserIban(invoiceData.userId);
 
         if (iban) {
-            invoiceData.iban = iban;
+            invoiceData.iban = decryptData(iban);
         }
     }
 
@@ -21,7 +22,7 @@ const generate = async (invoiceData) => {
 
     const pdfBuffer = await generatePdf(content);
 
-    //save the generated PDF to a database
+    //save the invoice information to the database
     if (invoiceData.userId) {
         await invoiceRepo.create({
             ...invoiceData,

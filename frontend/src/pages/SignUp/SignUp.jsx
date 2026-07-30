@@ -6,17 +6,14 @@ import { useState, useEffect } from "react";
 import { userRegisterSchema } from "../../schemas/user.schema";
 
 import * as z from 'zod';
-
+import { formatIban } from "../../utils/formatFormData";
 
 function SignUp() {
   const { signUp, isLoading, error, setError, fetchUser } = useUser();
   const { createClient } = useClient();
   const navigate = useNavigate();
 
-  const [showBusinessName, setShowBusinessName] = useState(false);
-  const [showEmail, setShowEmail] = useState(false);
-  const [showBusinessAddress, setShowBusinessAddress] = useState(false);
-  const [showPhoneNumber, setShowPhoneNumber] = useState(false);
+  const [showOptionalDetails, setShowOptionalDetails] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [formData, setFormData] = useState({});
   const isSubmitDisabled = disabled || isLoading;
@@ -36,7 +33,6 @@ function SignUp() {
     const userEmail = form.elements['email'].value;
     form.elements['businessEmail'].value = userEmail;
     setFormData({ ...formData, businessEmail: userEmail });
-    setShowBusinessAddress(true);
   }
 
   const handleChange = (e) => {
@@ -47,12 +43,17 @@ function SignUp() {
     }
 
     try {
+      if (e.target.name === "iban" && e.target.value.length > 0) {
+        e.target.value = formatIban(e.target.value);
+        data[e.target.name] = e.target.value;
+      }
+
       data = userRegisterSchema.parse(data);
-      setError({ ...error, [e.target.name]: undefined });
+      setError({});
       setDisabled(false);
     } catch (err) {
-      const error = z.flattenError(err).fieldErrors;
-      setError(error);
+      const fieldErrors = z.flattenError(err).fieldErrors;
+      setError(fieldErrors);
       setDisabled(true);
     }
 
@@ -68,7 +69,7 @@ function SignUp() {
       <div className="auth-box">
         <p className="auth-eyebrow">Create Account</p>
         <h1 className="auth-title">Sign Up</h1>
-        <p className="auth-subtitle">Create the user account first, then add the first client details.</p>
+        <p className="auth-subtitle">Create your account first. You can add business details later if you want.</p>
 
         <form className="auth-form" noValidate onSubmit={handleSubmit}>
           <label htmlFor="sign-up-email">User Email *</label>
@@ -103,76 +104,124 @@ function SignUp() {
             placeholder="Confirm password"
             autoComplete="new-password"
             readOnly={isLoading}
-            onChange={(e) => {
-              setShowBusinessName(true); handleChange(e);
-            }}
+            onChange={handleChange}
           />
           {error && error.confirmPassword && <p className="auth-error">{error.confirmPassword[0]}</p>}
 
-          {showBusinessName && (
-            <>
-              <label htmlFor="sign-up-businessName">Business name</label>
-              <input
-                id="sign-up-businessName"
-                type="text"
-                name="businessName"
-                placeholder="Business name"
-                autoComplete="organization"
-                readOnly={isLoading}
-                onChange={(e) => { setShowEmail(true); handleChange(e); }}
-              />
-            </>
-          )}
-          {error && error.businessName && <p className="auth-error">{error.businessName[0]}</p>}
+          <div className="optional-details">
+            <button
+              type="button"
+              className="optional-details__toggle"
+              onClick={() => setShowOptionalDetails((prev) => !prev)}
+              aria-expanded={showOptionalDetails}
+            >
+              {showOptionalDetails ? "Hide business details" : "Add business details (optional)"}
+            </button>
+            <p className="optional-details__hint">You can add this later. By adding them now you can have them already prefilled for your next invoice.</p>
 
-          {showEmail && (
-            <>
-              <label htmlFor="sign-up-businessEmail">Business email</label>
-              <input
-                id="sign-up-businessEmail"
-                type="email"
-                name="businessEmail"
-                placeholder="Business email"
-                autoComplete="email"
-                readOnly={isLoading}
-                onChange={(e) => { setShowBusinessAddress(true); handleChange(e); }}
-              />
-              <button type="button" onClick={handleClick} className="auth-button" disabled={isLoading}>Same as user email</button>
-            </>
-          )}
-          {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
+            {showOptionalDetails && (
+              <div className="optional-details__fields">
+                <label htmlFor="sign-up-businessName">Business name</label>
+                <input
+                  id="sign-up-businessName"
+                  type="text"
+                  name="businessName"
+                  placeholder="Business name"
+                  autoComplete="organization"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.businessName && <p className="auth-error">{error.businessName[0]}</p>}
 
-          {showBusinessAddress && (
-            <>
-              <label htmlFor="sign-up-businessAddress">Business address</label>
-              <input
-                id="sign-up-businessAddress"
-                type="text"
-                name="businessAddress"
-                placeholder="Business address"
-                autoComplete="street-address"
-                readOnly={isLoading}
-                onChange={(e) => { setShowPhoneNumber(true); handleChange(e); }}
-              />
-            </>
-          )}
-          {error && error.businessAddress && <p className="auth-error">{error.businessAddress[0]}</p>}
+                <label htmlFor="sign-up-businessEmail">Business email</label>
+                <input
+                  id="sign-up-businessEmail"
+                  type="email"
+                  name="businessEmail"
+                  placeholder="Business email"
+                  autoComplete="email"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                <button type="button" onClick={handleClick} className="auth-secondary-button" disabled={isLoading}>
+                  Use account email
+                </button>
+                {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
 
-          {showPhoneNumber && (
-            <>
-              <label htmlFor="sign-up-phoneNumber">Phone number</label>
-              <input
-                id="sign-up-phoneNumber"
-                type="tel"
-                name="phoneNumber"
-                placeholder="Phone number"
-                autoComplete="tel"
-                readOnly={isLoading}
-                onChange={handleChange}
-              />
-            </>
-          )}
-          {error && error.phoneNumber && <p className="auth-error">{error.phoneNumber[0]}</p>}
+                <label htmlFor="sign-up-businessAddress">Business address</label>
+                <input
+                  id="sign-up-businessAddress"
+                  type="text"
+                  name="businessAddress"
+                  placeholder="Business address"
+                  autoComplete="street-address"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.businessAddress && <p className="auth-error">{error.businessAddress[0]}</p>}
+
+                <label htmlFor="sign-up-phoneNumber">Phone number</label>
+                <input
+                  id="sign-up-phoneNumber"
+                  type="tel"
+                  name="phoneNumber"
+                  placeholder="Phone number"
+                  autoComplete="tel"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.phoneNumber && <p className="auth-error">{error.phoneNumber[0]}</p>}
+
+                <label htmlFor="sign-up-bankName">Bank Name</label>
+                <input
+                  id="sign-up-bankName"
+                  type="text"
+                  name="bankName"
+                  placeholder="Bank Name"
+                  autoComplete="organization"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.bankName && <p className="auth-error">{error.bankName[0]}</p>}
+
+                <label htmlFor="sign-up-bic">BIC/SWIFT</label>
+                <input
+                  id="sign-up-bic"
+                  type="text"
+                  name="bic"
+                  placeholder="BIC/SWIFT"
+                  autoComplete="off"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.bic && <p className="auth-error">{error.bic[0]}</p>}
+
+                <label htmlFor="sign-up-iban">IBAN</label>
+                <input
+                  id="sign-up-iban"
+                  type="text"
+                  name="iban"
+                  placeholder="IBAN"
+                  autoComplete="off"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.iban && <p className="auth-error">{error.iban[0]}</p>}
+
+                <label htmlFor="sign-up-taxId">TAX ID / Steuernummer</label>
+                <input
+                  id="sign-up-taxId"
+                  type="text"
+                  name="taxId"
+                  placeholder="TAX ID / Steuernummer"
+                  autoComplete="off"
+                  readOnly={isLoading}
+                  onChange={handleChange}
+                />
+                {error && error.taxId && <p className="auth-error">{error.taxId[0]}</p>}
+              </div>
+            )}
+          </div>
 
           <button
             type="submit"

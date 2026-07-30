@@ -35,7 +35,6 @@ function BusinessProfile() {
         };
 
         if (updatedData.iban === iban.current.defaultValue) {
-            console.log(iban.current.defaultValue);
             updatedData.iban = undefined;
         }
 

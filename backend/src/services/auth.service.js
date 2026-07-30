@@ -4,6 +4,7 @@ import jwt from 'jsonwebtoken';
 import userRepo from '../repositories/user.repo.js';
 import tokenUtil from '../utils/token.util.js';
 import { getNextInvoiceNum } from '../utils/invoiceNum.util.js';
+import { decryptData } from '../utils/encrypt.util.js';
 
 const register = async (userData) => {
     if (!userData.email || !userData.password) {
@@ -57,11 +58,15 @@ const getByEmail = async (email) => {
         throw new Error('User not found');
     }
 
+    if (user.iban) {
+        user.iban = decryptData(user.iban).slice(0, 4) + " XXXX XXXX XXXX XXXX";
+    }
+
     const nextInvoiceNum = getNextInvoiceNum(user.invoices[0]);
     user.nextInvoiceNum = nextInvoiceNum;
 
     return user;
-}
+};
 
 const authService = {
     login,

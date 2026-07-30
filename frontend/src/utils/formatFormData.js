@@ -1,5 +1,5 @@
 export const formatIban = (iban) => {
-    if (!iban) return '';
+    if (!iban) return "";
     const cleanedIban = iban.replace(/\s+/g, '').toUpperCase();
     const formattedIban = cleanedIban.replace(/(.{4})(?=.)/g, '$1 ').trim();
     return formattedIban;
