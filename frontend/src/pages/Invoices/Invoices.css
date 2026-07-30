@@ -144,6 +144,20 @@
   color: #991b1b;
 }
 
+.invoices-table__status-cell {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 8px;
+}
+
+.invoices-table__status-loading {
+  font-size: 12px;
+  font-weight: 600;
+  color: #2563eb;
+  padding-left: 8px;
+}
+
 .invoices-table__action {
   text-align: right;
 }

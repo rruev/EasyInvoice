@@ -4,18 +4,14 @@ import jwt from 'jsonwebtoken';
 import userRepo from '../repositories/user.repo.js';
 import tokenUtil from '../utils/token.util.js';
 import { getNextInvoiceNum } from '../utils/invoiceNum.util.js';
-import { decryptData } from '../utils/encrypt.util.js';
+import { encryptData, decryptData } from '../utils/encrypt.util.js';
 
 const register = async (userData) => {
-    if (!userData.email || !userData.password) {
-        throw new Error('Email and password are required');
-    }
-
-    if (userData.password !== userData.confirmPassword) {
-        throw new Error('Passwords do not match');
-    }
-
     const hashedPassword = await bcrypt.hash(userData.password, 10);
+
+    if (userData.iban) {
+        userData.iban = encryptData(userData.iban);
+    }
 
     userData.confirmPassword = undefined;
 

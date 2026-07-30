@@ -2,32 +2,48 @@ import "./Invoices.css";
 import { useUser } from "../../hooks/useUser";
 import { useInvoice } from "../../hooks/useInvoice";
 import { useState } from "react";
+import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
 
 const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
   const { updateInvoiceStatus, removeInvoice } = useInvoice();
-  const [deletingInvoiceIds, setDeletingInvoiceIds] = useState([]);
+  const [deletingInvoiceId, setDeletingInvoiceId] = useState(null); // for passing the delete id to the confirm modal
+  const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [updatingInvoiceId, setUpdatingInvoiceId] = useState(null);
 
   const handleOnChange = async (e, invoiceId) => {
-    await updateInvoiceStatus(invoiceId, e.target.value);
-    await fetchUser();
+    setUpdatingInvoiceId(invoiceId);
+
+    try {
+      await updateInvoiceStatus(invoiceId, e.target.value);
+      await fetchUser();
+    } finally {
+      setUpdatingInvoiceId(null);
+    }
   };
 
-  const handleClickDelete = async (id) => {
-    if (deletingInvoiceIds.includes(id)) {
+
+  const handleClickDelete = (id) => {
+    setDeletingInvoiceId(id);
+    setShowDeleteModal(true);
+  };
+
+  const confirmDelete = async (id) => {
+    if (deletingInvoiceIdList.includes(id)) {
       return;
     }
 
-    setDeletingInvoiceIds((prev) => [...prev, id]);
+    setDeletingInvoiceIdList((prev) => [...prev, id]);
     await new Promise((resolve) => setTimeout(resolve, DELETE_ANIMATION_MS));
 
     try {
       await removeInvoice(id);
       await fetchUser();
     } finally {
-      setDeletingInvoiceIds((prev) => prev.filter((invoiceId) => invoiceId !== id));
+      setDeletingInvoiceIdList((prev) => prev.filter((invoiceId) => invoiceId !== id));
     }
   };
 
@@ -62,8 +78,8 @@ function Invoices() {
               {userData?.invoices?.map((invoice, index) => (
                 <tr
                   key={invoice.id ?? invoice.invoiceNum ?? index}
-                  className={`invoices-table__row ${deletingInvoiceIds.includes(invoice.id) ? "invoices-table__row--deleting" : ""}`}
-                  aria-busy={deletingInvoiceIds.includes(invoice.id)}
+                  className={`invoices-table__row ${deletingInvoiceIdList.includes(invoice.id) ? "invoices-table__row--deleting" : ""}`}
+                  aria-busy={deletingInvoiceIdList.includes(invoice.id)}
                 >
                   <td>
                     <strong>{invoice.invoiceNum ?? "-"}</strong>
@@ -74,15 +90,18 @@ function Invoices() {
                   </td>
                   <td>{invoice.issuedAt ?? invoice.date ?? "-"}</td>
                   <td>
-                    <select
-                      className={`invoice-status invoice-status--${invoice.status ?? "draft"}`}
-                      value={invoice.status ?? "pending"}
-                      onChange={(e) => handleOnChange(e, invoice.id)}
-                      disabled={deletingInvoiceIds.includes(invoice.id)}
-                    >
-                      <option value="pending">Pending</option>
-                      <option value="paid">Paid</option>
-                    </select>
+                    <div className="invoices-table__status-cell">
+                      <select
+                        className={`invoice-status invoice-status--${invoice.status ?? "draft"}`}
+                        value={invoice.status ?? "pending"}
+                        onChange={(e) => handleOnChange(e, invoice.id)}
+                        disabled={deletingInvoiceIdList.includes(invoice.id) || updatingInvoiceId === invoice.id}
+                      >
+                        <option value="pending">Pending</option>
+                        <option value="paid">Paid</option>
+                      </select>
+                      {updatingInvoiceId === invoice.id && <span className="invoices-table__status-loading">Updating...</span>}
+                    </div>
                   </td>
                   <td>{invoice.total ?? "-"} &euro;</td>
                   <td className="invoices-table__action">
@@ -90,10 +109,10 @@ function Invoices() {
                       type="button"
                       className="invoices-table__delete"
                       onClick={() => handleClickDelete(invoice.id)}
-                      disabled={deletingInvoiceIds.includes(invoice.id)}
+                      disabled={deletingInvoiceIdList.includes(invoice.id)}
                       aria-label={`Delete invoice ${invoice.invoiceNum ?? invoice.number ?? index + 1}`}
                     >
-                      {deletingInvoiceIds.includes(invoice.id) ? "Deleting..." : "Delete"}
+                      {deletingInvoiceIdList.includes(invoice.id) ? "Deleting..." : "Delete"}
                     </button>
                   </td>
                 </tr>
@@ -106,6 +125,16 @@ function Invoices() {
           <h3>No invoices yet</h3>
           <p>Your invoice list will appear here once data is passed into the component.</p>
         </div>
+      )}
+
+      {showDeleteModal && (
+        <ConfirmDeleteMessage
+          onConfirm={confirmDelete}
+          onCancel={() => setShowDeleteModal(false)}
+          isLoading={deletingInvoiceIdList.length > 0}
+          target={"Invoice"}
+          id={deletingInvoiceId}
+        />
       )}
     </section>
   );

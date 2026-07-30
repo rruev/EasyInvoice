@@ -1,7 +1,8 @@
 import "./BusinessProfile.css";
 import * as z from "zod";
-import { formatIban } from "../../utils/formatFormData";
+import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
 
+import { formatIban } from "../../utils/formatFormData";
 import { useUser } from "../../hooks/useUser";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -13,6 +14,7 @@ function BusinessProfile() {
 
     const [readOnly, setReadOnly] = useState(true);
     const [isSaving, setIsSaving] = useState(false);
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [formData, setFormData] = useState({});
 
     const form = useRef(null);
@@ -54,6 +56,10 @@ function BusinessProfile() {
     };
 
     const handleDeleteUser = async () => {
+        setShowDeleteModal(true);
+    };
+
+    const confirmDeleteUser = async () => {
         await deleteUser();
         navigate("/");
     };
@@ -163,7 +169,7 @@ function BusinessProfile() {
                 <div className="business-profile__actions">
                     {readOnly ? (
                         <button type="button" className="business-profile__button business-profile__button--edit" onClick={() => setReadOnly(!readOnly)}>
-                            Edit User
+                            Edit Account Information
                         </button>
 
                     ) : (
@@ -190,9 +196,18 @@ function BusinessProfile() {
                         </>
                     )}
                     <button type="button" className="business-profile__button business-profile__button--delete" onClick={handleDeleteUser} disabled={isLoading || isSaving}>
-                        Delete User
+                        Delete Account
                     </button>
                 </div>
+
+                {showDeleteModal && (
+                    <ConfirmDeleteMessage
+                        onConfirm={confirmDeleteUser}
+                        onCancel={() => setShowDeleteModal(false)}
+                        isLoading={isLoading}
+                        target={"Account"}
+                    />
+                )}
             </div>
         </section>
     );
