@@ -43,7 +43,10 @@ function InvoiceForm() {
             formData.clientAddress = client?.address;
         }
 
+        formData.template = formData.template || 'generic'; // testing line
+
         const pdfData = await generatePdf(formData);
+        console.log(pdfData ? true : false);
         await previewPdf(pdfData);
         await fetchUser();
         form.reset();

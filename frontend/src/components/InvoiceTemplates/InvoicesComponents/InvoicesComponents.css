@@ -1,0 +1,79 @@
+.invoice-container {
+    font-family: Arial, sans-serif;
+    color: #111;
+    padding: 42px;
+    font-size: 14px;
+    line-height: 1.35;
+}
+
+.top-meta {
+    text-align: right;
+    margin-bottom: 28px;
+    font-size: 13px;
+}
+
+.client {
+    margin-bottom: 28px;
+    white-space: pre-line;
+}
+
+.invoice-title {
+    font-size: 28px;
+    font-weight: 700;
+    margin: 6px 0 14px;
+}
+
+.invoice-info {
+    margin-bottom: 18px;
+    text-align: right;
+}
+
+.invoice-info .row {
+    margin-bottom: 4px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 8px;
+}
+
+th,
+td {
+    padding: 10px 8px;
+    text-align: left;
+    border-top: 1px solid #222;
+}
+
+th {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+td.right,
+th.right {
+    text-align: right;
+}
+
+.sum-row td {
+    border-top: 1px solid #222;
+    border-bottom: 2px solid #222;
+    font-weight: 700;
+}
+
+.note {
+    margin-top: 26px;
+    font-size: 13px;
+}
+
+.footer {
+    margin-top: 62px;
+    font-size: 12px;
+    display: flex;
+    justify-content: space-between;
+    gap: 24px;
+}
+
+.footer p {
+    margin: 0 0 2px;
+}

@@ -1,8 +1,19 @@
 export const previewPdf = async (pdfData) => {
-    if (pdfData) {
-        const pdfUrl = URL.createObjectURL(pdfData);
-        window.open(pdfUrl, "_blank");
-    } else {
-        console.error("No PDF data available for preview.");
+    if (!pdfData || !(pdfData instanceof Blob)) {
+        console.error("No valid PDF data available for preview.");
+        return;
     }
+
+    const pdfUrl = URL.createObjectURL(pdfData);
+    const newWindow = window.open(pdfUrl, "_blank", "noopener,noreferrer");
+
+    if (!newWindow) {
+        URL.revokeObjectURL(pdfUrl);
+        console.error("The browser blocked the PDF preview popup.");
+        return;
+    }
+
+    setTimeout(() => {
+        URL.revokeObjectURL(pdfUrl);
+    }, 1000);
 };

@@ -17,30 +17,31 @@ const generate = async (invoiceData) => {
     }
 
     const preparedData = prepareData(invoiceData);
-    
+
     try {
         const content = await createHtml(preparedData);
-    
+
         const pdfBuffer = await generatePdf(content);
+
+
+        //save the invoice information to the database
+        if (invoiceData.userId) {
+            await invoiceRepo.create({
+                ...invoiceData,
+                status: 'pending',
+                price: invoiceData.price,
+                total: preparedData.totalPrice,
+                issuedAt: preparedData.issuedAt,
+                workedAt: preparedData.workedAt,
+            });
+        }
+
+        return pdfBuffer;
+
     } catch (error) {
         console.error('Error generating PDF:', error);
         throw error;
     }
-
-
-    //save the invoice information to the database
-    if (invoiceData.userId) {
-        await invoiceRepo.create({
-            ...invoiceData,
-            status: 'pending',
-            price: invoiceData.price,
-            total: preparedData.totalPrice,
-            issuedAt: preparedData.issuedAt,
-            workedAt: preparedData.workedAt,
-        });
-    }
-
-    return pdfBuffer;
 }
 
 const update = async (invoiceId, updatedData) => {

@@ -17,4 +17,5 @@ export const invoiceSchema = z.object({
     workedAt: z.string({ message: 'Performed date is required' }).regex(/^\d{2}\.\d{2}\.\d{4}$/, { message: "Performed date must be in the format DD.MM.YYYY" }).trim().optional(),
     quantity: z.coerce.number({ message: 'Quantity must be a positive number' }).positive({ message: "Quantity must be a positive number" }),
     price: z.coerce.number({ message: 'Price must be a positive number' }).positive({ message: "Price must be a positive number" }),
+    template: z.enum(['routesetting', 'generic'], { message: 'Invalid template type' }).optional(),
 })

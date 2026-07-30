@@ -21,7 +21,12 @@ export const generatePdf = async (content) => {
 }
 
 export const createHtml = async (invoiceData) => {
-    const htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.template.html', 'utf-8');
+    let htmlTemplate;
+    if (invoiceData.template === 'routesetting') {
+        htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.routesetting.html', 'utf-8');
+    } else {
+        htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.generic.html', 'utf-8');
+    }
 
     // TODO: Add flexible handling for diferent template structures and data formats. 
     // For now, we will assume a flat structure for invoiceData as we have only one template.
@@ -45,7 +50,7 @@ export const createHtml = async (invoiceData) => {
         bankName: invoiceData.bankName ?? '',
         bic: invoiceData.bic ?? '',
         iban: invoiceData.iban ?? '',
-        taxId: invoiceData.taxId ? `Steuernummer: ${invoiceData.taxId}` : '',
+        taxId: invoiceData.taxId ? (invoiceData.template === 'routesetting' ? `Steuernummer: ${invoiceData.taxId}` : `Tax ID: ${invoiceData.taxId}`) : '',
     };
 
     const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (test, key) => {
