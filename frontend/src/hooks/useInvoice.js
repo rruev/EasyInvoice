@@ -48,7 +48,7 @@ export const useInvoice = () => {
         }
     }
 
-    return { pdfData, isLoading, error, setError, generatePdf, updateInvoiceStatus, removeInvoice };
+    return { pdfData, isLoading, error, setError, generatePdf, updateInvoiceStatus, removeInvoice, setPdfData };
 }
 
 export default useInvoice;

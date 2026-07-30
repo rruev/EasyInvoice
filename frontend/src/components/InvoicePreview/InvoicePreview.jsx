@@ -1,136 +1,50 @@
 import "./InvoicePreview.css";
+import { useEffect, useState } from "react";
 
-import { useInvoice } from "../../hooks/useInvoice";
+function InvoicePreview({ pdfData, setPdfData, onBack }) {
+  const [pdfUrl, setPdfUrl] = useState(null);
 
-function InvoicePreview() {
+  useEffect(() => {
+    if (!pdfData || !(pdfData instanceof Blob)) {
+      setPdfUrl(null);
+      return;
+    }
 
-    const { pdfData } = useInvoice();
+    const objectUrl = URL.createObjectURL(pdfData);
+    setPdfUrl(objectUrl);
 
-    const hadlePreview = async () => {
-        if (pdfData) {
-            const pdfUrl = URL.createObjectURL(pdfData);
-            window.open(pdfUrl, "_blank");
-        } else {
-            console.error("No PDF data available for preview.");
-        }
+    return () => {
+      URL.revokeObjectURL(objectUrl);
     };
-
-    useEffect(() => {
-        hadlePreview();
-    }, [pdfData]);
+  }, [pdfData]);
 
   return (
-
     <div className="invoice-preview">
+      <h2>Preview</h2>
+      <div className="invoice-preview__button-container">
 
-      <h2>
-        Preview
-      </h2>
-
-
-      <div className="invoice">
-
-
-        <div className="invoice-header">
-
-
-          <div>
-
-            <h2>
-              My Company
-            </h2>
-
-            <p>
-              info@company.com
-            </p>
-
-          </div>
-
-
-          <div>
-
-            <strong>
-              Invoice #001
-            </strong>
-
-            <p>
-              11 July 2026
-            </p>
-
-          </div>
-
-
-        </div>
-
-
-        <h3>
-          Bill To
-        </h3>
-
-
-        <p>
-          Customer Name
-          <br/>
-          customer@email.com
-        </p>
-
-
-        <table>
-
-          <tbody>
-
-          <tr>
-            <th>
-              Description
-            </th>
-
-            <th>
-              Qty
-            </th>
-
-            <th>
-              Price
-            </th>
-
-          </tr>
-
-
-          <tr>
-
-            <td>
-              Website Design
-            </td>
-
-            <td>
-              1
-            </td>
-
-            <td>
-              €500
-            </td>
-
-          </tr>
-
-
-          </tbody>
-
-        </table>
-
-
-        <div className="total">
-
-          Total: €550
-
-        </div>
-
-
+      <button className="invoice-preview__clear" onClick={() => { setPdfUrl(null); setPdfData(null); }}>
+        Clear preview
+      </button>
+      <button className="invoice-preview__choose-template" onClick={onBack}>
+        Choose another template
+      </button>
       </div>
 
-
+      {pdfUrl ? (
+        <iframe
+          className="invoice-preview__frame"
+          src={pdfUrl}
+          title="PDF preview"
+        />
+      ) : (
+        <div className="invoice-preview__placeholder">
+          <p>No PDF generated yet.</p>
+          <span>Generate an invoice to preview it here.</span>
+        </div>
+      )}
     </div>
-
   );
 }
-
 
 export default InvoicePreview;

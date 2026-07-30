@@ -35,9 +35,9 @@
 }
 
 .home-skeleton__card,
-.home-skeleton__form {
+.home-skeleton__panel {
   background: #ffffff;
-  border-radius: 14px;
+  border-radius: 18px;
   box-shadow: 0 16px 38px rgba(15, 23, 42, 0.08);
 }
 
@@ -48,17 +48,23 @@
   gap: 12px;
 }
 
-.home-skeleton__form {
-  max-width: 800px;
-  margin: 0 auto;
-  width: 100%;
-  padding: 25px;
+.home-skeleton__workspace {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 24px;
+}
+
+.home-skeleton__panel {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
 .home-skeleton__fields {
   display: grid;
   gap: 12px;
-  margin-top: 18px;
+  margin-top: 4px;
 }
 
 .home-skeleton__field {
@@ -68,7 +74,7 @@
 }
 
 .home-skeleton__line {
-  border-radius: 8px;
+  border-radius: 10px;
   background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
   background-size: 220% 100%;
   animation: homeSkeletonPulse 1.45s ease-in-out infinite;
@@ -94,9 +100,18 @@
   height: 32px;
 }
 
-.home-skeleton__form-title {
+.home-skeleton__panel-title {
   width: 180px;
   height: 28px;
+}
+
+.home-skeleton__panel-subtitle {
+  width: 140px;
+  height: 16px;
+}
+
+.home-skeleton__panel-subtitle--short {
+  width: 90px;
 }
 
 .home-skeleton__field-label {
@@ -112,7 +127,36 @@
 .home-skeleton__button {
   width: 160px;
   height: 44px;
-  margin-top: 22px;
+  margin-top: 14px;
+}
+
+.home-skeleton__preview-box {
+  min-height: 360px;
+  border: 1px dashed #cbd5e1;
+  border-radius: 16px;
+  background: #f8fafc;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.home-skeleton__preview-bar {
+  width: 100%;
+  height: 16px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #e5e7eb 0%, #f3f4f6 50%, #e5e7eb 100%);
+  animation: homeSkeletonPulse 1.45s ease-in-out infinite;
+}
+
+.home-skeleton__preview-bar--short {
+  width: 72%;
+}
+
+.home-skeleton__preview-bar--tall {
+  flex: 1;
+  min-height: 220px;
+  border-radius: 12px;
 }
 
 @keyframes homeSkeletonPulse {
@@ -134,7 +178,8 @@
 }
 
 @media (max-width: 900px) {
-  .home-skeleton__cards {
+  .home-skeleton__cards,
+  .home-skeleton__workspace {
     grid-template-columns: 1fr;
   }
 

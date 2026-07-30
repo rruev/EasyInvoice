@@ -18,20 +18,33 @@ function HomeSkeleton() {
                     ))}
                 </div>
 
-                <section className="home-skeleton__form" aria-hidden="true">
-                    <div className="home-skeleton__line home-skeleton__form-title" />
+                <div className="home-skeleton__workspace" aria-hidden="true">
+                    <section className="home-skeleton__panel home-skeleton__panel--form">
+                        <div className="home-skeleton__line home-skeleton__panel-title" />
+                        <div className="home-skeleton__line home-skeleton__panel-subtitle" />
 
-                    <div className="home-skeleton__fields">
-                        {Array.from({ length: 6 }).map((_, index) => (
-                            <div className="home-skeleton__field" key={index}>
-                                <div className="home-skeleton__line home-skeleton__field-label" />
-                                <div className="home-skeleton__line home-skeleton__field-input" />
-                            </div>
-                        ))}
-                    </div>
+                        <div className="home-skeleton__fields">
+                            {Array.from({ length: 6 }).map((_, index) => (
+                                <div className="home-skeleton__field" key={index}>
+                                    <div className="home-skeleton__line home-skeleton__field-label" />
+                                    <div className="home-skeleton__line home-skeleton__field-input" />
+                                </div>
+                            ))}
+                        </div>
 
-                    <div className="home-skeleton__line home-skeleton__button" />
-                </section>
+                        <div className="home-skeleton__line home-skeleton__button" />
+                    </section>
+
+                    <section className="home-skeleton__panel home-skeleton__panel--preview">
+                        <div className="home-skeleton__line home-skeleton__panel-title" />
+                        <div className="home-skeleton__line home-skeleton__panel-subtitle home-skeleton__panel-subtitle--short" />
+                        <div className="home-skeleton__preview-box">
+                            <div className="home-skeleton__preview-bar" />
+                            <div className="home-skeleton__preview-bar home-skeleton__preview-bar--short" />
+                            <div className="home-skeleton__preview-bar home-skeleton__preview-bar--tall" />
+                        </div>
+                    </section>
+                </div>
             </section>
         </main>
     );

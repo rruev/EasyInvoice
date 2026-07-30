@@ -28,7 +28,7 @@ function InvoiceFormSkeleton() {
             <div className="skeleton-message-wrap">
                 <div className="skeleton-pulse-dot" />
                 <p className="skeleton-message">
-                    Your PDF is generating. A new tab will open for preview.
+                    Your PDF is generating. You will see it in the preview section on the right.
                 </p>
             </div>
         </section>

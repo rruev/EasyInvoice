@@ -1,7 +1,6 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
 import { useState } from "react";
-import useInvoice from "../../hooks/useInvoice";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
@@ -9,8 +8,7 @@ import { previewPdf } from "../../utils/previewPdf.util";
 import { formatIban, formatDate } from "../../utils/formatFormData";
 import * as z from "zod";
 
-function InvoiceForm() {
-    const { isLoading, error, setError, generatePdf } = useInvoice();
+function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
     const { userData, fetchUser } = useUser();
     const { createClient, isLoading: isClientLoading } = useClient();
 
@@ -43,11 +41,9 @@ function InvoiceForm() {
             formData.clientAddress = client?.address;
         }
 
-        formData.template = formData.template || 'generic'; // testing line
+        formData.template = template;
 
         const pdfData = await generatePdf(formData);
-        console.log(pdfData ? true : false);
-        await previewPdf(pdfData);
         await fetchUser();
         form.reset();
     };
