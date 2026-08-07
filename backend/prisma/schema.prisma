@@ -39,7 +39,7 @@ model Invoice {
   clientId   String
   invoiceNum String
   issuedAt   String
-  workedAt   String
+  workedAt   String?
   quantity   Int
   price      Float
   total      Float

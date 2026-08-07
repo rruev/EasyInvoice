@@ -11,7 +11,16 @@ import { useParams } from "react-router-dom";
 
 function ClientProfileForm() {
   const { userData, fetchUser } = useUser();
-  const { fetchClientById, updateClient, deleteClient, createClient, isLoading, error, setError } = useClient();
+  const { 
+    fetchClientById, 
+    updateClient, 
+    deleteClient, 
+    createClient,
+    isLoading, 
+    error, 
+    setError 
+  } = useClient();
+  
   const { clientId } = useParams();
   const navigate = useNavigate();
   const form = useRef(null);

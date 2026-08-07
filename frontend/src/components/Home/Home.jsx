@@ -47,7 +47,7 @@ function Home() {
                             setError={setError}
                             template={template}
                         />
-                        <InvoicePreview pdfData={pdfData} setPdfData={setPdfData} onBack={onBackToTemplates} />
+                        <InvoicePreview pdfData={pdfData} setPdfData={setPdfData} onBack={onBackToTemplates} template={template} />
                     </>
                 ) : (
                     <InvoiceTemplates onClickTemplate={onChooseForm} setTemplate={setTemplate} />

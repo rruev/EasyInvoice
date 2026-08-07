@@ -343,16 +343,21 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             />
             {error && error.issuedAt && <p className="invoice-form-error">{error.issuedAt[0]}</p>}
 
-            <label>
-                Performed Date
-            </label>
+            {template === 'routesetting' &&
+                <>
+                    <label>
+                        Service Date
+                    </label>
 
-            <input
-                name="workedAt"
-                placeholder="DD.MM.YYYY"
-                onChange={handleChange}
-            />
-            {error && error.workedAt && <p className="invoice-form-error">{error.workedAt[0]}</p>}
+                    <input
+                        name="workedAt"
+                        placeholder="DD.MM.YYYY"
+                        onChange={handleChange}
+                    />
+                    {error && error.workedAt && <p className="invoice-form-error">{error.workedAt[0]}</p>}
+                </>
+            }
+
 
             <div className="items">
 
@@ -362,7 +367,12 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
                 <div className="item">
 
-                    <input name="itemDescription" defaultValue="Routenbau / Routesetting in Kletterhalle" placeholder="Description" readOnly />
+                    <input
+                        name="itemDescription"
+                        defaultValue={template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : ''}
+                        placeholder="Description"
+                        readOnly={template === 'routesetting'}
+                    />
                     <input name="quantity" placeholder="Qty" defaultValue="1" onChange={handleChange} />
                     {error && error.quantity && <p className="invoice-form-error">{error.quantity[0]}</p>}
                     <input name="price" placeholder="Price" onChange={handleChange} />

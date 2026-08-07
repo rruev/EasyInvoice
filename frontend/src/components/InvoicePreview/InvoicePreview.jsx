@@ -1,8 +1,9 @@
 import "./InvoicePreview.css";
 import { useEffect, useState } from "react";
 import GenericTemplate from "../InvoiceTemplates/InvoicesComponents/GenericInvoice";
+import RoutesettingTemplate from "../InvoiceTemplates/InvoicesComponents/RoutesettingInvoice";
 
-function InvoicePreview({ pdfData, setPdfData, onBack }) {
+function InvoicePreview({ pdfData, setPdfData, onBack, template }) {
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
@@ -39,11 +40,7 @@ function InvoicePreview({ pdfData, setPdfData, onBack }) {
           title="PDF preview"
         />
       ) : (
-        // <div className="invoice-preview__placeholder">
-        //   <p>No PDF generated yet.</p>
-        //   <span>Generate an invoice to preview it here.</span>
-        // </div>
-        <GenericTemplate />
+        template === 'routesetting' ? <RoutesettingTemplate /> : <GenericTemplate />
       )}
     </div>
   );
