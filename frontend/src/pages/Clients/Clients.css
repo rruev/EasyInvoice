@@ -66,6 +66,7 @@
   transform: translateY(-2px);
   box-shadow: 0 14px 28px rgba(15, 23, 42, 0.08);
   background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  border: 1px solid #e5e7eb;
   cursor: pointer;
 }
 

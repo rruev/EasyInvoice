@@ -110,6 +110,27 @@
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
 
+.client-profile__button:disabled {
+  opacity: 0.75;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.client-profile__loading-content {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.client-profile__spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid color-mix(in srgb, currentColor 35%, transparent);
+  border-top-color: currentColor;
+  border-radius: 50%;
+  animation: clientProfileSpin 0.75s linear infinite;
+}
+
 .client-profile__button:hover {
   transform: translateY(-1px);
 }
@@ -171,6 +192,12 @@
 
   to {
     background-position: -100% 0;
+  }
+}
+
+@keyframes clientProfileSpin {
+  to {
+    transform: rotate(360deg);
   }
 }
 

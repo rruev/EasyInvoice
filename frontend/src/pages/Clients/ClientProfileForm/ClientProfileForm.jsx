@@ -18,6 +18,7 @@ function ClientProfileForm() {
 
   const [clientData, setClientData] = useState(null);
   const [formData, setFormData] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!clientId) {
@@ -39,6 +40,7 @@ function ClientProfileForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
     const data = Object.fromEntries(new FormData(form.current).entries());
     const updatedData = {
       name: data.name,
@@ -47,14 +49,18 @@ function ClientProfileForm() {
       phone: data.phone || null,
     };
 
-    if (!clientId) {
-      const newClient = await createClient(updatedData);
-    } else {
-      const updatedClient = await updateClient(clientId, updatedData);
-      setClientData(updatedClient);
+    try {
+      if (!clientId) {
+        await createClient(updatedData);
+      } else {
+        const updatedClient = await updateClient(clientId, updatedData);
+        setClientData(updatedClient);
+      }
+      await fetchUser();
+      navigate("/clients");
+    } finally {
+      setIsSubmitting(false);
     }
-    await fetchUser();
-    navigate("/clients");
   };
 
   const handleDeleteClient = async () => {
@@ -91,15 +97,14 @@ function ClientProfileForm() {
       <div className="client-profile__card">
         <div className="client-profile__header">
           <div>
-            <p className="client-profile__eyebrow">Client Details</p>
-            <h2 className="client-profile__title">Edit Client</h2>
+            <h2 className="client-profile__title">{clientId ? "Edit Client" : "Add Client"}</h2>
             <p className="client-profile__subtitle">
-              Update client information or remove the client from your directory.
+              {clientId ? "Update the client information below." : "Fill out the form below to add a new client."}
             </p>
           </div>
         </div>
 
-        <form className="client-profile__form" ref={form} onSubmit={handleSubmit}>
+        <form className="client-profile__form" ref={form} onSubmit={handleSubmit} aria-busy={isSubmitting}>
           <div className="client-profile__field">
             <label htmlFor="client-full-name">Client name</label>
             <input
@@ -108,6 +113,7 @@ function ClientProfileForm() {
               name="name"
               defaultValue={clientData?.name}
               placeholder="Client name"
+              readOnly={isSubmitting}
               onChange={handleChange}
             />
             {error?.name && <p className="client-profile__error">{error.name[0]}</p>}
@@ -120,6 +126,7 @@ function ClientProfileForm() {
               name="email"
               defaultValue={clientData?.email}
               placeholder="client@email.com"
+              readOnly={isSubmitting}
               onChange={handleChange}
             />
             {error?.email && <p className="client-profile__error">{error.email[0]}</p>}
@@ -133,6 +140,7 @@ function ClientProfileForm() {
               name="address"
               defaultValue={clientData?.address}
               placeholder="Street and city"
+              readOnly={isSubmitting}
               onChange={handleChange}
             />
             {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
@@ -146,6 +154,7 @@ function ClientProfileForm() {
               name="phone"
               defaultValue={clientData?.phone}
               placeholder="+49 000 000000"
+              readOnly={isSubmitting}
               onChange={handleChange}
             />
             {error?.phone && <p className="client-profile__error">{error.phone[0]}</p>}
@@ -155,12 +164,21 @@ function ClientProfileForm() {
             <NavLink to="/clients" className="client-profile__back-link">
               &larr; Back to Clients
             </NavLink>
-            <button type="submit" className="client-profile__button client-profile__button--edit">
-              Save Changes
+            <button type="submit" className="client-profile__button client-profile__button--edit" disabled={isSubmitting} aria-busy={isSubmitting}>
+              {isSubmitting ? (
+                <span className="client-profile__loading-content">
+                  <span className="client-profile__spinner" aria-hidden="true" />
+                  {clientId ? "Saving..." : "Adding..."}
+                </span>
+              ) : (
+                clientId ? "Save Changes" : "Add Client"
+              )}
             </button>
-            <button type="button" className="client-profile__button client-profile__button--delete" onClick={handleDeleteClient}>
-              Delete Client
-            </button>
+            {clientId && (
+              <button type="button" className="client-profile__button client-profile__button--delete" onClick={handleDeleteClient} disabled={isSubmitting || isLoading}>
+                Delete Client
+              </button>
+            )}
           </div>
           {error?.general && <p className="client-profile__error">{error.general[0]}</p>}
         </form>
