@@ -7,11 +7,18 @@ import { isAuthenticated } from "../middleware/auth.middleware.js";
 const invoiceController = Router();
 
 invoiceController.post('/generate', async (req, res) => {
-    
+    const user = req.user;
+
+    if (!user) {
+        const pdfBuffer = await invoiceService.generate({ ...req.body, userId: null });
+
+        res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
+    }
+
     try {
         const invoiceData = invoiceSchema.parse(req.body);
         
-        const pdfBuffer = await invoiceService.generate({ ...invoiceData, userId: req.user?.id });
+        const pdfBuffer = await invoiceService.generate({ ...invoiceData, userId: user.id });
 
         res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
     } catch (error) {
