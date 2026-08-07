@@ -28,8 +28,9 @@ export const createHtml = async (invoiceData) => {
         htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.generic.html', 'utf-8');
     }
 
-    // TODO: Add flexible handling for diferent template structures and data formats. 
-    // For now, we will assume a flat structure for invoiceData as we have only one template.
+    // TODO: Add flexible handling for different template structures and data formats.
+    // For now, we will assume a flat structure for invoiceData as we have only two templates.
+    // For next versions new way of generating templates should be implemented
 
     const templateData = {
         businessName: invoiceData.businessName ?? '',

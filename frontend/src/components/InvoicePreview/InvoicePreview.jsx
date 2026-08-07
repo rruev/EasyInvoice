@@ -1,5 +1,6 @@
 import "./InvoicePreview.css";
 import { useEffect, useState } from "react";
+import GenericTemplate from "../InvoiceTemplates/InvoicesComponents/GenericInvoice";
 
 function InvoicePreview({ pdfData, setPdfData, onBack }) {
   const [pdfUrl, setPdfUrl] = useState(null);
@@ -38,10 +39,11 @@ function InvoicePreview({ pdfData, setPdfData, onBack }) {
           title="PDF preview"
         />
       ) : (
-        <div className="invoice-preview__placeholder">
-          <p>No PDF generated yet.</p>
-          <span>Generate an invoice to preview it here.</span>
-        </div>
+        // <div className="invoice-preview__placeholder">
+        //   <p>No PDF generated yet.</p>
+        //   <span>Generate an invoice to preview it here.</span>
+        // </div>
+        <GenericTemplate />
       )}
     </div>
   );

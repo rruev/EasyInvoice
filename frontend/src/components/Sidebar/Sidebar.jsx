@@ -1,11 +1,13 @@
 import "./Sidebar.css";
 
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
 import SidebarSkeleton from "./SidebarSkeleton";
 
 function Sidebar() {
   const { userData, isLoading } = useUser();
+
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <SidebarSkeleton />;
@@ -14,7 +16,7 @@ function Sidebar() {
   return (
     <aside className="sidebar">
 
-      <div className="logo">
+      <div className="logo" onClick={() => navigate("/")}>
         EasyInvoice
         <img src="/favicon.png" alt="EasyInvoice Logo" />
       </div>

@@ -2,7 +2,7 @@ import "./Header.css";
 import { useUser } from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
 
-function Header() {
+function Header({ setPdfData }) {
   const { userData, signOut } = useUser();
   const navigate = useNavigate();
 
@@ -16,7 +16,7 @@ function Header() {
       <div className="profile">
         {userData ? (userData.businessName ? userData.businessName : userData.email) : "Guest"}
         {userData && (
-          <button className="signout-button" onClick={async (e) => { e.preventDefault(); await signOut(); navigate("/"); }}>
+          <button className="signout-button" onClick={async (e) => { e.preventDefault(); setPdfData(null); await signOut(); navigate("/");  }}>
             Sign Out
           </button>
         )}

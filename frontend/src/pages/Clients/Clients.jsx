@@ -20,6 +20,17 @@ function Clients() {
       </div>
 
       <div className="customers-panel__grid">
+        <article className="add-client-card" onClick={() => navigate("/clients/addBusinessClient")}>
+          <div className="add-client-card__header">
+            <div>
+              <h3 className="add-client-card__name">+ Add Client</h3>
+              <p className="add-client-card__meta">Create a new client profile</p>
+            </div>
+          </div>
+
+
+        </article>
+
         {userData?.clients?.length ? (
           userData?.clients?.map((customer, index) => (
             <article className="customer-card" key={customer.id ?? customer.name ?? index} onClick={() => navigate(`/clients/editBusinessClient/${customer.id}`)}>

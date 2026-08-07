@@ -29,6 +29,7 @@ function App() {
             <Route path="/invoices" element={<Invoices />} />
             <Route path="/clients" element={<Clients />} />
             <Route path="/clients/editBusinessClient/:clientId" element={<ClientProfileForm />} />
+            <Route path="/clients/addBusinessClient" element={<ClientProfileForm />} />
             <Route path="/business-profile" element={<BusinessProfile />} />
             {/* <Route path="/settings" element={<></>} /> */}
           </Route>

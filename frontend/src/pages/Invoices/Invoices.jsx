@@ -1,8 +1,10 @@
 import "./Invoices.css";
+import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
+
 import { useUser } from "../../hooks/useUser";
 import { useInvoice } from "../../hooks/useInvoice";
 import { useState } from "react";
-import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
+import { useNavigate } from "react-router-dom";
 
 const DELETE_ANIMATION_MS = 320;
 
@@ -13,6 +15,8 @@ function Invoices() {
   const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [updatingInvoiceId, setUpdatingInvoiceId] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleOnChange = async (e, invoiceId) => {
     setUpdatingInvoiceId(invoiceId);
@@ -55,6 +59,7 @@ function Invoices() {
           <h2 className="invoices-panel__title">Invoice Register</h2>
         </div>
 
+        <button type="button" onClick={() => navigate("/")}>New Invoice</button>
         <span className="invoices-panel__count">
           {userData?.invoices?.length ?? 0} records
         </span>

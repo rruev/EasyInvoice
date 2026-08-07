@@ -8,13 +8,13 @@ import InvoicePreview from "../InvoicePreview/InvoicePreview";
 import HomeSkeleton from "./HomeSkeleton";
 
 import { useUser } from "../../hooks/useUser";
-import useInvoice from "../../hooks/useInvoice";
 import { useState } from "react";
+import useInvoice from "../../hooks/useInvoice";
 
 function Home() {
     const { userData, isLoading } = useUser();
     const { pdfData, setPdfData, isLoading: invoiceLoading, error, setError, generatePdf } = useInvoice();
-    const [showForm, setShowForm] = useState(false);
+    const [showForm, setShowForm] = useState(true);
     const [template, setTemplate] = useState('generic');
 
     const onChooseForm = () => {
@@ -33,7 +33,7 @@ function Home() {
     return (
         <main className="main">
 
-            <Header />
+            <Header setPdfData={setPdfData} />
 
             {userData && <StatsCards />}
 

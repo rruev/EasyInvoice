@@ -184,7 +184,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             />
             {error && error.iban && <p className="invoice-form-error">{error.iban[0]}</p>}
 
-             <label>
+            <label>
                 Steuernummer / Tax ID
             </label>
 
@@ -286,7 +286,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                             </div>
                             <div className="buttons_safe_cancel">
                                 <button
-                                    className="client-picker__button"
+                                    className="invoice-form__button"
                                     type="button"
                                     onClick={handleAddClient}
                                     disabled={isClientLoading}
@@ -301,13 +301,13 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                                         "Save"
                                     )}
                                 </button>
-                                <button className="client-picker__button" type="button" onClick={() => setAddNewClient(false)} disabled={isClientLoading}>
+                                <button className="invoice-form__button" type="button" onClick={() => setAddNewClient(false)} disabled={isClientLoading}>
                                     Cancel
                                 </button>
                             </div>
                         </>
                     ) : (
-                        <button className="client-picker__button" type="button" onClick={() => setAddNewClient(true)}>
+                        <button className="invoice-form__button" type="button" onClick={() => setAddNewClient(true)}>
                             Add New Client
                         </button>
 
@@ -373,7 +373,12 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             </div>
 
-            <button type="submit">
+            <button
+                type="submit"
+                disabled={isLoading || isClientLoading || Object.keys(error || {}).length > 0}
+                aria-busy={isLoading || isClientLoading}
+                className={isLoading || isClientLoading || Object.keys(error || {}).length > 0 ? "invoice-form__button-disabled" : "invoice-form__button"}
+            >
                 Generate PDF
             </button>
 

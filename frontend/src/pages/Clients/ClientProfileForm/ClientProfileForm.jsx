@@ -10,8 +10,8 @@ import { useNavigate, NavLink } from "react-router-dom";
 import { useParams } from "react-router-dom";
 
 function ClientProfileForm() {
-  const { userData,fetchUser } = useUser();
-  const { fetchClientById, updateClient, deleteClient, isLoading, error, setError } = useClient();
+  const { userData, fetchUser } = useUser();
+  const { fetchClientById, updateClient, deleteClient, createClient, isLoading, error, setError } = useClient();
   const { clientId } = useParams();
   const navigate = useNavigate();
   const form = useRef(null);
@@ -20,6 +20,10 @@ function ClientProfileForm() {
   const [formData, setFormData] = useState({});
 
   useEffect(() => {
+    if (!clientId) {
+      return;
+    }
+
     const fetchClientData = async () => {
       const clientData = await fetchClientById(clientId);
       setClientData(clientData);
@@ -43,8 +47,12 @@ function ClientProfileForm() {
       phone: data.phone || null,
     };
 
-    const updatedClient = await updateClient(clientId, updatedData);
-    setClientData(updatedClient);
+    if (!clientId) {
+      const newClient = await createClient(updatedData);
+    } else {
+      const updatedClient = await updateClient(clientId, updatedData);
+      setClientData(updatedClient);
+    }
     await fetchUser();
     navigate("/clients");
   };
@@ -74,7 +82,7 @@ function ClientProfileForm() {
     setFormData(data);
   };
 
-  if (!clientData) {
+  if (!clientData && clientId) {
     return <ClientProfileFormSkeleton />;
   }
 
@@ -89,7 +97,6 @@ function ClientProfileForm() {
               Update client information or remove the client from your directory.
             </p>
           </div>
-          <span className="client-profile__status">Client</span>
         </div>
 
         <form className="client-profile__form" ref={form} onSubmit={handleSubmit}>
