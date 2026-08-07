@@ -77,21 +77,62 @@
   color: #0f172a;
 }
 
-.invoice-preview__choose-template {
+.invoice-preview__template-toggle {
   align-self: center;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
   border: 1px solid #cbd5e1;
   border-radius: 999px;
-  padding: 8px 14px;
+  padding: 8px 12px;
   background: #ffffff;
   color: #475569;
-  font-size: 16px;
+  font-size: 14px;
   font-weight: 700;
   cursor: pointer;
   transition: all 0.2s ease;
 }
 
-.invoice-preview__choose-template:hover {
+.invoice-preview__template-toggle:hover {
   background: #f8fafc;
   border-color: #94a3b8;
   color: #0f172a;
+}
+
+.invoice-preview__template-toggle:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.2);
+}
+
+.invoice-preview__toggle-label {
+  line-height: 1;
+}
+
+.invoice-preview__toggle-track {
+  position: relative;
+  width: 44px;
+  height: 24px;
+  border-radius: 999px;
+  background: #cbd5e1;
+  transition: background-color 0.2s ease;
+}
+
+.invoice-preview__toggle-thumb {
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.3);
+  transition: transform 0.2s ease;
+}
+
+.invoice-preview__toggle-thumb--right {
+  transform: translateX(20px);
+}
+
+.invoice-preview__template-toggle[aria-checked="true"] .invoice-preview__toggle-track {
+  background: #0ea5e9;
 }

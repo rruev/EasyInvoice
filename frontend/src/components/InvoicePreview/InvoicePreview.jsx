@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import GenericTemplate from "../InvoiceTemplates/InvoicesComponents/GenericInvoice";
 import RoutesettingTemplate from "../InvoiceTemplates/InvoicesComponents/RoutesettingInvoice";
 
-function InvoicePreview({ pdfData, setPdfData, onBack, template }) {
+function InvoicePreview({ pdfData, setPdfData, onToggleTemplate, template }) {
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {
@@ -28,8 +28,19 @@ function InvoicePreview({ pdfData, setPdfData, onBack, template }) {
       <button className="invoice-preview__clear" onClick={() => { setPdfUrl(null); setPdfData(null); }}>
         Clear preview
       </button>
-      <button className="invoice-preview__choose-template" onClick={onBack}>
-        Choose another template
+      <button
+        type="button"
+        className="invoice-preview__template-toggle"
+        onClick={onToggleTemplate}
+        role="switch"
+        aria-checked={template === "routesetting"}
+        aria-label="Toggle invoice template"
+      >
+        <span className="invoice-preview__toggle-label">Generic</span>
+        <span className="invoice-preview__toggle-track" aria-hidden="true">
+          <span className={`invoice-preview__toggle-thumb ${template === "routesetting" ? "invoice-preview__toggle-thumb--right" : ""}`} />
+        </span>
+        <span className="invoice-preview__toggle-label">Routesetting</span>
       </button>
       </div>
 
