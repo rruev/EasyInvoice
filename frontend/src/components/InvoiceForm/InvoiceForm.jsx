@@ -1,6 +1,6 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
@@ -19,6 +19,9 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
     const [clientAddress, setClientAddress] = useState("");
     const [selectedClient, setSelectedClient] = useState("");
     const [formData, setFormData] = useState({});
+    const [showReset, setShowReset] = useState(false);
+
+    const formRef = useRef(null);
 
     const today = new Date();
     const year = today.getFullYear();
@@ -45,7 +48,9 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
         const pdfData = await generatePdf(formData);
         await fetchUser();
-        form.reset();
+        if (pdfData) {
+            setShowReset(true);
+        }
     };
 
     const handleChange = (e) => {
@@ -87,17 +92,30 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
         await fetchUser();
     };
 
+    const handleReset = () => {
+        setFormData({});
+        formRef.current.reset();
+        setShowReset(false);
+    };
+
     if (isLoading) {
         return <InvoiceFormSkeleton />;
     }
     return (
 
-        <form className="invoice-form" onSubmit={handleSubmit}>
+        <form ref={formRef} className="invoice-form" onSubmit={handleSubmit}>
 
             <h2>
                 Invoice Details
             </h2>
-
+            <button
+                type="button"
+                className="invoice-form__button"
+                onClick={handleReset}
+                style={{ display: showReset ? 'inline-block' : 'none' }}
+            >
+                Reset
+            </button>
 
             <label>
                 Business Name
@@ -238,7 +256,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                         id="client-select"
                         className="client-picker__select"
                         value={formData?.clientId || selectedClient}
-                        onChange={(e) => setSelectedClient(e.target.value)}
+                        onChange={(e) => { setSelectedClient(e.target.value); handleChange(e); }}
                     >
                         <option value="">Select a client...</option>
                         {clients.length ? (
