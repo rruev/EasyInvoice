@@ -7,19 +7,23 @@ import InvoicePreview from "../InvoicePreview/InvoicePreview";
 import HomeSkeleton from "./HomeSkeleton";
 
 import { useUser } from "../../hooks/useUser";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import useInvoice from "../../hooks/useInvoice";
 
 function Home() {
     const { userData, isLoading } = useUser();
     const { pdfData, setPdfData, isLoading: invoiceLoading, error, setError, generatePdf } = useInvoice();
 
-    const [template, setTemplate] = useState('generic');
+    const [template, setTemplate] = useState(localStorage.getItem('invoiceTemplate') || 'generic');
 
     const onToggleTemplate = () => {
         setTemplate((currentTemplate) => (currentTemplate === 'generic' ? 'routesetting' : 'generic'));
         setError(null);
     };
+
+    useEffect(() => {
+        localStorage.setItem('invoiceTemplate', template);
+    }, [template]);
 
     if (isLoading) {
         return <HomeSkeleton />;
