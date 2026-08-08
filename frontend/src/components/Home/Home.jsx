@@ -14,10 +14,10 @@ function Home() {
     const { userData, isLoading } = useUser();
     const { pdfData, setPdfData, isLoading: invoiceLoading, error, setError, generatePdf } = useInvoice();
 
-    const [template, setTemplate] = useState('routesetting');
+    const [template, setTemplate] = useState('generic');
 
     const onToggleTemplate = () => {
-        setTemplate((currentTemplate) => (currentTemplate === 'routesetting' ? 'generic' : 'routesetting'));
+        setTemplate((currentTemplate) => (currentTemplate === 'generic' ? 'routesetting' : 'generic'));
         setError(null);
     };
 

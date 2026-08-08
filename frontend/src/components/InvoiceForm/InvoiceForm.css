@@ -59,6 +59,7 @@
 
 .client-picker__select {
   margin-top: 10px;
+  cursor: pointer;
 }
 
 .client-picker__details {

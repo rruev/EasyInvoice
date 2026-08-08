@@ -105,7 +105,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="businessName"
-                defaultValue={userData ? userData.businessName : ''}
+                defaultValue={formData?.businessName || userData?.businessName}
                 placeholder="Business / Person"
                 onChange={handleChange}
             />
@@ -117,7 +117,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="businessAddress"
-                defaultValue={userData ? userData.businessAddress : ''}
+                defaultValue={formData?.businessAddress || userData?.businessAddress}
                 placeholder="Format: Mainstraße, 123 6020 Innsbruck"
                 onChange={handleChange}
             />
@@ -129,7 +129,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="businessPhone"
-                defaultValue={userData ? userData.phoneNumber : ''}
+                defaultValue={formData?.businessPhone || userData?.phoneNumber}
                 placeholder="+43 123 456789"
                 onChange={handleChange}
             />
@@ -142,7 +142,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="businessEmail"
-                defaultValue={userData ? userData.businessEmail : ''}
+                defaultValue={formData?.businessEmail || userData?.businessEmail}
                 placeholder="company@email.com"
                 onChange={handleChange}
             />
@@ -154,7 +154,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="bankName"
-                defaultValue={userData ? userData.bankName : ''}
+                defaultValue={formData?.bankName || userData?.bankName}
                 placeholder="Revolut Bank UAB"
                 onChange={handleChange}
             />
@@ -166,7 +166,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="bic"
-                defaultValue={userData ? userData.bic : ''}
+                defaultValue={formData?.bic || userData?.bic}
                 placeholder="REVOLT21"
                 onChange={handleChange}
             />
@@ -178,7 +178,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="iban"
-                defaultValue={userData ? userData.iban : ''}
+                defaultValue={userData?.iban}
                 placeholder="LT15 5289 8043 9331 7202"
                 onChange={handleChange}
             />
@@ -190,7 +190,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="taxId"
-                defaultValue={userData ? userData.taxId : ''}
+                defaultValue={formData?.taxId || userData?.taxId}
                 placeholder="Steuernummer"
                 onChange={handleChange}
             />
@@ -237,7 +237,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     <select
                         id="client-select"
                         className="client-picker__select"
-                        value={selectedClient}
+                        value={formData?.clientId || selectedClient}
                         onChange={(e) => setSelectedClient(e.target.value)}
                     >
                         <option value="">Select a client...</option>
@@ -326,7 +326,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             <input
                 key={userData ? userData.nextInvoiceNum : 'invoice-number'}
                 name="invoiceNum"
-                defaultValue={userData ? userData.nextInvoiceNum : ''}
+                defaultValue={formData?.invoiceNum || userData?.nextInvoiceNum}
                 placeholder="Format: YYYY-001"
                 onChange={handleChange}
             />
@@ -338,7 +338,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
             <input
                 name="issuedAt"
-                defaultValue={now}
+                defaultValue={formData?.issuedAt || now}
                 onChange={handleChange}
             />
             {error && error.issuedAt && <p className="invoice-form-error">{error.issuedAt[0]}</p>}
@@ -352,6 +352,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     <input
                         name="workedAt"
                         placeholder="DD.MM.YYYY"
+                        defaultValue={formData?.workedAt}
                         onChange={handleChange}
                     />
                     {error && error.workedAt && <p className="invoice-form-error">{error.workedAt[0]}</p>}
@@ -369,13 +370,13 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
                     <input
                         name="itemDescription"
-                        defaultValue={template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : ''}
+                        defaultValue={template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : formData?.itemDescription}
                         placeholder="Description"
                         readOnly={template === 'routesetting'}
                     />
-                    <input name="quantity" placeholder="Qty" defaultValue="1" onChange={handleChange} />
+                    <input name="quantity" placeholder="Qty" defaultValue={formData?.quantity || '1'} onChange={handleChange} />
                     {error && error.quantity && <p className="invoice-form-error">{error.quantity[0]}</p>}
-                    <input name="price" placeholder="Price" onChange={handleChange} />
+                    <input name="price" placeholder="Price" defaultValue={formData?.price} onChange={handleChange} />
                     {error && error.price && <p className="invoice-form-error">{error.price[0]}</p>}
 
                 </div>

@@ -10,7 +10,7 @@ invoiceController.post('/generate', async (req, res) => {
     const user = req.user;
 
     if (!user) {
-        const pdfBuffer = await invoiceService.generate({ ...req.body, userId: null });
+        const pdfBuffer = await invoiceService.generate(req.body);
 
         res.setHeader('Content-Type', 'application/pdf').send(pdfBuffer);
     }

@@ -6,6 +6,13 @@ function Header({ setPdfData }) {
   const { userData, signOut } = useUser();
   const navigate = useNavigate();
 
+  const handleSignOut = async (e) => {
+    e.preventDefault();
+    setPdfData(null);
+    await signOut();
+    navigate("/");
+  };
+
   return (
     <div className="header">
 
@@ -16,7 +23,7 @@ function Header({ setPdfData }) {
       <div className="profile">
         {userData ? (userData.businessName ? userData.businessName : userData.email) : "Guest"}
         {userData && (
-          <button className="signout-button" onClick={async (e) => { e.preventDefault(); setPdfData(null); await signOut(); navigate("/");  }}>
+          <button className="signout-button" onClick={handleSignOut}>
             Sign Out
           </button>
         )}
