@@ -80,12 +80,20 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             return updatedItems;
         });
 
+        
         if (userData) {
             const client = clients.find(c => c.id === selectedClient);
-
+            
             formData.clientId = client?.id;
             formData.clientName = client?.name;
             formData.clientAddress = client?.address;
+        } else {
+            formData.clientAddress = prepareAddress(
+                formData.clientStreet, 
+                formData.clientStreetNum, 
+                formData.clientPostalCode, 
+                formData.clientCity
+            );
         }
 
         formData.businessAddress = prepareAddress(
@@ -94,6 +102,8 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             formData.businessPostalCode, 
             formData.businessCity
         );
+        
+
         formData.template = template;
 
         const pdfData = await generatePdf(formData);
@@ -127,6 +137,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             const errors = z.flattenError(err).fieldErrors;
             setError(errors);
         }
+
         setFormData(data);
     };
 
