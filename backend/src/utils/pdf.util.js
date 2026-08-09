@@ -54,7 +54,9 @@ export const createHtml = async (invoiceData) => {
         taxId: invoiceData.taxId ? (invoiceData.template === 'routesetting' ? `Steuernummer: ${invoiceData.taxId}` : `Tax ID: ${invoiceData.taxId}`) : '',
     };
 
-    const items = invoiceData.items?.map((item, index) => {
+    // this runs but does nothing for the routesetting template
+    //TODO Unify the way of generating templates for different invoice types
+    const items = invoiceData.items?.map((item, index) => { 
         return `<tr>
             <td>${index + 1}</td>
             <td>${item.description}</td>

@@ -5,9 +5,8 @@ import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
 import { previewPdf } from "../../utils/previewPdf.util";
-import { formatIban, formatDate } from "../../utils/formatFormData";
+import { formatIban, formatDate, prepareAddress, parseAddress } from "../../utils/formatFormData";
 import * as z from "zod";
-import { id } from "zod/v4/locales";
 
 function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
     const { userData, fetchUser } = useUser();
@@ -17,7 +16,10 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
     const [addNewClient, setAddNewClient] = useState(false);
     const [clientName, setClientName] = useState("");
-    const [clientAddress, setClientAddress] = useState("");
+    const [clientStreet, setClientStreet] = useState("");
+    const [clientStreetNum, setClientStreetNum] = useState("");
+    const [clientPostalCode, setClientPostalCode] = useState("");
+    const [clientCity, setClientCity] = useState("");
     const [selectedClient, setSelectedClient] = useState("");
     const [formData, setFormData] = useState({});
     const [showReset, setShowReset] = useState(false);
@@ -86,6 +88,12 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
             formData.clientAddress = client?.address;
         }
 
+        formData.businessAddress = prepareAddress(
+            formData.businessStreet, 
+            formData.businessStreetNum, 
+            formData.businessPostalCode, 
+            formData.businessCity
+        );
         formData.template = template;
 
         const pdfData = await generatePdf(formData);
@@ -126,10 +134,14 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
         if (isClientLoading) {
             return;
         }
+        const clientAddress = prepareAddress(clientStreet, clientStreetNum, clientPostalCode, clientCity);
         const client = await createClient({ name: clientName, address: clientAddress });
         setSelectedClient(client.id);
         setClientName("");
-        setClientAddress("");
+        setClientStreet("");
+        setClientStreetNum("");
+        setClientPostalCode("");
+        setClientCity("");
         setAddNewClient(false);
         await fetchUser();
     };
@@ -191,12 +203,32 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                 Business Address
             </label>
 
-            <input
-                name="businessAddress"
-                defaultValue={formData?.businessAddress || userData?.businessAddress}
-                placeholder="Format: Mainstraße, 123 6020 Innsbruck"
-                onChange={handleChange}
-            />
+            <div className="client-picker__details">
+                <input
+                    name="businessStreet"
+                    defaultValue={formData?.businessStreet || parseAddress(userData?.businessAddress).street}
+                    placeholder="Street"
+                    onChange={handleChange}
+                />
+                <input
+                    name="businessStreetNum"
+                    defaultValue={formData?.businessStreetNum || parseAddress(userData?.businessAddress).num}
+                    placeholder="No."
+                    onChange={handleChange}
+                />
+                <input
+                    name="businessPostalCode"
+                    defaultValue={formData?.businessPostalCode || parseAddress(userData?.businessAddress).postal}
+                    placeholder="Postal code"
+                    onChange={handleChange}
+                />
+                <input
+                    name="businessCity"
+                    defaultValue={formData?.businessCity || parseAddress(userData?.businessAddress).city}
+                    placeholder="City"
+                    onChange={handleChange}
+                />
+            </div>
             {error && error.businessAddress && <p className="invoice-form-error">{error.businessAddress[0]}</p>}
 
             <label>
@@ -289,12 +321,32 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     <label>
                         Client Address
                     </label>
-                    <input
-                        name="clientAddress"
-                        placeholder="Format: Mainstraße 123, 6020 Innsbruck"
-                        defaultValue={formData?.clientAddress}
-                        onChange={handleChange}
-                    />
+                    <div className="client-picker__details">
+                        <input
+                            name="clientStreet"
+                            placeholder="Street"
+                            defaultValue={formData?.clientStreet}
+                            onChange={handleChange}
+                        />
+                        <input
+                            name="clientStreetNum"
+                            placeholder="No."
+                            defaultValue={formData?.clientStreetNum}
+                            onChange={handleChange}
+                        />
+                        <input
+                            name="clientPostalCode"
+                            placeholder="Postal code"
+                            defaultValue={formData?.clientPostalCode}
+                            onChange={handleChange}
+                        />
+                        <input
+                            name="clientCity"
+                            placeholder="City"
+                            defaultValue={formData?.clientCity}
+                            onChange={handleChange}
+                        />
+                    </div>
                     {error && error.clientAddress && <p className="invoice-form-error">{error.clientAddress[0]}</p>}
                 </>
             ) : (
@@ -353,11 +405,32 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                                     <label>
                                         Client Address
                                     </label>
-                                    <input
-                                        placeholder="Format: Mainstraße 123, 6020 Innsbruck"
-                                        name="clientAddress"
-                                        onChange={(e) => { setClientAddress(e.target.value); handleChange(e); }}
-                                    />
+                                    <div className="client-picker__details">
+                                        <input
+                                            placeholder="Street"
+                                            name="clientStreet"
+                                            value={clientStreet}
+                                            onChange={(e) => { setClientStreet(e.target.value); handleChange(e); }}
+                                        />
+                                        <input
+                                            placeholder="No."
+                                            name="clientStreetNum"
+                                            value={clientStreetNum}
+                                            onChange={(e) => { setClientStreetNum(e.target.value); handleChange(e); }}
+                                        />
+                                        <input
+                                            placeholder="Postal code"
+                                            name="clientPostalCode"
+                                            value={clientPostalCode}
+                                            onChange={(e) => { setClientPostalCode(e.target.value); handleChange(e); }}
+                                        />
+                                        <input
+                                            placeholder="City"
+                                            name="clientCity"
+                                            value={clientCity}
+                                            onChange={(e) => { setClientCity(e.target.value); handleChange(e); }}
+                                        />
+                                    </div>
                                     {error && error.clientAddress && <p className="invoice-form-error">{error.clientAddress[0]}</p>}
                                 </div>
 
