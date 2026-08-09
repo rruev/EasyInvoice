@@ -1,12 +1,13 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
 import { previewPdf } from "../../utils/previewPdf.util";
 import { formatIban, formatDate } from "../../utils/formatFormData";
 import * as z from "zod";
+import { id } from "zod/v4/locales";
 
 function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
     const { userData, fetchUser } = useUser();
@@ -20,14 +21,33 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
     const [selectedClient, setSelectedClient] = useState("");
     const [formData, setFormData] = useState({});
     const [showReset, setShowReset] = useState(false);
+    const [items, setItems] = useState([]);
 
     const formRef = useRef(null);
-
+    
     const today = new Date();
     const year = today.getFullYear();
     const month = String(today.getMonth() + 1).padStart(2, '0');
     const day = String(today.getDate()).padStart(2, '0');
     const now = `${day}.${month}.${year}`;
+
+    useEffect(() => {
+        if (template === 'routesetting') {
+            setItems([{
+                id: crypto.randomUUID(),
+                description: 'Routenbau / Routesetting in Kletterhalle',
+                quantity: "1",
+                price: "",
+            }]);
+        } else {
+            setItems([{
+                id: crypto.randomUUID(),
+                description: "",
+                quantity: "1",
+                price: "",
+            }]);
+        }
+    }, [template]);
 
     const handleSubmit = async (event) => {
         event.preventDefault();
@@ -35,6 +55,28 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
         const form = event.target;
         const data = new FormData(form);
         const formData = Object.fromEntries(data.entries());
+
+        const items = [];
+        for (let i = 0; i < data.getAll("itemDescription").length; i++) {
+            items.push({
+                description: data.getAll("itemDescription")[i],
+                quantity: data.getAll("quantity")[i],
+                price: data.getAll("price")[i],
+            });
+        }
+
+        formData.items = items;
+        setItems(prevItems => {
+            const updatedItems = items.map((item, index) => {
+                return {
+                    id: prevItems[index].id,
+                    description: item.description,
+                    quantity: item.quantity,
+                    price: item.price,
+                };
+            });
+            return updatedItems;
+        });
 
         if (userData) {
             const client = clients.find(c => c.id === selectedClient);
@@ -94,8 +136,24 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
 
     const handleReset = () => {
         setFormData({});
+        setItems([{
+            id: crypto.randomUUID(),
+            description: template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : '',
+            quantity: "1",
+            price: "",
+        }]);
         formRef.current.reset();
         setShowReset(false);
+    };
+
+    const handleAddItem = () => {
+        const newItem = {
+            id: crypto.randomUUID(),
+            description: "",
+            quantity: "1",
+            price: "",
+        }
+        setItems([...items, newItem]);
     };
 
     if (isLoading) {
@@ -223,6 +281,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     <input
                         name="clientName"
                         placeholder="Company / Person"
+                        defaultValue={formData?.clientName}
                         onChange={handleChange}
                     />
                     {error && error.clientName && <p className="invoice-form-error">{error.clientName[0]}</p>}
@@ -233,6 +292,7 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     <input
                         name="clientAddress"
                         placeholder="Format: Mainstraße 123, 6020 Innsbruck"
+                        defaultValue={formData?.clientAddress}
                         onChange={handleChange}
                     />
                     {error && error.clientAddress && <p className="invoice-form-error">{error.clientAddress[0]}</p>}
@@ -384,21 +444,45 @@ function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
                     Items
                 </h3>
 
-                <div className="item">
+                {/* <div className="item">
 
                     <input
                         name="itemDescription"
-                        defaultValue={template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : formData?.itemDescription}
+                        defaultValue={template === 'routesetting' ? 'Routenbau / Routesetting in Kletterhalle' : items[0]?.description}
                         placeholder="Description"
                         readOnly={template === 'routesetting'}
                     />
-                    <input name="quantity" placeholder="Qty" defaultValue={formData?.quantity || '1'} onChange={handleChange} />
+                    <input name="quantity" placeholder="Qty" defaultValue={items[0]?.quantity || '1'} onChange={handleChange} />
                     {error && error.quantity && <p className="invoice-form-error">{error.quantity[0]}</p>}
-                    <input name="price" placeholder="Price" defaultValue={formData?.price} onChange={handleChange} />
+                    <input name="price" placeholder="Price" defaultValue={items[0]?.price} onChange={handleChange} />
                     {error && error.price && <p className="invoice-form-error">{error.price[0]}</p>}
 
-                </div>
+                </div> */}
 
+                {items.map(item =>
+                    <div key={item.id} className="item">
+                        <input
+                            name="itemDescription"
+                            defaultValue={item.description}
+                            placeholder="Description"
+                        />
+                        <input name="quantity" placeholder="Qty" defaultValue={item.quantity || '1'} onChange={handleChange} />
+                        <input name="price" placeholder="Price" defaultValue={item.price} onChange={handleChange} />
+                        {template === 'generic' && items.length > 1 && (
+                            <button className="remove" type="button" onClick={() => {
+                                setItems(items.filter(i => i.id !== item.id));
+                            }}>-</button>
+                        )}
+                    </div>
+                )}
+                {error && error.quantity && <p className="invoice-form-error">{error.quantity[0]}</p>}
+                {error && error.price && <p className="invoice-form-error">{error.price[0]}</p>}
+
+                {template === 'generic' && (
+                    <button className="addItem" type="button" onClick={handleAddItem}>
+                        Add Item
+                    </button>
+                )}
 
             </div>
 

@@ -54,6 +54,19 @@ export const createHtml = async (invoiceData) => {
         taxId: invoiceData.taxId ? (invoiceData.template === 'routesetting' ? `Steuernummer: ${invoiceData.taxId}` : `Tax ID: ${invoiceData.taxId}`) : '',
     };
 
+    const items = invoiceData.items?.map((item, index) => {
+        return `<tr>
+            <td>${index + 1}</td>
+            <td>${item.description}</td>
+            <td class="right">${item.quantity}</td>
+            <!-- <td>Tagessatz</td> -->
+            <td class="right">${item.price.toFixed(2)} &euro;</td>
+            <td class="right">${item.lineTotal.toFixed(2)} &euro;</td>
+        </tr>`;
+    }).join('');
+
+    templateData.items = items;
+
     const content = htmlTemplate.replace(/{{\s*([a-zA-Z0-9_]+)\s*}}/g, (test, key) => {
         const value = templateData[key];
         return value === undefined || value === null ? '' : String(value);

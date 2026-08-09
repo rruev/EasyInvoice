@@ -5,9 +5,6 @@ import userRepo from '../repositories/user.repo.js';
 import { decryptData } from '../utils/encrypt.util.js';
 
 const generate = async (invoiceData) => {
-    invoiceData.quantity = Number(invoiceData.quantity);
-    invoiceData.price = parseFloat(invoiceData.price);
-
     if (invoiceData.userId) {
         const iban = await userRepo.getUserIban(invoiceData.userId);
 

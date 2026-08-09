@@ -49,4 +49,13 @@ export const invoiceSchema = z.object({
         .positive({ message: "Price must be a positive number" }),
     template: z.enum(['routesetting', 'generic'], { message: 'Invalid template type' })
         .optional(),
+    items: z.array(z.object({
+        description: z.string({ message: 'Description is required' })
+            .min(1, { message: 'Description is required' })
+            .trim(),
+        quantity: z.coerce.number({ message: 'Quantity must be a positive number' })
+            .positive({ message: "Quantity must be a positive number" }),
+        price: z.coerce.number({ message: 'Price must be a positive number' })
+            .positive({ message: "Price must be a positive number" }),
+    })).optional(),
 })
