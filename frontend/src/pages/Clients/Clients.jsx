@@ -5,13 +5,14 @@ import { useNavigate } from "react-router-dom";
 function Clients() {
   const { userData } = useUser();
   const navigate = useNavigate();
+  const hasClients = (userData?.clients?.length ?? 0) > 0;
 
   return (
     <section className="customers-panel">
       <div className="customers-panel__hero">
         <div>
-          <p className="customers-panel__eyebrow">Customers</p>
-          <h2 className="customers-panel__title">Customer Directory</h2>
+          <p className="customers-panel__eyebrow">Clients</p>
+          <h2 className="customers-panel__title">Client Manager</h2>
         </div>
 
         <span className="customers-panel__count">
@@ -19,8 +20,12 @@ function Clients() {
         </span>
       </div>
 
-      <div className="customers-panel__grid">
-        <article className="add-client-card" onClick={() => navigate("/clients/addBusinessClient")}>
+      <div className={`customers-panel__grid${hasClients ? "" : " customers-panel__grid--empty"}`}>
+
+        <article
+          className={`add-client-card${hasClients ? "" : " add-client-card--empty"}`}
+          onClick={() => navigate("/clients/addBusinessClient")}
+        >
           <div className="add-client-card__header">
             <div>
               <h3 className="add-client-card__name">+ Add Client</h3>
@@ -30,8 +35,7 @@ function Clients() {
 
 
         </article>
-
-        {userData?.clients?.length ? (
+        {hasClients ? (
           userData?.clients?.map((customer, index) => (
             <article className="customer-card" key={customer.id ?? customer.name ?? index} onClick={() => navigate(`/clients/editBusinessClient/${customer.id}`)}>
               <div className="customer-card__header">
@@ -56,9 +60,9 @@ function Clients() {
             </article>
           ))
         ) : (
-          <div className="customers-empty">
-            <h3>No customers yet</h3>
-            <p>Add a customer list here when you pass data into the component.</p>
+          <div className="customers-empty customers-empty--compact">
+            <h3>No clients yet</h3>
+            <p>Your client list will appear here.</p>
           </div>
         )}
       </div>

@@ -69,6 +69,16 @@
   grid-column: 1 / -1;
 }
 
+.client-profile__address-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 12px;
+  border: 1px solid #dbe5ef;
+  border-radius: 14px;
+  background: linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+}
+
 .client-profile__field label {
   font-size: 13px;
   color: #334155;
@@ -85,6 +95,10 @@
   background: #fbfdff;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.client-profile__address-grid input {
+  background: #ffffff;
 }
 
 .client-profile__field input:focus {
@@ -207,6 +221,10 @@
   }
 
   .client-profile__form {
+    grid-template-columns: 1fr;
+  }
+
+  .client-profile__address-grid {
     grid-template-columns: 1fr;
   }
 

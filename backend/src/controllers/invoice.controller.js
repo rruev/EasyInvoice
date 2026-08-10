@@ -27,6 +27,19 @@ invoiceController.post('/generate', async (req, res) => {
     }
 });
 
+invoiceController.get('/', isAuthenticated, async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const invoices = await invoiceService.findAll(userId);
+
+        res.status(200).json(invoices);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(500).json({ message: 'Failed to fetch invoices', errors: errors });
+    }
+});
+
 invoiceController.put('/:invoiceId', isAuthenticated, async (req, res) => {
     const invoiceId = req.params.invoiceId;
     const updatedData = req.body;
@@ -51,6 +64,19 @@ invoiceController.delete('/:invoiceId', isAuthenticated, async (req, res) => {
     } catch (error) {
         const errors = getErrors(error);
         res.status(500).json({ message: 'Failed to delete invoice', errors: errors });
+    }
+});
+
+invoiceController.get('/stats', isAuthenticated, async (req, res) => {
+    const userId = req.user.id;
+
+    try {
+        const stats = await invoiceService.getStats(userId);
+
+        res.status(200).json(stats);
+    } catch (error) {
+        const errors = getErrors(error);
+        res.status(500).json({ message: 'Failed to fetch invoice statistics', errors: errors });
     }
 });
 

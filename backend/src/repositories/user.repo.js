@@ -18,7 +18,7 @@ const findByEmail = async (email) => {
                     email: true,
                     phone: true,
                     address: true,
-                }
+                },
             },
             invoices: {
                 orderBy: {

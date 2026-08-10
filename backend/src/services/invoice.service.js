@@ -41,6 +41,11 @@ const generate = async (invoiceData) => {
     }
 }
 
+const findAll = async (userId, filter = {}) => {
+    const invoices = await invoiceRepo.findAll(userId, filter);
+    return invoices;
+};
+
 const update = async (invoiceId, updatedData) => {
     const updatedInvoice = await invoiceRepo.update(invoiceId, updatedData);
     return updatedInvoice;
@@ -50,10 +55,17 @@ const remove = async (invoiceId) => {
     await invoiceRepo.remove(invoiceId);
 };
 
+const getStats = async (userId) => {
+    const stats = await invoiceRepo.getStats(userId);
+    return stats;
+};
+
 const invoiceService = {
     generate,
+    findAll,
     update,
     remove,
+    getStats,
 };
 
 export default invoiceService;

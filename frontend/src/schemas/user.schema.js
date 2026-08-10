@@ -8,7 +8,10 @@ export const userRegisterSchema = z.object({
     .optional(),
   confirmPassword: z.string({ message: 'Confirm Password is required' }).optional(),
   businessName: z.string().optional(),
-  businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).optional(),
+  businessStreet: z.string().optional(),
+  businessStreetNum: z.string().optional(),
+  businessPostal: z.string().optional(),
+  businessCity: z.string().optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().optional(),
   phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().optional(),
   bankName: z.string().trim().optional(),
@@ -26,7 +29,10 @@ export const userUpdateSchema = z.object({
   fullName: z.string().nullable().optional(),
   email: z.string().email({ message: 'Invalid email address' }).nullable().optional(),
   businessName: z.string().nullable().optional(),
-  businessAddress: z.string().regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' }).nullable().optional(),
+  businessAddress: z.string()
+    .regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City". Do not forget the comma after the street number' })
+    .nullable()
+    .optional(),
   businessEmail: z.string().email({ message: 'Invalid email address' }).trim().toLowerCase().nullable().optional(),
   phoneNumber: z.string().regex(/^\+?[1-9]\d{1,14}$/, { message: 'Invalid phone number' }).trim().nullable().optional(),
   bankName: z.string().trim().nullable().optional(),

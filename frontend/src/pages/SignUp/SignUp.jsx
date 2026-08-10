@@ -6,7 +6,7 @@ import { useState, useEffect } from "react";
 import { userRegisterSchema } from "../../schemas/user.schema";
 
 import * as z from 'zod';
-import { formatIban } from "../../utils/formatFormData";
+import { formatIban, prepareAddress } from "../../utils/formatFormData";
 
 function SignUp() {
   const { signUp, isLoading, error, setError, fetchUser } = useUser();
@@ -16,11 +16,21 @@ function SignUp() {
   const [showOptionalDetails, setShowOptionalDetails] = useState(false);
   const [disabled, setDisabled] = useState(true);
   const [formData, setFormData] = useState({});
+  const [businessStreet, setBusinessStreet] = useState("");
+  const [businessStreetNum, setBusinessStreetNum] = useState("");
+  const [businessPostalCode, setBusinessPostalCode] = useState("");
+  const [businessCity, setBusinessCity] = useState("");
   const isSubmitDisabled = disabled || isLoading;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const user = await signUp(formData);
+
+    const payload = {
+      ...formData,
+      businessAddress: prepareAddress(businessStreet, businessStreetNum, businessPostalCode, businessCity),
+    };
+
+    const user = await signUp(payload);
     if (user) {
       await fetchUser();
       navigate('/');
@@ -149,15 +159,60 @@ function SignUp() {
                 {error && error.businessEmail && <p className="auth-error">{error.businessEmail[0]}</p>}
 
                 <label htmlFor="sign-up-businessAddress">Business address</label>
-                <input
-                  id="sign-up-businessAddress"
-                  type="text"
-                  name="businessAddress"
-                  placeholder="Business address"
-                  autoComplete="street-address"
-                  readOnly={isLoading}
-                  onChange={handleChange}
-                />
+                <div className="optional-details__address-grid">
+                  <input
+                    id="sign-up-businessStreet"
+                    type="text"
+                    name="businessStreet"
+                    placeholder="Street"
+                    autoComplete="street-address"
+                    readOnly={isLoading}
+                    value={businessStreet}
+                    onChange={(e) => {
+                      setBusinessStreet(e.target.value);
+                      handleChange(e);
+                    }}
+                  />
+                  <input
+                    id="sign-up-businessStreetNum"
+                    type="text"
+                    name="businessStreetNum"
+                    placeholder="No."
+                    autoComplete="off"
+                    readOnly={isLoading}
+                    value={businessStreetNum}
+                    onChange={(e) => {
+                      setBusinessStreetNum(e.target.value);
+                      handleChange(e);
+                    }}
+                  />
+                  <input
+                    id="sign-up-businessPostalCode"
+                    type="text"
+                    name="businessPostalCode"
+                    placeholder="Postal code"
+                    autoComplete="postal-code"
+                    readOnly={isLoading}
+                    value={businessPostalCode}
+                    onChange={(e) => {
+                      setBusinessPostalCode(e.target.value);
+                      handleChange(e);
+                    }}
+                  />
+                  <input
+                    id="sign-up-businessCity"
+                    type="text"
+                    name="businessCity"
+                    placeholder="City"
+                    autoComplete="address-level2"
+                    readOnly={isLoading}
+                    value={businessCity}
+                    onChange={(e) => {
+                      setBusinessCity(e.target.value);
+                      handleChange(e);
+                    }}
+                  />
+                </div>
                 {error && error.businessAddress && <p className="auth-error">{error.businessAddress[0]}</p>}
 
                 <label htmlFor="sign-up-phoneNumber">Phone number</label>

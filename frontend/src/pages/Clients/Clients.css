@@ -49,6 +49,10 @@
   gap: 16px;
 }
 
+.customers-panel__grid--empty {
+  grid-template-columns: 1fr;
+}
+
 .add-client-card {
   display: flex;
   flex-direction: column;
@@ -59,6 +63,59 @@
   padding: 18px;
   background: white;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.add-client-card--empty {
+  min-height: 220px;
+  align-items: flex-start;
+  justify-content: flex-end;
+  padding: 24px;
+  border: 1px solid #dbeafe;
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.12), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #f8fbff 100%);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+}
+
+.add-client-card--empty::before {
+  content: "+";
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  margin-bottom: 18px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #e0f2fe 0%, #dbeafe 100%);
+  color: #0f766e;
+  font-size: 30px;
+  font-weight: 700;
+  box-shadow: 0 10px 24px rgba(15, 118, 110, 0.12);
+}
+
+.add-client-card--empty .add-client-card__header {
+  width: 100%;
+}
+
+.add-client-card--empty .add-client-card__name {
+  font-size: 22px;
+  color: #0f172a;
+}
+
+.add-client-card--empty .add-client-card__meta {
+  margin-top: 8px;
+  font-size: 14px;
+  color: #475569;
+}
+
+.add-client-card--empty:hover {
+  transform: translateY(-2px);
+  border-color: #93c5fd;
+  box-shadow: 0 16px 30px rgba(15, 23, 42, 0.1);
+  background:
+    radial-gradient(circle at top right, rgba(14, 165, 233, 0.16), transparent 34%),
+    linear-gradient(180deg, #ffffff 0%, #eef6ff 100%);
 }
 
 
@@ -136,6 +193,13 @@
   background: linear-gradient(180deg, #f8fbff 0%, #ffffff 100%);
 }
 
+.customers-empty--compact {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 160px;
+}
+
 .customers-empty h3 {
   margin: 0 0 8px;
   color: #0f172a;
@@ -148,6 +212,10 @@
 
 @media (max-width: 900px) {
   .customers-panel__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .customers-panel__grid--empty {
     grid-template-columns: 1fr;
   }
 }

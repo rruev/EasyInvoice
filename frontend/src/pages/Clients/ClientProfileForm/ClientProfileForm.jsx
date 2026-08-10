@@ -2,6 +2,7 @@ import "./ClientProfileForm.css";
 import * as z from "zod";
 import clientSchema from "../../../schemas/client.schema";
 import ClientProfileFormSkeleton from "./ClientProfileFormSkeleton";
+import { prepareAddress, parseAddress } from "../../../utils/formatFormData";
 
 import { useClient } from "../../../hooks/useClient";
 import { useUser } from "../../../hooks/useUser";
@@ -27,6 +28,10 @@ function ClientProfileForm() {
 
   const [clientData, setClientData] = useState(null);
   const [formData, setFormData] = useState({});
+  const [street, setStreet] = useState("");
+  const [streetNum, setStreetNum] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [city, setCity] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
@@ -46,15 +51,24 @@ function ClientProfileForm() {
     fetchClientData();
   }, [clientId, userData]);
 
+  useEffect(() => {
+    const parsedAddress = parseAddress(clientData?.address);
+    setStreet(parsedAddress.street);
+    setStreetNum(parsedAddress.num);
+    setPostalCode(parsedAddress.postal);
+    setCity(parsedAddress.city);
+  }, [clientData]);
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
     const data = Object.fromEntries(new FormData(form.current).entries());
+    const address = prepareAddress(street, streetNum, postalCode, city);
     const updatedData = {
       name: data.name,
       email: data.email || null,
-      address: data.address,
+      address,
       phone: data.phone || null,
     };
 
@@ -143,15 +157,56 @@ function ClientProfileForm() {
 
           <div className="client-profile__field client-profile__field--wide">
             <label htmlFor="client-address">Address</label>
-            <input
-              id="client-address"
-              type="text"
-              name="address"
-              defaultValue={clientData?.address}
-              placeholder="Street and city"
-              readOnly={isSubmitting}
-              onChange={handleChange}
-            />
+            <div className="client-profile__address-grid">
+              <input
+                id="client-address-street"
+                type="text"
+                name="street"
+                value={street}
+                placeholder="Street"
+                readOnly={isSubmitting}
+                onChange={(e) => {
+                  setStreet(e.target.value);
+                  handleChange(e);
+                }}
+              />
+              <input
+                id="client-address-streetNum"
+                type="text"
+                name="streetNum"
+                value={streetNum}
+                placeholder="No."
+                readOnly={isSubmitting}
+                onChange={(e) => {
+                  setStreetNum(e.target.value);
+                  handleChange(e);
+                }}
+              />
+              <input
+                id="client-address-postalCode"
+                type="text"
+                name="postalCode"
+                value={postalCode}
+                placeholder="Postal code"
+                readOnly={isSubmitting}
+                onChange={(e) => {
+                  setPostalCode(e.target.value);
+                  handleChange(e);
+                }}
+              />
+              <input
+                id="client-address-city"
+                type="text"
+                name="city"
+                value={city}
+                placeholder="City"
+                readOnly={isSubmitting}
+                onChange={(e) => {
+                  setCity(e.target.value);
+                  handleChange(e);
+                }}
+              />
+            </div>
             {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
           </div>
 

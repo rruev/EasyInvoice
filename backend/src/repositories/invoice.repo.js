@@ -24,9 +24,9 @@ const findById = async (id) => {
     return invoice;
 };
 
-const findAll = async (filter = {}) => {
+const findAll = async (userId, filter = {}) => {
     const invoices = await prisma.invoice.findMany({
-        where: filter,
+        where: { userId, ...filter },
     });
     return invoices;
 };
@@ -45,12 +45,36 @@ const remove = async (invoiceId) => {
     });
 };
 
+const getStats = async (userId) => {
+    const [totalInvoices, totalRevenue, pendingInvoices] = await Promise.all([
+        prisma.invoice.count({
+            where: { userId },
+        }),
+        prisma.invoice.aggregate({
+            where: { userId },
+            _sum: {
+                total: true,
+            },
+        }),
+        prisma.invoice.count({
+            where: { userId, status: "pending" },
+        }),
+    ]);
+
+    return {
+        totalInvoices,
+        totalRevenue: totalRevenue._sum.total || 0,
+        pendingInvoices,
+    };
+};
+
 const invoiceRepo = {
     create,
     findById,
     findAll,
     update,
     remove,
+    getStats,
 };
 
 export default invoiceRepo;
