@@ -5,12 +5,14 @@ import useInvoice from "../../hooks/useInvoice";
 
 function Header() {
   const { userData, signOut } = useUser();
-  const { setPdfData } = useInvoice();
+  const { setPdfData, setStats, setInvoices } = useInvoice();
   const navigate = useNavigate();
 
   const handleSignOut = async (e) => {
     e.preventDefault();
     setPdfData(null);
+    setStats(null);
+    setInvoices([]);
     await signOut();
     navigate("/");
   };

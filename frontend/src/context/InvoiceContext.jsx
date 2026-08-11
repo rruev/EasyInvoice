@@ -15,7 +15,6 @@ const InvoiceProvider = ({ children }) => {
 
     const getAllInvoices = useCallback(async () => {
         setError(null);
-        setInvoices([]);
 
         try {
             const invoices = await invoiceService.getAll();
@@ -27,7 +26,6 @@ const InvoiceProvider = ({ children }) => {
 
     const getInvoiceStats = useCallback(async () => {
         setError(null);
-        setStats(null);
 
         try {
             const statsData = await invoiceService.getStats();
@@ -118,6 +116,8 @@ const InvoiceProvider = ({ children }) => {
         template,
         isLoading,
         error,
+        setStats,
+        setInvoices,
         onToggleTemplate,
         setError,
         generatePdf,

@@ -10,7 +10,7 @@ const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
-  const { invoices, updateInvoiceStatus, removeInvoice } = useInvoice();
+  const { invoices, stats, updateInvoiceStatus, removeInvoice } = useInvoice();
 
   const [deletingInvoiceId, setDeletingInvoiceId] = useState(null); // for passing the delete id to the confirm modal
   const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
@@ -24,7 +24,6 @@ function Invoices() {
 
     try {
       await updateInvoiceStatus(invoiceId, e.target.value);
-      await fetchUser();
     } finally {
       setUpdatingInvoiceId(null);
     }
@@ -46,7 +45,6 @@ function Invoices() {
 
     try {
       await removeInvoice(id);
-      await fetchUser();
     } finally {
       setDeletingInvoiceIdList((prev) => prev.filter((invoiceId) => invoiceId !== id));
     }
@@ -60,9 +58,9 @@ function Invoices() {
           <h2 className="invoices-panel__title">Invoice Register</h2>
         </div>
 
-        <button type="button" onClick={() => navigate("/")}>New Invoice</button>
+        <button className="invoices-panel__new-button" type="button" onClick={() => navigate("/")}>New Invoice</button>
         <span className="invoices-panel__count">
-          {invoices?.length ?? 0} records
+          {stats?.totalInvoices ?? 0} records
         </span>
       </div>
 
@@ -123,6 +121,26 @@ function Invoices() {
                   </td>
                 </tr>
               ))}
+              <tr className="invoices-table__summary-row" aria-label="invoice summary row">
+                <td className="invoices-table__summary-label-cell">
+                  <strong>Summary</strong>
+                </td>
+                <td colSpan={3}>
+                  <div className="invoices-table__summary-meta">
+                    <span className="invoices-table__summary-pill">Total clients {userData.clients.length ?? 0} </span>
+                    <span className="invoices-table__summary-pill">Total pending invoices {stats?.pendingInvoices ?? 0} </span>
+                  </div>
+                </td>
+                <td className="invoices-table__summary-total">{stats?.totalRevenue ?? "--"} &euro;</td>
+                <td className="invoices-table__action">&nbsp;</td>
+              </tr>
+              <tr className="invoices-table__add-more-row" aria-label="add more invoices row">
+                <td colSpan={6}>
+                  <button type="button" className="invoices-table__add-more-button">
+                    Add More Invoices
+                  </button>
+                </td>
+              </tr>
             </tbody>
           </table>
         </div>

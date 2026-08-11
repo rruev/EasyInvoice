@@ -42,6 +42,31 @@
   white-space: nowrap;
 }
 
+.invoices-panel__new-button {
+  border: 0;
+  border-radius: 999px;
+  min-height: 40px;
+  padding: 0 16px;
+  background: linear-gradient(180deg, #2563eb 0%, #1d4ed8 100%);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  box-shadow: 0 8px 18px rgba(37, 99, 235, 0.28);
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.invoices-panel__new-button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 12px 22px rgba(29, 78, 216, 0.3);
+  filter: brightness(1.03);
+}
+
+.invoices-panel__new-button:active {
+  transform: translateY(0);
+}
+
 .invoices-table-wrap {
   overflow-x: auto;
 }
@@ -185,6 +210,78 @@
   transform: none;
 }
 
+.invoices-table__summary-row {
+  background: linear-gradient(180deg, #f8fbff 0%, #f1f7ff 100%);
+}
+
+.invoices-table__summary-row td {
+  border-bottom: 1px solid #dbeafe;
+}
+
+.invoices-table__summary-label-cell {
+  color: #1e3a8a;
+}
+
+.invoices-table__summary-meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.invoices-table__summary-pill {
+  display: inline-flex;
+  align-items: center;
+  min-height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: #ffffff;
+  border: 1px solid #dbeafe;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+.invoices-table__summary-text {
+  font-size: 13px;
+  color: #475569;
+}
+
+.invoices-table__summary-total {
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.invoices-table__add-more-row td {
+  border-bottom: 0;
+  padding-top: 14px;
+  padding-bottom: 6px;
+}
+
+.invoices-table__add-more-button {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  border: 1px dashed #93c5fd;
+  border-radius: 12px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+}
+
+.invoices-table__add-more-button:hover {
+  background: #dbeafe;
+  border-color: #60a5fa;
+  transform: translateY(-1px);
+}
+
 .invoices-empty {
   border: 1px dashed #cbd5e1;
   border-radius: 16px;
@@ -205,5 +302,10 @@
 @media (max-width: 720px) {
   .invoices-panel__header {
     flex-direction: column;
+  }
+
+  .invoices-panel__new-button {
+    width: 100%;
+    justify-content: center;
   }
 }
