@@ -23,7 +23,7 @@ function InvoiceForm() {
     const [clientCity, setClientCity] = useState("");
     const [selectedClient, setSelectedClient] = useState("");
     const [addNewClient, setAddNewClient] = useState(false);
-    const [updatedUserData, setUpdatedUserData] = useState(false); //to keep loading until the user data is updated after adding a new client
+    const [updatingUserData, setUpdatingUserData] = useState(false);
 
     const [formData, setFormData] = useState({});
     const [showReset, setShowReset] = useState(false);
@@ -150,9 +150,9 @@ function InvoiceForm() {
         }
         const clientAddress = prepareAddress(clientStreet, clientStreetNum, clientPostalCode, clientCity);
         const client = await createClient({ name: clientName, address: clientAddress });
-        setUpdatedUserData(true);
+        setUpdatingUserData(true);
         await fetchUser();
-        setUpdatedUserData(false);
+        setUpdatingUserData(false);
         setSelectedClient(client.id);
         setAddNewClient(false);
         setClientName("");
@@ -459,7 +459,7 @@ function InvoiceForm() {
                                     disabled={isClientLoading}
                                     aria-busy={isClientLoading}
                                 >
-                                    {isClientLoading || updatedUserData ? (
+                                    {isClientLoading || updatingUserData ? (
                                         <span className="client-picker__loading-content">
                                             <span className="client-picker__spinner" aria-hidden="true" />
                                             Saving...

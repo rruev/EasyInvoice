@@ -17,10 +17,10 @@ function SignIn() {
     const password = formData.get("password");
 
     const user = await signIn({ email, password });
-
+    
     if (user) {
       navigate('/');
-      await Promise.all([getAllInvoices(), getInvoiceStats(), fetchUser()]);
+      await Promise.all([getAllInvoices(), getInvoiceStats()]);
     }
   };
 

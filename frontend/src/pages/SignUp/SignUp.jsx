@@ -3,6 +3,7 @@ import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useInvoice } from "../../hooks/useInvoice";
 import { userRegisterSchema } from "../../schemas/user.schema";
 
 import * as z from 'zod';
@@ -11,6 +12,7 @@ import { formatIban, prepareAddress } from "../../utils/formatFormData";
 function SignUp() {
   const { signUp, isLoading, error, setError, fetchUser } = useUser();
   const { createClient } = useClient();
+  const { getAllInvoices, getInvoiceStats } = useInvoice();
   const navigate = useNavigate();
 
   const [showOptionalDetails, setShowOptionalDetails] = useState(false);
@@ -25,15 +27,17 @@ function SignUp() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    const businessAddress = prepareAddress(businessStreet, businessStreetNum, businessPostalCode, businessCity);
     const payload = {
       ...formData,
-      businessAddress: prepareAddress(businessStreet, businessStreetNum, businessPostalCode, businessCity),
+      businessAddress: businessAddress === "" ? undefined : businessAddress,
     };
 
     const user = await signUp(payload);
+
     if (user) {
-      await fetchUser();
       navigate('/');
+      await Promise.all([getAllInvoices(), getInvoiceStats()]);
     }
   };
 

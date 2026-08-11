@@ -74,7 +74,6 @@ authController.get('/me', isAuthenticated, async (req, res) => {
         bic: user.bic,
         taxId: user.taxId,
         clients: user.clients,
-        invoices: user.invoices,
         nextInvoiceNum: user.nextInvoiceNum,
         phoneNumber: user.phoneNumber
     });

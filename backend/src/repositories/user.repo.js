@@ -21,26 +21,14 @@ const findByEmail = async (email) => {
                 },
             },
             invoices: {
-                orderBy: {
-                    createdAt: 'desc'
-                },
                 select: {
-                    id: true,
                     invoiceNum: true,
-                    issuedAt: true,
-                    workedAt: true,
-                    quantity: true,
-                    price: true,
-                    total: true,
-                    status: true,
-                    client: {
-                        select: {
-                            name: true,
-                            address: true,
-                        }
-                    }
                 },
-            }
+                take: 1,
+                orderBy: {
+                    createdAt: 'desc',
+                },
+            },
         }
     });
     return user;

@@ -11,12 +11,28 @@ const AuthProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState(null);
 
+    const fetchUser = useCallback(async () => {
+        // setIsLoading(true);
+        setError(null);
+        try {
+            const data = await fetchUserData();
+            setUserData(data);
+            return data;
+        } catch (err) {
+            setUserData(null);
+            return null;
+        } finally {
+            setIsLoading(false);
+        }
+    }, []);
+
     const signUp = useCallback(async (userData) => {
         setIsLoading(true);
         setError(null);
 
         try {
-            const data = await register(userData);
+            await register(userData);
+            const data = await fetchUserData();
             setUserData(data);
             return data;
         } catch (err) {
@@ -31,7 +47,8 @@ const AuthProvider = ({ children }) => {
         setError(null);
 
         try {
-            const data = await login(userData);
+            await login(userData);
+            const data = await fetchUserData();
             setUserData(data);
             return data;
         } catch (err) {
@@ -51,21 +68,6 @@ const AuthProvider = ({ children }) => {
         } catch (err) {
             setError('Failed to logout user.');
             throw err;
-        } finally {
-            setIsLoading(false);
-        }
-    }, []);
-
-    const fetchUser = useCallback(async () => {
-        // setIsLoading(true);
-        setError(null);
-        try {
-            const data = await fetchUserData();
-            setUserData(data);
-            return data;
-        } catch (err) {
-            setUserData(null);
-            return null;
         } finally {
             setIsLoading(false);
         }

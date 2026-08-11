@@ -14,30 +14,26 @@ const InvoiceProvider = ({ children }) => {
     const [error, setError] = useState(null);
 
     const getAllInvoices = useCallback(async () => {
-        setIsLoading(true);
         setError(null);
+        setInvoices([]);
 
         try {
             const invoices = await invoiceService.getAll();
             setInvoices(invoices);
         } catch (err) {
             setError(err.errors || { general: ["An error occurred while fetching invoices."] });
-        } finally {
-            setIsLoading(false);
         }
     }, []);
 
-        const getInvoiceStats = useCallback(async () => {
-        setIsLoading(true);
+    const getInvoiceStats = useCallback(async () => {
         setError(null);
+        setStats(null);
 
         try {
             const statsData = await invoiceService.getStats();
             setStats(statsData);
         } catch (err) {
             setError(err.errors || { general: ["An error occurred while fetching invoice statistics."] });
-        } finally {
-            setIsLoading(false);
         }
     }, []);
 
@@ -58,7 +54,7 @@ const InvoiceProvider = ({ children }) => {
         } finally {
             setIsLoading(false);
         }
-    }, [getAllInvoices, getInvoiceStats]); 
+    }, [getAllInvoices, getInvoiceStats]);
 
 
     const updateInvoiceStatus = useCallback(async (invoiceId, newStatus) => {
@@ -102,7 +98,7 @@ const InvoiceProvider = ({ children }) => {
     useEffect(() => {
         const fetchInvoices = async () => {
             await Promise.all([
-                getAllInvoices(), 
+                getAllInvoices(),
                 getInvoiceStats()
             ]);
         };
