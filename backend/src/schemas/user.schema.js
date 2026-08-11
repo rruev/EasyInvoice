@@ -39,6 +39,7 @@ export const userUpdateSchema = z.object({
   bic: z.string().nullable().optional(),
   iban: z.string()
     .regex(/^[A-Z]{2}\d{2}(?: [A-Z0-9]{4})+(?: [A-Z0-9]{1,2})?$/, { message: 'Invalid IBAN' })
+    .nullable()
     .optional(),
   taxId: z.string().nullable().optional(),
 });
