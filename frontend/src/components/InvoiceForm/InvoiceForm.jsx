@@ -1,6 +1,7 @@
 import "./InvoiceForm.css";
 import InvoiceFormSkeleton from "./InvoiceFormSkeleton";
 import { useState, useEffect, useRef } from "react";
+import useInvoice from "../../hooks/useInvoice";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
@@ -8,9 +9,10 @@ import { previewPdf } from "../../utils/previewPdf.util";
 import { formatIban, formatDate, prepareAddress, parseAddress } from "../../utils/formatFormData";
 import * as z from "zod";
 
-function InvoiceForm({ generatePdf, isLoading, error, setError, template }) {
+function InvoiceForm() {
     const { userData, fetchUser } = useUser();
     const { createClient, isLoading: isClientLoading } = useClient();
+    const { generatePdf, template, isLoading, error, setError } = useInvoice();
 
     const clients = userData?.clients ?? [];
 

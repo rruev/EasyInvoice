@@ -1,50 +1,43 @@
 import "./StatsCards.css";
-import { useUser } from "../../hooks/useUser";
-
-
-
+import { useInvoice } from "../../hooks/useInvoice";
 
 function StatsCards() {
-  const { userData } = useUser();
-  const stats = [
+  const { stats, isLoading } = useInvoice();
+
+  const statsData = [
     {
       title: "Total Invoices",
-      value: userData ? userData.invoices.length : 0
+      value: stats ? stats.totalInvoices : null,
     },
     {
       title: "Revenue",
-      value: `€${userData ? userData.invoices.reduce((acc, invoice) => acc + invoice.total, 0) : 0}`
+      value: stats ? `€${stats.totalRevenue}` : null,
     },
     {
       title: "Pending",
-      value: userData ? userData.invoices.filter(invoice => invoice.status === "pending").length : 0
+      value: stats ? stats.pendingInvoices : null,
     },
   ];
+
   return (
-
     <section className="cards">
-
-      {stats.map((stat) => (
-
-        <div
-          className="card"
-          key={stat.title}
-        >
-
-          <h3>
-            {stat.title}
-          </h3>
-
+      {statsData.map((stat) => (
+        <div className="card" key={stat.title}>
+          <h3>{stat.title}</h3>
           <strong>
-            {stat.value}
+            {!stats || isLoading ? (
+              <span className="loading-dots" aria-label="Loading">
+                <span />
+                <span />
+                <span />
+              </span>
+            ) : (
+              stat.value
+            )}
           </strong>
-
         </div>
-
       ))}
-
     </section>
-
   );
 }
 

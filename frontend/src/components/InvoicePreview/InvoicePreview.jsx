@@ -2,8 +2,11 @@ import "./InvoicePreview.css";
 import { useEffect, useState } from "react";
 import GenericTemplate from "../InvoiceTemplates/InvoicesComponents/GenericInvoice";
 import RoutesettingTemplate from "../InvoiceTemplates/InvoicesComponents/RoutesettingInvoice";
+import useInvoice from "../../hooks/useInvoice";
 
-function InvoicePreview({ pdfData, setPdfData, onToggleTemplate, template }) {
+function InvoicePreview() {
+  const { pdfData, setPdfData, onToggleTemplate, template } = useInvoice();
+  
   const [pdfUrl, setPdfUrl] = useState(null);
 
   useEffect(() => {

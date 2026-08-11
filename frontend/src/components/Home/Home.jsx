@@ -12,18 +12,6 @@ import useInvoice from "../../hooks/useInvoice";
 
 function Home() {
     const { userData, isLoading } = useUser();
-    const { pdfData, setPdfData, isLoading: invoiceLoading, error, setError, generatePdf } = useInvoice();
-
-    const [template, setTemplate] = useState(localStorage.getItem('invoiceTemplate') || 'generic');
-
-    const onToggleTemplate = () => {
-        setTemplate((currentTemplate) => (currentTemplate === 'generic' ? 'routesetting' : 'generic'));
-        setError(null);
-    };
-
-    useEffect(() => {
-        localStorage.setItem('invoiceTemplate', template);
-    }, [template]);
 
     if (isLoading) {
         return <HomeSkeleton />;
@@ -32,19 +20,13 @@ function Home() {
     return (
         <main className="main">
 
-            <Header setPdfData={setPdfData} />
+            <Header />
 
             {userData && <StatsCards />}
 
             <section className="workspace">
-                <InvoiceForm
-                    generatePdf={generatePdf}
-                    isLoading={invoiceLoading}
-                    error={error}
-                    setError={setError}
-                    template={template}
-                />
-                <InvoicePreview pdfData={pdfData} setPdfData={setPdfData} onToggleTemplate={onToggleTemplate} template={template} />
+                <InvoiceForm/>
+                <InvoicePreview />
             </section>
         </main>
     );

@@ -1,54 +1,9 @@
-import { useState } from "react";
-import invoiceService from "../services/invoice.service";
+import { use } from "react";
+import { InvoiceContext } from "../context/InvoiceContext";
 
 export const useInvoice = () => {
-    const [pdfData, setPdfData] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
-
-    const generatePdf = async (formData) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            const pdfBlob = await invoiceService.fetchPdf(formData);
-            setPdfData(pdfBlob);
-            return pdfBlob;
-
-        } catch (err) {
-            setError(err.errors || { general: ["An error occurred while generating the PDF."] });
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const updateInvoiceStatus = async (invoiceId, newStatus) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            await invoiceService.update(invoiceId, { status: newStatus });
-        } catch (err) {
-            setError(err.errors || { general: ["An error occurred while updating the invoice status."] });
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    const removeInvoice = async (invoiceId) => {
-        setIsLoading(true);
-        setError(null);
-
-        try {
-            await invoiceService.remove(invoiceId);
-        } catch (err) {
-            setError(err.errors || { general: ["An error occurred while deleting the invoice."] });
-        } finally {
-            setIsLoading(false);
-        }
-    }
-
-    return { pdfData, isLoading, error, setError, generatePdf, updateInvoiceStatus, removeInvoice, setPdfData };
+    const ctx = use(InvoiceContext);
+    return ctx;
 }
 
 export default useInvoice;

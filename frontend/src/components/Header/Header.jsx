@@ -1,9 +1,11 @@
 import "./Header.css";
 import { useUser } from "../../hooks/useUser";
 import { useNavigate } from "react-router-dom";
+import useInvoice from "../../hooks/useInvoice";
 
-function Header({ setPdfData }) {
+function Header() {
   const { userData, signOut } = useUser();
+  const { setPdfData } = useInvoice();
   const navigate = useNavigate();
 
   const handleSignOut = async (e) => {

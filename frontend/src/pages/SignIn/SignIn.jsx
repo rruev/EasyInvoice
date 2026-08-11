@@ -1,11 +1,13 @@
 import "./SignIn.css";
 
 import { useUser } from "../../hooks/useUser";
+import { useInvoice } from "../../hooks/useInvoice";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 
 function SignIn() {
   const { signIn, isLoading, error, setError, fetchUser } = useUser();
+  const { getAllInvoices, getInvoiceStats } = useInvoice();
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
@@ -19,6 +21,7 @@ function SignIn() {
     if (user) {
       await fetchUser();
       navigate('/');
+      await Promise.all([getAllInvoices(), getInvoiceStats()]);
     }
   };
 
@@ -67,7 +70,7 @@ function SignIn() {
             )}
           </button>
         </form>
-        {error && error.general && <p className="auth-error">{error.general}</p>}
+        {error && error.general && <p className="auth-error">{error.general[0]}</p>}
       </div>
     </section>
   );

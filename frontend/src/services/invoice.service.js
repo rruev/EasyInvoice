@@ -19,6 +19,20 @@ const fetchPdf = async (formData) => {
 
 }
 
+const getAll = async () => {
+    const response = await fetch("http://localhost:3000/api/invoices", {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const error = await getErrors(response);
+        throw error;
+    }
+
+    return await response.json();
+}
+
 const update = async (invoiceId, updatedData) => {
     const response = await fetch(`http://localhost:3000/api/invoices/${invoiceId}`, {
         method: "PUT",
@@ -47,10 +61,26 @@ const remove = async (invoiceId) => {
     }
 };
 
+const getStats = async () => {
+    const response = await fetch("http://localhost:3000/api/invoices/stats", {
+        method: "GET",
+        credentials: "include"
+    });
+
+    if (!response.ok) {
+        const error = await getErrors(response);
+        throw error;
+    }
+
+    return await response.json();
+}
+
 const invoiceService = {
     fetchPdf,
+    getAll,
     update,
-    remove
+    remove,
+    getStats
 };
 
 export default invoiceService;
