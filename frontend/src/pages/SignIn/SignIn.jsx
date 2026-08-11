@@ -19,9 +19,8 @@ function SignIn() {
     const user = await signIn({ email, password });
 
     if (user) {
-      await fetchUser();
       navigate('/');
-      await Promise.all([getAllInvoices(), getInvoiceStats()]);
+      await Promise.all([getAllInvoices(), getInvoiceStats(), fetchUser()]);
     }
   };
 

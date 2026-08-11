@@ -16,13 +16,15 @@ function InvoiceForm() {
 
     const clients = userData?.clients ?? [];
 
-    const [addNewClient, setAddNewClient] = useState(false);
     const [clientName, setClientName] = useState("");
     const [clientStreet, setClientStreet] = useState("");
     const [clientStreetNum, setClientStreetNum] = useState("");
     const [clientPostalCode, setClientPostalCode] = useState("");
     const [clientCity, setClientCity] = useState("");
     const [selectedClient, setSelectedClient] = useState("");
+    const [addNewClient, setAddNewClient] = useState(false);
+    const [updatedUserData, setUpdatedUserData] = useState(false); //to keep loading until the user data is updated after adding a new client
+
     const [formData, setFormData] = useState({});
     const [showReset, setShowReset] = useState(false);
     const [items, setItems] = useState([]);
@@ -109,7 +111,6 @@ function InvoiceForm() {
         formData.template = template;
 
         const pdfData = await generatePdf(formData);
-        await fetchUser();
         if (pdfData) {
             setShowReset(true);
         }
@@ -149,14 +150,16 @@ function InvoiceForm() {
         }
         const clientAddress = prepareAddress(clientStreet, clientStreetNum, clientPostalCode, clientCity);
         const client = await createClient({ name: clientName, address: clientAddress });
+        setUpdatedUserData(true);
+        await fetchUser();
+        setUpdatedUserData(false);
         setSelectedClient(client.id);
+        setAddNewClient(false);
         setClientName("");
         setClientStreet("");
         setClientStreetNum("");
         setClientPostalCode("");
         setClientCity("");
-        setAddNewClient(false);
-        await fetchUser();
     };
 
     const handleReset = () => {
@@ -456,7 +459,7 @@ function InvoiceForm() {
                                     disabled={isClientLoading}
                                     aria-busy={isClientLoading}
                                 >
-                                    {isClientLoading ? (
+                                    {isClientLoading || updatedUserData ? (
                                         <span className="client-picker__loading-content">
                                             <span className="client-picker__spinner" aria-hidden="true" />
                                             Saving...

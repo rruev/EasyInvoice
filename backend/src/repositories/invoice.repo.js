@@ -27,6 +27,17 @@ const findById = async (id) => {
 const findAll = async (userId, filter = {}) => {
     const invoices = await prisma.invoice.findMany({
         where: { userId, ...filter },
+        include: {
+            client: {
+                select: {
+                    name: true,
+                    address: true,
+                },
+            }
+        },
+        orderBy: {
+            createdAt: "desc",
+        },
     });
     return invoices;
 };

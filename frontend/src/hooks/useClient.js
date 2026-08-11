@@ -20,6 +20,8 @@ export const useClient = () => {
         }
     }
 
+    // this i am not using it anywhere as i fethc the clients with the user 
+    //TODO render the clients on the client page with this function 
     const fetchClients = async () => {
         setIsLoading(true);
         setError(null);

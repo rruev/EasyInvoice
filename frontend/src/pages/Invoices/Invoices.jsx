@@ -10,7 +10,8 @@ const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
-  const { updateInvoiceStatus, removeInvoice } = useInvoice();
+  const { invoices, updateInvoiceStatus, removeInvoice } = useInvoice();
+
   const [deletingInvoiceId, setDeletingInvoiceId] = useState(null); // for passing the delete id to the confirm modal
   const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -61,11 +62,11 @@ function Invoices() {
 
         <button type="button" onClick={() => navigate("/")}>New Invoice</button>
         <span className="invoices-panel__count">
-          {userData?.invoices?.length ?? 0} records
+          {invoices?.length ?? 0} records
         </span>
       </div>
 
-      {userData?.invoices?.length ? (
+      {invoices?.length ? (
         <div className="invoices-table-wrap">
           <table className="invoices-table">
             <thead>
@@ -80,7 +81,7 @@ function Invoices() {
             </thead>
 
             <tbody>
-              {userData?.invoices?.map((invoice, index) => (
+              {invoices?.map((invoice, index) => (
                 <tr
                   key={invoice.id ?? invoice.invoiceNum ?? index}
                   className={`invoices-table__row ${deletingInvoiceIdList.includes(invoice.id) ? "invoices-table__row--deleting" : ""}`}
