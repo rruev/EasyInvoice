@@ -6,7 +6,12 @@ import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { invoiceFormSchema } from "../../schemas/invoiceForm.schema";
 import { previewPdf } from "../../utils/previewPdf.util";
-import { formatIban, formatDate, prepareAddress, parseAddress } from "../../utils/formatFormData";
+import { 
+    formatIban, 
+    formatDate, 
+    prepareAddress, 
+    parseAddress, 
+} from "../../utils/formatFormData";
 import * as z from "zod";
 
 function InvoiceForm() {
@@ -113,6 +118,7 @@ function InvoiceForm() {
         const pdfData = await generatePdf(formData);
         if (pdfData) {
             setShowReset(true);
+            await fetchUser();
         }
     };
 

@@ -19,8 +19,8 @@ const fetchPdf = async (formData) => {
 
 }
 
-const getAll = async () => {
-    const response = await fetch("http://localhost:3000/api/invoices", {
+const getAll = async (page) => {
+    const response = await fetch(`http://localhost:3000/api/invoices?page=${page}`, {
         method: "GET",
         credentials: "include"
     });
@@ -59,6 +59,8 @@ const remove = async (invoiceId) => {
         const error = await getErrors(response);
         throw error;
     }
+
+    return await response.json();
 };
 
 const getStats = async () => {

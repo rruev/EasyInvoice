@@ -9,16 +9,38 @@ const InvoiceProvider = ({ children }) => {
     const [stats, setStats] = useState(null);
     const [invoices, setInvoices] = useState([]);
     const [template, setTemplate] = useState(localStorage.getItem('invoiceTemplate') || 'generic');
+    const [currentPage, setCurrentPage] = useState(1);
 
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getAllInvoices = useCallback(async () => {
+    const getAllInvoices = useCallback(async (page = 1, deletedInvoice = null) => {
         setError(null);
 
         try {
-            const invoices = await invoiceService.getAll();
-            setInvoices(invoices);
+            let invoices = await invoiceService.getAll(page);
+            if (page === 1) {
+                setInvoices(invoices);
+                return;
+            } 
+            setCurrentPage(page);
+            setInvoices((currentInvoices) => {
+                if (currentInvoices.some((inv) => invoices.some((newInv) => newInv.id === inv.id))) {
+                    return currentInvoices.map((inv) => {
+                        const newInv = invoices.find((nInv) => nInv.id === inv.id);
+                        if (deletedInvoice && inv.id === deletedInvoice.id) {
+                            console.log("Removing invoice with id:", inv.id);
+                            return null; 
+                        }
+                        return newInv || inv;
+                    }).filter(inv => inv !== null);
+                }
+                if (invoices.length === 0 && deletedInvoice) {
+                    setCurrentPage((prevPage) => Math.max(prevPage - 1, 1));
+                    return currentInvoices.filter((inv) => inv.id !== deletedInvoice.id);
+                }
+                return [...currentInvoices, ...invoices];
+            });
         } catch (err) {
             setError(err.errors || { general: ["An error occurred while fetching invoices."] });
         }
@@ -42,6 +64,7 @@ const InvoiceProvider = ({ children }) => {
         try {
             const pdfBlob = await invoiceService.fetchPdf(formData);
             setPdfData(pdfBlob);
+            setCurrentPage(1)
             await Promise.all([
                 getAllInvoices(),
                 getInvoiceStats()
@@ -55,14 +78,14 @@ const InvoiceProvider = ({ children }) => {
     }, [getAllInvoices, getInvoiceStats]);
 
 
-    const updateInvoiceStatus = useCallback(async (invoiceId, newStatus) => {
+    const updateInvoiceStatus = useCallback(async (invoiceId, newStatus, page = 1) => {
         setIsLoading(true);
         setError(null);
 
         try {
             await invoiceService.update(invoiceId, { status: newStatus });
             await Promise.all([
-                getAllInvoices(),
+                getAllInvoices(page),
                 getInvoiceStats()
             ]);
         } catch (err) {
@@ -72,14 +95,14 @@ const InvoiceProvider = ({ children }) => {
         }
     }, [getAllInvoices, getInvoiceStats]);
 
-    const removeInvoice = useCallback(async (invoiceId) => {
+    const removeInvoice = useCallback(async (invoiceId, page = 1) => {
         setIsLoading(true);
         setError(null);
 
         try {
-            await invoiceService.remove(invoiceId);
+            const deletedInvoice = await invoiceService.remove(invoiceId);
             await Promise.all([
-                getAllInvoices(),
+                getAllInvoices(page, deletedInvoice),
                 getInvoiceStats()
             ]);
         } catch (err) {
@@ -124,7 +147,9 @@ const InvoiceProvider = ({ children }) => {
         getAllInvoices,
         updateInvoiceStatus,
         removeInvoice,
-        getInvoiceStats
+        getInvoiceStats,
+        currentPage,
+        setCurrentPage
     }), [
         pdfData,
         setPdfData,
@@ -139,7 +164,9 @@ const InvoiceProvider = ({ children }) => {
         updateInvoiceStatus,
         removeInvoice,
         onToggleTemplate,
-        getInvoiceStats
+        getInvoiceStats,
+        currentPage,
+        setCurrentPage
     ]);
 
     return (

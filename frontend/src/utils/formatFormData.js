@@ -59,4 +59,3 @@ export const parseAddress = (address) => {
 
     return { street, num, streetNum: num, postal, city };
 };
-

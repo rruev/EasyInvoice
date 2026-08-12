@@ -52,7 +52,7 @@ const update = async (invoiceId, updatedData) => {
 };
 
 const remove = async (invoiceId) => {
-    await invoiceRepo.remove(invoiceId);
+    return await invoiceRepo.remove(invoiceId);
 };
 
 const getStats = async (userId) => {

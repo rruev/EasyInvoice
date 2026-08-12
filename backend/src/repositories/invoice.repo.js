@@ -26,7 +26,7 @@ const findById = async (id) => {
 
 const findAll = async (userId, filter = {}) => {
     const invoices = await prisma.invoice.findMany({
-        where: { userId, ...filter },
+        where: { userId },
         include: {
             client: {
                 select: {
@@ -38,6 +38,8 @@ const findAll = async (userId, filter = {}) => {
         orderBy: {
             createdAt: "desc",
         },
+        take: filter.take || undefined,
+        skip: filter.skip || undefined,
     });
     return invoices;
 };
@@ -51,7 +53,7 @@ const update = async (invoiceId, updatedData) => {
 };
 
 const remove = async (invoiceId) => {
-    await prisma.invoice.delete({
+    return await prisma.invoice.delete({
         where: { id: invoiceId },
     });
 };

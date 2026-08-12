@@ -10,12 +10,13 @@ const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
-  const { invoices, stats, updateInvoiceStatus, removeInvoice } = useInvoice();
+  const { invoices, stats, updateInvoiceStatus, removeInvoice, getAllInvoices, currentPage } = useInvoice();
 
   const [deletingInvoiceId, setDeletingInvoiceId] = useState(null); // for passing the delete id to the confirm modal
   const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [updatingInvoiceId, setUpdatingInvoiceId] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const navigate = useNavigate();
 
@@ -23,7 +24,7 @@ function Invoices() {
     setUpdatingInvoiceId(invoiceId);
 
     try {
-      await updateInvoiceStatus(invoiceId, e.target.value);
+      await updateInvoiceStatus(invoiceId, e.target.value, currentPage);
     } finally {
       setUpdatingInvoiceId(null);
     }
@@ -44,10 +45,17 @@ function Invoices() {
     await new Promise((resolve) => setTimeout(resolve, DELETE_ANIMATION_MS));
 
     try {
-      await removeInvoice(id);
+      await removeInvoice(id, currentPage);
+      await fetchUser();
     } finally {
       setDeletingInvoiceIdList((prev) => prev.filter((invoiceId) => invoiceId !== id));
     }
+  };
+
+  const onNextPage = async () => {
+    setIsLoading(true);
+    await getAllInvoices(currentPage + 1);
+    setIsLoading(false);
   };
 
   return (
@@ -81,7 +89,7 @@ function Invoices() {
             <tbody>
               {invoices?.map((invoice, index) => (
                 <tr
-                  key={invoice.id ?? invoice.invoiceNum ?? index}
+                  key={invoice.id}
                   className={`invoices-table__row ${deletingInvoiceIdList.includes(invoice.id) ? "invoices-table__row--deleting" : ""}`}
                   aria-busy={deletingInvoiceIdList.includes(invoice.id)}
                 >
@@ -121,6 +129,15 @@ function Invoices() {
                   </td>
                 </tr>
               ))}
+              {invoices.length !== stats?.totalInvoices && (
+                <tr className="invoices-table__add-more-row" aria-label="add more invoices row">
+                <td colSpan={6}>
+                  <button type="button" className="invoices-table__add-more-button" onClick={onNextPage}>
+                    {isLoading ? "Loading..." : "Load more invoices page: " + (currentPage)}
+                  </button>
+                </td>
+                </tr>
+              )}
               <tr className="invoices-table__summary-row" aria-label="invoice summary row">
                 <td className="invoices-table__summary-label-cell">
                   <strong>Summary</strong>
@@ -133,13 +150,6 @@ function Invoices() {
                 </td>
                 <td className="invoices-table__summary-total">{stats?.totalRevenue ?? "--"} &euro;</td>
                 <td className="invoices-table__action">&nbsp;</td>
-              </tr>
-              <tr className="invoices-table__add-more-row" aria-label="add more invoices row">
-                <td colSpan={6}>
-                  <button type="button" className="invoices-table__add-more-button">
-                    Add More Invoices
-                  </button>
-                </td>
               </tr>
             </tbody>
           </table>
