@@ -1,7 +1,8 @@
 import clientService from "../services/client.service";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export const useClient = () => {
+    const [clients, setClients] = useState([]);
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
@@ -20,7 +21,6 @@ export const useClient = () => {
         }
     }
 
-    // this i am not using it anywhere as i fethc the clients with the user 
     //TODO render the clients on the client page with this function 
     const fetchClients = async () => {
         setIsLoading(true);
@@ -28,6 +28,7 @@ export const useClient = () => {
 
         try {
             const data = await clientService.getAll();
+            setClients(data);
             return data;
         } catch (err) {
             setError(err.errors || { general: ['An error occurred while fetching clients.'] });
@@ -81,6 +82,11 @@ export const useClient = () => {
             setIsLoading(false);
         }
     }
+
+    // useEffect(() => {
+    //     // Fetch clients when the component mounts
+    //     fetchClients();
+    // }, []);
 
     return { isLoading, error, setError, fetchClients, createClient, fetchClientById, updateClient, deleteClient };
 }

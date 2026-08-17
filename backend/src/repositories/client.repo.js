@@ -1,8 +1,15 @@
 import { prisma } from '../lib/prisma.js';
 
-const findAll = async (filter = {}) => {
+const findAll = async (userId) => {
     const clients = await prisma.client.findMany({
-        where: filter,
+        where: { userId },
+        include: {
+            invoices: {
+                select: {
+                    id: true,
+                }
+            }
+        }
     });
     return clients;
 };
@@ -10,6 +17,13 @@ const findAll = async (filter = {}) => {
 const findById = async (clientId) => {
     const client = await prisma.client.findUnique({
         where: { id: clientId },
+        include: {
+            invoices: {
+                select: {
+                    id: true,
+                }
+            }
+        }
     });
     return client;
 };

@@ -1,9 +1,12 @@
 import "./Clients.css";
 import { useUser } from "../../hooks/useUser";
+import { useClient } from "../../hooks/useClient";
 import { useNavigate } from "react-router-dom";
 
 function Clients() {
   const { userData } = useUser();
+  const { clients } = useClient(); // Assuming useClient is imported and provides the clients state
+
   const navigate = useNavigate();
   const hasClients = (userData?.clients?.length ?? 0) > 0;
 
@@ -55,7 +58,7 @@ function Clients() {
 
               <div className="customer-card__footer">
                 <span>{customer.phone ?? customer.phoneNumber ?? "No phone"}</span>
-                <span>{customer.totalInvoices ?? 0} invoices</span>
+                {/* <span>{clients?.find(c => c.id === customer.id)?.invoices?.length ?? 0} invoices</span> */}
               </div>
             </article>
           ))

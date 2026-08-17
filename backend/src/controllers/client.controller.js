@@ -7,10 +7,10 @@ import { getErrors } from "../utils/error.util.js";
 const clientController = Router();
 
 clientController.get('/', isAuthenticated, async (req, res) => {
-    const filter = req.query;
-    console.log(filter);
+    const userId = req.user?.id;
+
     try {
-        const clients = await clientService.getAll({ userId: req.user?.id, ...filter });
+        const clients = await clientService.getAll(userId);
 
         res.status(200).json(clients);
     } catch (error) {

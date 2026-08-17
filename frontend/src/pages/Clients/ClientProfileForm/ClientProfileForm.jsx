@@ -2,6 +2,7 @@ import "./ClientProfileForm.css";
 import * as z from "zod";
 import clientSchema from "../../../schemas/client.schema";
 import ClientProfileFormSkeleton from "./ClientProfileFormSkeleton";
+import ConfirmDeleteMessage from "../../../components/ConfirmDelete/ConfirmDeleteMessage";
 import { prepareAddress, parseAddress } from "../../../utils/formatFormData";
 
 import { useClient } from "../../../hooks/useClient";
@@ -33,6 +34,7 @@ function ClientProfileForm() {
   const [postalCode, setPostalCode] = useState("");
   const [city, setCity] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   useEffect(() => {
     if (!clientId) {
@@ -120,6 +122,7 @@ function ClientProfileForm() {
       <div className="client-profile__card">
         <div className="client-profile__header">
           <div>
+            {clientId && <p className="client-profile__eyebrow">Total Invoices: {clientData?.invoices?.length ?? 0}</p>}
             <h2 className="client-profile__title">{clientId ? "Edit Client" : "Add Client"}</h2>
             <p className="client-profile__subtitle">
               {clientId ? "Update the client information below." : "Fill out the form below to add a new client."}
@@ -239,13 +242,22 @@ function ClientProfileForm() {
               )}
             </button>
             {clientId && (
-              <button type="button" className="client-profile__button client-profile__button--delete" onClick={handleDeleteClient} disabled={isSubmitting || isLoading}>
+              <button type="button" className="client-profile__button client-profile__button--delete" onClick={() => setShowDeleteModal(true)} disabled={isSubmitting || isLoading}>
                 Delete Client
               </button>
             )}
           </div>
           {error?.general && <p className="client-profile__error">{error.general[0]}</p>}
         </form>
+        {showDeleteModal && (
+          <ConfirmDeleteMessage
+            onConfirm={handleDeleteClient}
+            onCancel={() => setShowDeleteModal(false)}
+            isLoading={isLoading}
+            target="Client"
+            id={clientId}
+          />
+        )}
       </div>
     </section>
   );
