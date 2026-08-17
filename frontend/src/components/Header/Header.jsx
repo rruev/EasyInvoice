@@ -18,7 +18,7 @@ function Header() {
   };
 
   return (
-    <div className="header">
+    <header className="header">
 
       <h1>
         Create Invoice
@@ -33,7 +33,7 @@ function Header() {
         )}
       </div>
 
-    </div>
+    </header>
   );
 }
 
