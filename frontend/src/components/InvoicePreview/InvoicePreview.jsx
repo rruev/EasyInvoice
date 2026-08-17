@@ -49,17 +49,19 @@ function InvoicePreview() {
       </div>
 
       {pdfUrl ? (
-        <iframe
-          className="invoice-preview__frame"
-          src={pdfUrl}
-          title="PDF preview"
-        />
+        <>
+          <iframe
+            className="invoice-preview__frame"
+            src={pdfUrl}
+            title="PDF preview"
+          />
+          <button className="invoice-preview__clear" onClick={() => previewPdf(pdfData)}>
+            Open PDF preview in new tab
+          </button>
+        </>
       ) : (
         template === 'routesetting' ? <RoutesettingTemplate /> : <GenericTemplate />
       )}
-      <button className="invoice-preview__clear" onClick={() => previewPdf(pdfData)}>
-        Open PDF in new tab
-      </button>
     </div>
   );
 }

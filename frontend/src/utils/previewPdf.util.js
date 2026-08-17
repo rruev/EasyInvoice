@@ -9,11 +9,26 @@ export const previewPdf = async (pdfData) => {
 
     if (!newWindow) {
         URL.revokeObjectURL(pdfUrl);
+        console.log("successfully revoked the object URL for the PDF preview.");
         console.error("The browser blocked the PDF preview popup.");
         return;
     }
 
-    setTimeout(() => {
-        URL.revokeObjectURL(pdfUrl);
-    }, 1000);
+    const cleanup = () => {
+        try {
+            URL.revokeObjectURL(pdfUrl);
+        } catch (error) {
+            console.warn("Failed to revoke PDF preview URL.", error);
+        }
+    };
+
+    newWindow.addEventListener("load", () => {
+        if (newWindow.location.href.startsWith("blob:")) {
+            return;
+        }
+
+        cleanup();
+    }, { once: true });
+
+    newWindow.addEventListener("beforeunload", cleanup, { once: true });
 };
