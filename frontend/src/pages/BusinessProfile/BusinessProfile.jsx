@@ -1,8 +1,11 @@
 import "./BusinessProfile.css";
 import * as z from "zod";
-import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
 
+import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
 import { formatIban } from "../../utils/formatFormData";
+import { parseAddress, prepareAddress  } from "../../utils/formatFormData";
+
+import { useEffect } from "react";
 import { useUser } from "../../hooks/useUser";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -17,17 +20,33 @@ function BusinessProfile() {
     const [showDeleteModal, setShowDeleteModal] = useState(false);
     const [formData, setFormData] = useState({});
 
+    const [street, setStreet] = useState("");
+    const [streetNum, setStreetNum] = useState("");
+    const [postalCode, setPostalCode] = useState("");
+    const [city, setCity] = useState("");
+
     const form = useRef(null);
     const iban = useRef(null);
+
+    useEffect(() => {
+        const parsedAddress = parseAddress(userData?.businessAddress);
+        setStreet(parsedAddress.street);
+        setStreetNum(parsedAddress.num);
+        setPostalCode(parsedAddress.postal);
+        setCity(parsedAddress.city);
+    }, [userData]);
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         const data = Object.fromEntries(new FormData(form.current).entries());
+        const businessAddress = prepareAddress(
+            street, streetNum, postalCode, city
+        );
         const updatedData = {
             fullName: data.fullName || null,
             email: data.email || null,
             businessName: data.businessName || null,
-            businessAddress: data.businessAddress || null,
+            businessAddress: businessAddress || null,
             businessEmail: data.businessEmail || null,
             phoneNumber: data.phoneNumber || null,
             bankName: data.bankName || null,
@@ -128,11 +147,68 @@ function BusinessProfile() {
                         {error?.businessEmail && <p className="profile-field__error">{error.businessEmail[0]}</p>}
                     </article>
 
-                    <article className="profile-field profile-field--wide">
-                        <label className="profile-field__label">Business address</label>
-                        <input className="profile-field__value" name="businessAddress" defaultValue={userData?.businessAddress} readOnly={readOnly} onChange={handleChange} />
-                        {error?.businessAddress && <p className="profile-field__error">{error.businessAddress[0]}</p>}
-                    </article>
+                    {readOnly ? (
+                        <article className="profile-field profile-field--wide">
+                            <label className="profile-field__label">Business address</label>
+                            <input className="profile-field__value" name="businessAddress" defaultValue={userData?.businessAddress} readOnly={readOnly} onChange={handleChange} />
+                            {error?.businessAddress && <p className="profile-field__error">{error.businessAddress[0]}</p>}
+                        </article>
+                    ) : (
+                        <article className="client-profile__field client-profile__field--wide">
+                            <label htmlFor="client-address">Address</label>
+                            <div className="client-profile__address-grid">
+                                <input
+                                    id="client-address-street"
+                                    type="text"
+                                    name="street"
+                                    value={street}
+                                    placeholder="Street"
+                                    readOnly={readOnly}
+                                    onChange={(e) => {
+                                        setStreet(e.target.value);
+                                        handleChange(e);
+                                    }}
+                                />
+                                <input
+                                    id="client-address-streetNum"
+                                    type="text"
+                                    name="streetNum"
+                                    value={streetNum}
+                                    placeholder="No."
+                                    readOnly={readOnly}
+                                    onChange={(e) => {
+                                        setStreetNum(e.target.value);
+                                        handleChange(e);
+                                    }}
+                                />
+                                <input
+                                    id="client-address-postalCode"
+                                    type="text"
+                                    name="postalCode"
+                                    value={postalCode}
+                                    placeholder="Postal code"
+                                    readOnly={readOnly}
+                                    onChange={(e) => {
+                                        setPostalCode(e.target.value);
+                                        handleChange(e);
+                                    }}
+                                />
+                                <input
+                                    id="client-address-city"
+                                    type="text"
+                                    name="city"
+                                    value={city}
+                                    placeholder="City"
+                                    readOnly={readOnly}
+                                    onChange={(e) => {
+                                        setCity(e.target.value);
+                                        handleChange(e);
+                                    }}
+                                />
+                            </div>
+                            {error?.address && <p className="client-profile__error">{error.address[0]}</p>}
+                        </article>
+                    )}
 
                     <article className="profile-field profile-field--wide">
                         <label className="profile-field__label">Phone number</label>
