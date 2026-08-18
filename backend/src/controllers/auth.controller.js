@@ -13,7 +13,11 @@ authController.post('/register', async (req, res) => {
 
         const { user, token } = await authService.register(userData);
 
-        res.cookie('auth-token', token, { httpOnly: true });
+        res.cookie('auth-token', token, { 
+            httpOnly: true,
+            sameSite: 'None',
+            secure: true
+         });
 
         res.json({
             id: user.id,
@@ -36,7 +40,11 @@ authController.post('/login', async (req, res) => {
 
         const { user, token } = await authService.login(userData);
         
-        res.cookie('auth-token', token, { httpOnly: true});
+        res.cookie('auth-token', token, { 
+            httpOnly: true,
+            sameSite: 'None',
+            secure: true
+        });
     
         res.json({
             id: user.id,
