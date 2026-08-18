@@ -63,7 +63,11 @@ authController.post('/login', async (req, res) => {
 });
 
 authController.get('/logout', (req, res) => {
-    res.clearCookie('auth-token');
+    res.clearCookie('auth-token', {
+        httpOnly: true,
+        sameSite: 'None',
+        secure: true
+    });
     res.json({ message: 'Logged out successfully' });
 });
 
