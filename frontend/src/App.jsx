@@ -10,6 +10,7 @@ import RequireAuth from "./components/RequireAuth/RequireAuth";
 import NotFound from "./pages/NotFound/NotFound";
 import Footer from "./components/Footer/Footer";
 
+import { useState } from "react";
 import { Routes, Route } from "react-router-dom";
 
 import "./App.css";
@@ -18,6 +19,7 @@ function App() {
   return (
     <>
       <div className="app">
+
         <Sidebar />
 
         <div className="app-content">

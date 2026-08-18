@@ -3,13 +3,28 @@
   background: #111827;
   color: white;
   padding: 25px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .logo {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
   font-size: 24px;
   font-weight: bold;
   margin-bottom: 40px;
   cursor: pointer;
+}
+
+.logo img {
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+}
+
+.close {
+  display: none;
 }
 
 .menu a {
@@ -19,6 +34,7 @@
   padding: 12px;
   border-radius: 8px;
   margin-bottom: 8px;
+  transition: background 0.2s ease, color 0.2s ease;
 }
 
 .menu a:hover,
@@ -27,8 +43,51 @@
   color: white;
 }
 
-@media(max-width:900px) {
+@media (max-width: 900px) {
   .sidebar {
-    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 30;
+    width: min(82vw, 320px);
+    height: 100vh;
+    padding: 1.25rem 1rem;
+    transform: translateX(-120%);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.22);
+  }
+
+  .sidebar--open {
+    transform: translateX(0);
+  }
+
+  .logo {
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+  }
+
+  .close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.2rem;
+    height: 2.2rem;
+    border: none;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.08);
+    color: #ffffff;
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.2s ease;
+  }
+
+  .close:hover {
+    background: rgba(255, 255, 255, 0.16);
+    transform: rotate(90deg);
+  }
+
+  .menu a {
+    padding: 0.9rem 0.85rem;
+    font-size: 1rem;
   }
 }

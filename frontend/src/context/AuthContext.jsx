@@ -1,8 +1,12 @@
-import { createContext } from "react";
-import { useState, useEffect } from 'react';
+import { 
+    createContext,
+    useState,
+    useEffect,
+    useCallback,
+    useMemo
+} from 'react';
 import { register, login, logout, fetchUserData } from '../services/auth.service';
 import userService from '../services/user.service';
-import { useMemo, useCallback } from 'react';
 
 const AuthContext = createContext(null);
 

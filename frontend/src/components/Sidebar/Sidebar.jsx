@@ -2,43 +2,49 @@ import "./Sidebar.css";
 
 import { NavLink, useNavigate } from "react-router-dom";
 import { useUser } from "../../hooks/useUser";
+import useSidebar from "../../hooks/useSidebar";
+
 import SidebarSkeleton from "./SidebarSkeleton";
 
-function Sidebar() {
+function Sidebar({ isMobileOpen, onClose }) {
   const { userData, isLoading } = useUser();
+  const { isSidebarOpen, setIsSidebarOpen, isMobile } = useSidebar();
 
   const navigate = useNavigate();
+
+  const handleNavigate = (path) => {
+    navigate(path);
+    setIsSidebarOpen(false);
+  };
 
   if (isLoading) {
     return <SidebarSkeleton />;
   }
 
   return (
-    <aside className="sidebar">
-
-      <div className="logo" onClick={() => navigate("/")}>
+    <aside className={`sidebar ${isSidebarOpen ? "sidebar--open" : ""}`}>
+      <div className="logo" onClick={() => handleNavigate("/")}>
         EasyInvoice
         <img src="/favicon.png" alt="EasyInvoice Logo" />
+        {isMobile && <button className="close" onClick={() => setIsSidebarOpen(false)}>X</button>}
       </div>
 
-
       <nav className="menu">
-        <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/">New Invoice</NavLink>
+        <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/" onClick={() => setIsSidebarOpen(false)}>New Invoice</NavLink>
         {userData ? (
           <>
-            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/invoices">Invoices</NavLink>
-            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/clients">Clients</NavLink>
-            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/business-profile">Business Profile</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/invoices" onClick={() => setIsSidebarOpen(false)}>Invoices</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/clients" onClick={() => setIsSidebarOpen(false)}>Clients</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/business-profile" onClick={() => setIsSidebarOpen(false)}>Business Profile</NavLink>
             {/* <NavLink to="/settings">Settings</NavLink> */}
           </>
         ) : (
           <>
-            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signin">Sign In</NavLink>
-            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signup">Sign Up</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signin" onClick={() => setIsSidebarOpen(false)}>Sign In</NavLink>
+            <NavLink className={({ isActive }) => isActive ? "active" : ""} to="/signup" onClick={() => setIsSidebarOpen(false)}>Sign Up</NavLink>
           </>
         )}
       </nav>
-
     </aside>
   );
 }
