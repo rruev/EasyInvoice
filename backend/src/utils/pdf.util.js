@@ -10,7 +10,7 @@ export const generatePdf = async (content) => {
     const page = await browser.newPage();
 
     await page.setContent(content, {
-        waitUntil: 'networkidle0',
+        waitUntil: 'domcontentloaded',
     });
 
     const pdf = await page.pdf({
