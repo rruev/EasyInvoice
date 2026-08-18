@@ -1,7 +1,9 @@
 import { getErrors } from '../utils/errors.util';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const create = async (clientData) => {
-    const response = await fetch('http://localhost:3000/api/clients', {
+    const response = await fetch(`${API_URL}/api/clients`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +21,7 @@ const create = async (clientData) => {
 }
 
 const getAll = async () => {
-    const response = await fetch('http://localhost:3000/api/clients', {
+    const response = await fetch(`${API_URL}/api/clients`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -36,7 +38,7 @@ const getAll = async () => {
 }
 
 const getById = async (clientId) => {
-    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+    const response = await fetch(`${API_URL}/api/clients/${clientId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ const getById = async (clientId) => {
 }
 
 const update = async (clientId, clientData) => {
-    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+    const response = await fetch(`${API_URL}/api/clients/${clientId}`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -71,7 +73,7 @@ const update = async (clientId, clientData) => {
 }
 
 const deleteClient = async (clientId) => {
-    const response = await fetch(`http://localhost:3000/api/clients/${clientId}`, {
+    const response = await fetch(`${API_URL}/api/clients/${clientId}`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

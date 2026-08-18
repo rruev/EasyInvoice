@@ -1,7 +1,9 @@
 import { getErrors } from '../utils/errors.util';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 export const updateUser = async (userData) => {
-    const response = await fetch(`http://localhost:3000/api/users`, {
+    const response = await fetch(`${API_URL}/api/users`, {
         method: 'PUT',
         headers: {
             'Content-Type': 'application/json',
@@ -19,7 +21,7 @@ export const updateUser = async (userData) => {
 };
 
 export const deleteUser = async () => {
-    const response = await fetch('http://localhost:3000/api/users', {
+    const response = await fetch(`${API_URL}/api/users`, {
         method: 'DELETE',
         headers: {
             'Content-Type': 'application/json',

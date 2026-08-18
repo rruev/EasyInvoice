@@ -1,7 +1,9 @@
 import { getErrors } from '../utils/errors.util';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+
 const fetchPdf = async (formData) => {
-    const response = await fetch("http://localhost:3000/api/invoices/generate", {
+    const response = await fetch(`${API_URL}/api/invoices/generate`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -20,7 +22,7 @@ const fetchPdf = async (formData) => {
 }
 
 const getAll = async (page) => {
-    const response = await fetch(`http://localhost:3000/api/invoices?page=${page}`, {
+    const response = await fetch(`${API_URL}/api/invoices?page=${page}`, {
         method: "GET",
         credentials: "include"
     });
@@ -34,7 +36,7 @@ const getAll = async (page) => {
 }
 
 const update = async (invoiceId, updatedData) => {
-    const response = await fetch(`http://localhost:3000/api/invoices/${invoiceId}`, {
+    const response = await fetch(`${API_URL}/api/invoices/${invoiceId}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
@@ -50,7 +52,7 @@ const update = async (invoiceId, updatedData) => {
 }
 
 const remove = async (invoiceId) => {
-    const response = await fetch(`http://localhost:3000/api/invoices/${invoiceId}`, {
+    const response = await fetch(`${API_URL}/api/invoices/${invoiceId}`, {
         method: "DELETE",
         credentials: "include"
     });
@@ -64,7 +66,7 @@ const remove = async (invoiceId) => {
 };
 
 const getStats = async () => {
-    const response = await fetch("http://localhost:3000/api/invoices/stats", {
+    const response = await fetch(`${API_URL}/api/invoices/stats`, {
         method: "GET",
         credentials: "include"
     });
