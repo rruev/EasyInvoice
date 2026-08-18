@@ -23,9 +23,9 @@ function Sidebar({ isMobileOpen, onClose }) {
 
   return (
     <aside className={`sidebar ${isSidebarOpen ? "sidebar--open" : ""}`}>
-      <div className="logo" onClick={() => handleNavigate("/")}>
+      <div className="logo">
         EasyInvoice
-        <img src="/favicon.png" alt="EasyInvoice Logo" />
+        <img src="/favicon.png" alt="EasyInvoice Logo"  onClick={() => handleNavigate("/")}/>
         {isMobile && <button className="close" onClick={() => setIsSidebarOpen(false)}>X</button>}
       </div>
 

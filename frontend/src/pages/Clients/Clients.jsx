@@ -2,10 +2,12 @@ import "./Clients.css";
 import { useUser } from "../../hooks/useUser";
 import { useClient } from "../../hooks/useClient";
 import { useNavigate } from "react-router-dom";
+import { useSidebar } from "../../hooks/useSidebar";
 
 function Clients() {
   const { userData } = useUser();
   const { clients } = useClient(); // Assuming useClient is imported and provides the clients state
+  const { isSidebarOpen, setIsSidebarOpen, isMobile } = useSidebar();
 
   const navigate = useNavigate();
   const hasClients = (userData?.clients?.length ?? 0) > 0;
@@ -13,9 +15,21 @@ function Clients() {
   return (
     <section className="customers-panel">
       <div className="customers-panel__hero">
-        <div>
-          <p className="customers-panel__eyebrow">Clients</p>
-          <h2 className="customers-panel__title">Client Manager</h2>
+        <div className="container">
+          {!isSidebarOpen && isMobile && (
+            <button
+              type="button"
+              className={`mobile-sidebar-toggle ${isSidebarOpen ? "is-open" : ""}`}
+              aria-label={isSidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              ☰
+            </button>
+          )}
+          <div>
+            <p className="customers-panel__eyebrow">Clients</p>
+            <h2 className="customers-panel__title">Client Manager</h2>
+          </div>
         </div>
 
         <span className="customers-panel__count">

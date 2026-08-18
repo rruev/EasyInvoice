@@ -5,12 +5,14 @@ import { useUser } from "../../hooks/useUser";
 import { useInvoice } from "../../hooks/useInvoice";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSidebar } from "../../hooks/useSidebar";
 
 const DELETE_ANIMATION_MS = 320;
 
 function Invoices() {
   const { userData, fetchUser } = useUser();
   const { invoices, stats, updateInvoiceStatus, removeInvoice, getAllInvoices, currentPage } = useInvoice();
+  const { isSidebarOpen, setIsSidebarOpen, isMobile } = useSidebar();
 
   const [deletingInvoiceId, setDeletingInvoiceId] = useState(null); // for passing the delete id to the confirm modal
   const [deletingInvoiceIdList, setDeletingInvoiceIdList] = useState([]); // for the delete animation not to delete something twice
@@ -61,9 +63,21 @@ function Invoices() {
   return (
     <section className="invoices-panel">
       <div className="invoices-panel__header">
-        <div>
-          <p className="invoices-panel__eyebrow">Invoices</p>
-          <h2 className="invoices-panel__title">Invoice Register</h2>
+        <div className="container">
+          {!isSidebarOpen && isMobile && (
+            <button
+              type="button"
+              className={`mobile-sidebar-toggle ${isSidebarOpen ? "is-open" : ""}`}
+              aria-label={isSidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+              onClick={() => setIsSidebarOpen(true)}
+            >
+              ☰
+            </button>
+          )}
+          <div>
+            <p className="invoices-panel__eyebrow">Invoices</p>
+            <h2 className="invoices-panel__title">Invoice Register</h2>
+          </div>
         </div>
 
         <button className="invoices-panel__new-button" type="button" onClick={() => navigate("/")}>New Invoice</button>
@@ -131,11 +145,11 @@ function Invoices() {
               ))}
               {invoices.length !== stats?.totalInvoices && (
                 <tr className="invoices-table__add-more-row" aria-label="add more invoices row">
-                <td colSpan={6}>
-                  <button type="button" className="invoices-table__add-more-button" onClick={onNextPage}>
-                    {isLoading ? "Loading..." : "Load more invoices page: " + (currentPage)}
-                  </button>
-                </td>
+                  <td colSpan={6}>
+                    <button type="button" className="invoices-table__add-more-button" onClick={onNextPage}>
+                      {isLoading ? "Loading..." : "Load more invoices page: " + (currentPage)}
+                    </button>
+                  </td>
                 </tr>
               )}
               <tr className="invoices-table__summary-row" aria-label="invoice summary row">

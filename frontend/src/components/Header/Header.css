@@ -54,6 +54,7 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    margin-right: 1rem;
     width: 2.9rem;
     height: 2.9rem;
     border: none;

@@ -3,16 +3,20 @@ import * as z from "zod";
 
 import ConfirmDeleteMessage from "../../components/ConfirmDelete/ConfirmDeleteMessage";
 import { formatIban } from "../../utils/formatFormData";
-import { parseAddress, prepareAddress  } from "../../utils/formatFormData";
+import { parseAddress, prepareAddress } from "../../utils/formatFormData";
 
 import { useEffect } from "react";
 import { useUser } from "../../hooks/useUser";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useSidebar } from "../../hooks/useSidebar";
+
 import { userUpdateSchema } from "../../schemas/user.schema";
 
 function BusinessProfile() {
     const { userData, fetchUser, error, setError, updateUser, deleteUser, isLoading } = useUser();
+    const { isSidebarOpen, setIsSidebarOpen, isMobile } = useSidebar();
+
     const navigate = useNavigate();
 
     const [readOnly, setReadOnly] = useState(true);
@@ -110,12 +114,24 @@ function BusinessProfile() {
         <section className="business-profile" aria-label="Business profile page">
             <div className="business-profile__card">
                 <div className="business-profile__header">
-                    <div>
-                        <p className="business-profile__eyebrow">Business Profile</p>
-                        <h2 className="business-profile__title">User Information</h2>
-                        <p className="business-profile__subtitle">
-                            Review your account details and manage your profile.
-                        </p>
+                    <div className="container">
+                        {!isSidebarOpen && isMobile && (
+                            <button
+                                type="button"
+                                className={`mobile-sidebar-toggle ${isSidebarOpen ? "is-open" : ""}`}
+                                aria-label={isSidebarOpen ? "Close navigation menu" : "Open navigation menu"}
+                                onClick={() => setIsSidebarOpen(true)}
+                            >
+                                ☰
+                            </button>
+                        )}
+                        <div>
+                            <p className="business-profile__eyebrow">Business Profile</p>
+                            <h2 className="business-profile__title">User Information</h2>
+                            <p className="business-profile__subtitle">
+                                Review your account details and manage your profile.
+                            </p>
+                        </div>
                     </div>
 
                     <span className="business-profile__status">Active account</span>
