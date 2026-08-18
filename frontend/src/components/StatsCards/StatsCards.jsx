@@ -1,10 +1,8 @@
 import "./StatsCards.css";
 import { useInvoice } from "../../hooks/useInvoice";
-import useSidebar from "../../hooks/useSidebar";
 
 function StatsCards() {
   const { stats, isLoading } = useInvoice();
-  const { isMobile } = useSidebar();
 
   const statsData = [
     {
@@ -15,11 +13,11 @@ function StatsCards() {
       title: "Revenue",
       value: stats ? `€${stats.totalRevenue}` : null,
     },
-    !isMobile && {
+   {
       title: "Pending Invoices",
       value: stats ? stats.pendingInvoices : null,
     },
-  ].filter(Boolean); // Filter out null values for mobile view
+  ];
 
   return (
     <section className="cards">
