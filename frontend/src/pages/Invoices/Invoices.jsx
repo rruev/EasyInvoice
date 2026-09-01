@@ -163,7 +163,7 @@ function Invoices() {
                   </div>
                 </td>
                 <td className="invoices-table__summary-total">{stats?.totalRevenue ?? "--"} &euro;</td>
-                <td className="invoices-table__action">&nbsp;</td>
+                <td className="invoices-table__action">page: {currentPage}</td>
               </tr>
             </tbody>
           </table>

@@ -14,7 +14,7 @@ const InvoiceProvider = ({ children }) => {
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const getAllInvoices = useCallback(async (page = 1, deletedInvoice = null) => {
+    const getAllInvoices = useCallback(async (page = 1, deletedInvoice = null, updatedInvoice = null) => {
         setError(null);
 
         try {
@@ -25,12 +25,17 @@ const InvoiceProvider = ({ children }) => {
             } 
             setCurrentPage(page);
             setInvoices((currentInvoices) => {
-                if (currentInvoices.some((inv) => invoices.some((newInv) => newInv.id === inv.id))) {
+                // Cheks if the new invoices are already in the current invoices list when updateing status or deleting an invoice
+                const isInCurrentInvoices = currentInvoices.some((inv) => invoices.some((newInv) => newInv.id === inv.id));
+                if (isInCurrentInvoices) {
                     return currentInvoices.map((inv) => {
                         const newInv = invoices.find((nInv) => nInv.id === inv.id);
                         if (deletedInvoice && inv.id === deletedInvoice.id) {
-                            console.log("Removing invoice with id:", inv.id);
                             return null; 
+                        }
+                        if (updatedInvoice && inv.id === updatedInvoice.id) {
+                            inv.status = updatedInvoice.status;
+                            return inv;
                         }
                         return newInv || inv;
                     }).filter(inv => inv !== null);
@@ -83,9 +88,9 @@ const InvoiceProvider = ({ children }) => {
         setError(null);
 
         try {
-            await invoiceService.update(invoiceId, { status: newStatus });
+            const updatedInvoice = await invoiceService.update(invoiceId, { status: newStatus });
             await Promise.all([
-                getAllInvoices(page),
+                getAllInvoices(page, null, updatedInvoice),
                 getInvoiceStats()
             ]);
         } catch (err) {

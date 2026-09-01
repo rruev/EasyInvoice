@@ -49,6 +49,8 @@ const update = async (invoiceId, updatedData) => {
         const error = await getErrors(response);
         throw error;
     }
+
+    return await response.json();
 }
 
 const remove = async (invoiceId) => {
