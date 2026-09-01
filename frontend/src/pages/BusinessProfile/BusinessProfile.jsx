@@ -66,13 +66,13 @@ function BusinessProfile() {
         try {
             setIsSaving(true);
             await updateUser(updatedData);
-            await fetchUser();
+            const updatedUser = await fetchUser();
+            iban.current.value = updatedUser?.iban || "";
             setReadOnly(true);
         } catch (error) {
             console.error("Failed to update user:", error);
             setError(error || { general: ["Failed to update user."] });
         } finally {
-            iban.current.value = userData?.iban || "";
             setIsSaving(false);
         }
 
@@ -260,7 +260,7 @@ function BusinessProfile() {
 
                 <div className="business-profile__actions">
                     {readOnly ? (
-                        <button type="button" className="business-profile__button business-profile__button--edit" onClick={() => setReadOnly(!readOnly)}>
+                        <button type="button" className="business-profile__button business-profile__button--edit" onClick={() => {setReadOnly(!readOnly); iban.current.value = '';}}>
                             Edit Account Information
                         </button>
 
