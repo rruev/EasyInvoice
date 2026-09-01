@@ -55,7 +55,7 @@ function InvoicePreview() {
           {!isMobile && (
             <iframe
               className="invoice-preview__frame"
-              src={pdfUrl}
+              src={`${pdfUrl}#view=FitH&navpanes=0`}
               title="PDF preview"
             />
           )}
