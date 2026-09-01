@@ -38,8 +38,8 @@ function Header() {
 
       </div>
 
-      <div className="profile">
-        {userData ? (userData.businessName ? userData.businessName : userData.email) : "Guest"}
+      <div className="profile" style={{ display: isMobile && !userData ? "none" : "block" }}>
+        {!isMobile && (userData ? (userData.businessName ? userData.businessName : userData.email) : "Guest")}
         {userData && (
           <button className="signout-button" onClick={handleSignOut}>
             Sign Out

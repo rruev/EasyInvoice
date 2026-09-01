@@ -64,7 +64,7 @@ function InvoicePreview() {
           </button>
         </>
       ) : (
-        template === 'routesetting' ? <RoutesettingTemplate /> : <GenericTemplate />
+        !isMobile && (template === 'routesetting' ? <RoutesettingTemplate /> : <GenericTemplate />)
       )}
     </div>
   );
