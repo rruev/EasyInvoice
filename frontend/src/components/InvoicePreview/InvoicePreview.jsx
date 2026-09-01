@@ -3,10 +3,12 @@ import { useEffect, useState } from "react";
 import GenericTemplate from "../InvoiceTemplates/InvoicesComponents/GenericInvoice";
 import RoutesettingTemplate from "../InvoiceTemplates/InvoicesComponents/RoutesettingInvoice";
 import useInvoice from "../../hooks/useInvoice";
+import useSidebar from "../../hooks/useSidebar";
 import { previewPdf } from "../../utils/previewPdf.util";
 
 function InvoicePreview() {
   const { pdfData, setPdfData, onToggleTemplate, template } = useInvoice();
+  const { isMobile } = useSidebar();
 
   const [pdfUrl, setPdfUrl] = useState(null);
 
@@ -50,11 +52,13 @@ function InvoicePreview() {
 
       {pdfUrl ? (
         <>
-          <iframe
-            className="invoice-preview__frame"
-            src={pdfUrl}
-            title="PDF preview"
-          />
+          {!isMobile && (
+            <iframe
+              className="invoice-preview__frame"
+              src={pdfUrl}
+              title="PDF preview"
+            />
+          )}
           <button className="invoice-preview__clear" onClick={() => previewPdf(pdfData)}>
             Open PDF preview in new tab
           </button>

@@ -46,7 +46,8 @@ export const invoiceSchema = z.object({
     quantity: z.coerce.number({ message: 'Quantity must be a positive number' })
         .positive({ message: "Quantity must be a positive number" }),
     price: z.coerce.number({ message: 'Price must be a positive number' })
-        .positive({ message: "Price must be a positive number" }),
+        .positive({ message: "Price must be a positive number" })
+        .transform((val) => val.toFixed(2)),
     template: z.enum(['routesetting', 'generic'], { message: 'Invalid template type' })
         .optional(),
     items: z.array(z.object({
@@ -56,6 +57,7 @@ export const invoiceSchema = z.object({
         quantity: z.coerce.number({ message: 'Quantity must be a positive number' })
             .positive({ message: "Quantity must be a positive number" }),
         price: z.coerce.number({ message: 'Price must be a positive number' })
-            .positive({ message: "Price must be a positive number" }),
+            .positive({ message: "Price must be a positive number" })
+            .transform((val) => val.toFixed(2)),
     })).optional(),
 })
