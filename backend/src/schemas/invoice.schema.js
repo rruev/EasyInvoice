@@ -31,7 +31,7 @@ export const invoiceSchema = z.object({
         .min(1, { message: 'Client name is required' })
         .trim(),
     clientAddress: z.string({ message: 'Client address is required' })
-        .regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{4} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' })
+        .regex(/^[A-Za-zÄÖÜäöüßẞ .'-]+ \d+[A-Za-z]?, \d{0,10} [A-Za-zÄÖÜäöüßẞ .'-]+$/, { message: 'The address must be in this format: "Street Name 123, 4000 City"' })
         .trim(),
     invoiceNum: z.string({ message: 'Invoice number is required' })
         .regex(/^\d{4}-\d{3}$/, { message: "Invoice number must be in the format YYYY-001" })
