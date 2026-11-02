@@ -1,8 +1,8 @@
 import { Router } from 'express';
 import authService from '../services/auth.service.js';
 import clientService from '../services/client.service.js';
-import { isAuthenticated } from '../middleware/auth.middleware';
-import { userLogInSchema, userRegisterSchema } from '../schemas/user.schema';
+import { isAuthenticated } from '../middleware/auth.middleware.js';
+import { userLogInSchema, userRegisterSchema } from '../schemas/user.schema.js';
 import { getErrors } from '../utils/error.util.js';
 
 const authController = Router();

@@ -28,6 +28,12 @@ app.use(authMiddleware);
 // Routing
 app.use('/api', router);
 
+app.get('/', (req, res) => {
+  res.send('API is running');
+});
+
 app.listen(process.env.PORT || 3000, () => {
   console.log(`Server is running on http://localhost:${process.env.PORT || 3000}`);
 });
+
+export default app;

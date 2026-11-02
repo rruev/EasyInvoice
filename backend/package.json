@@ -5,7 +5,8 @@
   "main": "src/index.js",
   "scripts": {
     "start": "tsx src/index.js",
-    "dev": "tsx watch src/index.js"
+    "dev": "tsx watch src/index.js",
+    "postinstall": "prisma generate"
   },
   "keywords": [],
   "author": "Rosen Ruev",
