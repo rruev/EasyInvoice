@@ -42,7 +42,7 @@ export const login = async (userData) => {
 export const logout = async () => {
     try {
         const response = await fetch(`${API_URL}/api/auth/logout`, {
-            method: 'GET',
+            method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
