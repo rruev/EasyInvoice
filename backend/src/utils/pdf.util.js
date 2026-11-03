@@ -7,7 +7,7 @@ import { fileURLToPath } from 'url';
 
 export const generatePdf = async (content) => {
     const browser = await puppeteer.launch({
-        headless: true,
+        headless: "shell",
         args: chromium.args,
         executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(), // Add this line to specify the path to the browser executable
     });
