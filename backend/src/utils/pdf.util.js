@@ -9,22 +9,23 @@ export const generatePdf = async (content) => {
     const browser = await puppeteer.launch({
         headless: "shell",
         args: chromium.args,
-        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(), // Add this line to specify the path to the browser executable
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(),
     });
-    const page = await browser.newPage();
+    try {
+        const page = await browser.newPage();
 
-    await page.setContent(content, {
-        waitUntil: 'domcontentloaded',
-    });
+        await page.setContent(content, {
+            waitUntil: 'domcontentloaded',
+        });
 
-    const pdf = await page.pdf({
-        format: 'A4',
-        printBackground: true,
-    });
-
-    await browser.close();
-
-    return pdf;
+        const pdf = await page.pdf({
+            format: 'A4',
+            printBackground: true,
+        });
+        return pdf;
+    } finally {
+        await browser.close();
+    }
 }
 
 export const createHtml = async (invoiceData) => {
@@ -63,7 +64,7 @@ export const createHtml = async (invoiceData) => {
 
     // this runs but does nothing for the routesetting template
     //TODO Unify the way of generating templates for different invoice types
-    const items = invoiceData.items?.map((item, index) => { 
+    const items = invoiceData.items?.map((item, index) => {
         return `<tr>
             <td>${index + 1}</td>
             <td>${item.description}</td>
