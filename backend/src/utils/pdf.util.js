@@ -1,4 +1,5 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-core';
+import chromium from '@sparticuz/chromium';
 import fs from 'fs/promises';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,7 +8,8 @@ import { fileURLToPath } from 'url';
 export const generatePdf = async (content) => {
     const browser = await puppeteer.launch({
         headless: true,
-        args: ['--no-sandbox', '--disable-setuid-sandbox'],
+        args: chromium.args,
+        executablePath: process.env.PUPPETEER_EXECUTABLE_PATH || await chromium.executablePath(), // Add this line to specify the path to the browser executable
     });
     const page = await browser.newPage();
 
