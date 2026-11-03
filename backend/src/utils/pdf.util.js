@@ -26,9 +26,9 @@ export const generatePdf = async (content) => {
 export const createHtml = async (invoiceData) => {
     let htmlTemplate;
     if (invoiceData.template === 'routesetting') {
-        htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.routesetting.html', 'utf-8');
+        htmlTemplate = await fs.readFile('src/invoiceTemplates/invoice.routesetting.html', 'utf-8');
     } else {
-        htmlTemplate = await fs.readFile('./src/invoiceTemplates/invoice.generic.html', 'utf-8');
+        htmlTemplate = await fs.readFile('src/invoiceTemplates/invoice.generic.html', 'utf-8');
     }
 
     // TODO: Add flexible handling for different template structures and data formats.
